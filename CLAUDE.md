@@ -37,6 +37,9 @@ _build/ 고침 → python3 build.py → 브라우저로 확인 → git push → 
 ```
 
 - 이 폴더에서 세션을 시작하면 **미리보기 서버가 자동으로 뜹니다** (http://localhost:8765)
+- `quickmenu()` 가 `</body></html>` 까지 함께 내보냅니다. `tail()` 에 무엇을 더할 때는
+  **반드시 그 앞에** 넣으십시오 — 뒤에 두면 body 밖으로 나가서, 화면에는 보이는데
+  `getElementById` 로는 안 잡히는 상태가 됩니다
 - `git push` 하면 Netlify 가 알아서 배포합니다. **zip 을 만들어 끌어다 놓지 마십시오** — 다음 push 때 덮어써집니다
 - 배포 전에는 아래 "완료 전 점검" 을 돌립니다
 
@@ -57,6 +60,45 @@ python-pptx 처럼 조용히 깨지는 것이 많습니다. **브라우저에서
 
 숨은 iframe 에 각 페이지를 폭별로 띄워 재는 방식이 빠릅니다. `.js-reveal` 은
 `opacity:1; transform:none` 로 눌러 두고 재야 위치가 정확합니다.
+
+### 재는 방법 — 이 맥의 Chrome 을 직접 띄웁니다
+
+그림으로 뽑아 눈으로 볼 수도 있고, 값을 재서 숫자로 받을 수도 있습니다.
+
+```bash
+CH="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+
+# 화면을 그림으로
+perl -e 'alarm 30; exec @ARGV' "$CH" --headless --disable-gpu --hide-scrollbars \
+  --virtual-time-budget=4000 --user-data-dir=/tmp/cprof/a --window-size=1440,900 \
+  --screenshot=/tmp/shot.png http://localhost:8765/index.html
+
+# 값을 재서 — 잰 값을 document.title 에 넣고 DOM 을 덤프해 받습니다
+perl -e 'alarm 30; exec @ARGV' "$CH" --headless --disable-gpu \
+  --virtual-time-budget=4000 --user-data-dir=/tmp/cprof/b \
+  --dump-dom http://localhost:8765/_probe.html | grep -o '<title>[^<]*</title>'
+```
+
+걸리는 곳이 셋 있습니다. 모르면 시간을 크게 버립니다.
+
+- **Chrome 은 창을 500px 아래로 줄이지 못합니다.** `--window-size=390,780` 을 줘도
+  `innerWidth` 는 500 입니다. 스크린샷만 390 으로 잘려 나오기 때문에 **멀쩡한 화면이
+  오른쪽 잘린 것처럼 보입니다.** 320 · 390px 은 폭을 지정한 iframe 안에 띄워서
+  재십시오 — 그래야 진짜 그 폭으로 조판됩니다
+- **한 번 띄우는 데 20~30초 걸립니다** (지도 embed). `perl -e 'alarm 30; exec @ARGV'`
+  로 감싸지 않으면 명령이 안 끝납니다
+- `--user-data-dir` 은 매번 다른 경로로 주십시오. 고친 CSS 가 캐시에서 나오는지
+  의심하느라 시간을 쓰지 않게 됩니다
+
+**node 는 안 깔려 있습니다.** 자바스크립트 문법만 보려면 JavaScriptCore 를 씁니다.
+
+```bash
+JSC=/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Helpers/jsc
+echo "try { new Function(read('script.js')); print('ok') } catch(e) { print(e) }" > /tmp/c.js
+"$JSC" /tmp/c.js
+```
+
+`_probe*.html` 같은 검사용 파일은 재고 나면 **지웁니다.** 저장소에 남기지 마십시오.
 
 ---
 
