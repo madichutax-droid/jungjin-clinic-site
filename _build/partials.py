@@ -7,8 +7,8 @@
 20개 파일을 손대야 했습니다.
 """
 
-CSS_V = "105"
-JS_V  = "3"
+CSS_V = "106"
+JS_V  = "4"
 IMG_V = "3"
 
 CLINIC   = "정진한의원"
@@ -610,6 +610,47 @@ def venn(labels):
 """
 
 
+# ── 개원 안내 창 ─────────────────────────────────────────────
+# 개원하면 OPENING_ON = False 하나만 바꾸십시오. 20개 페이지에서 한 번에 사라집니다.
+OPENING_ON   = True
+OPENING_WHEN = "10월 초"
+OPENING_BODY = [
+    f"{CLINIC}은 {OPENING_WHEN} 진료를 시작합니다.",
+    "표기된 진료시간은 개원 후 기준입니다.",
+    "정확한 날짜는 정해지는 대로 알려 드리겠습니다.",
+]
+
+
+def opening_popup():
+    """개원 전까지 모든 페이지에 뜨는 안내 창.
+
+    hidden 으로 내보내고 script.js 가 벗깁니다 — 자바스크립트가 꺼져 있으면
+    닫을 방법이 없는 창이 화면을 덮게 되므로, 그럴 때는 아예 열지 않습니다."""
+    if not OPENING_ON:
+        return ""
+    body = "\n".join(f"          <p>{t}</p>" for t in OPENING_BODY)
+    return f"""  <div class="popup" id="openingPopup" hidden>
+    <div class="popup__dim" data-popup-close></div>
+    <div class="popup__card" role="dialog" aria-modal="true"
+         aria-labelledby="openingTitle" tabindex="-1">
+      <div class="popup__body">
+        <p class="popup__eyebrow">개원 안내</p>
+        <h2 class="popup__title" id="openingTitle">{OPENING_WHEN},<br />문을 엽니다</h2>
+        <div class="popup__text">
+{body}
+        </div>
+        <p class="popup__where">{LANDMARK}<br />{LANDMARK_BLDG}</p>
+        <a class="btn btn--accent popup__tel" href="tel:{TEL}">전화로 문의하기 <span class="popup__no">{TEL}</span></a>
+      </div>
+      <div class="popup__foot">
+        <button type="button" class="popup__today" data-popup-today>오늘 하루 보지 않기</button>
+        <button type="button" class="popup__close" data-popup-close>닫기</button>
+      </div>
+    </div>
+  </div>
+"""
+
+
 def tail(with_cta=True, cta_title=None, cta_desc=None):
     """페이지 마무리 한 벌 — CTA + 푸터 + 퀵메뉴."""
     parts = []
@@ -621,5 +662,8 @@ def tail(with_cta=True, cta_title=None, cta_desc=None):
             kw["desc"] = cta_desc
         parts.append(cta(**kw))
     parts.append(footer())
+    # quickmenu() 가 </body></html> 까지 함께 내보냅니다.
+    # 팝업은 반드시 그 앞에 와야 합니다 — 뒤에 두면 body 밖으로 나갑니다.
+    parts.append(opening_popup())
     parts.append(quickmenu())
     return "".join(parts)

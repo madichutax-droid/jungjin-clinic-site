@@ -25,7 +25,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=105" />
+  <link rel="stylesheet" href="styles.css?v=106" />
   <link rel="canonical" href="https://jungjinmedi.netlify.app/joint.html" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="정진한의원" />
@@ -279,6 +279,27 @@
       </div>
     </div>
   </footer>
+  <div class="popup" id="openingPopup" hidden>
+    <div class="popup__dim" data-popup-close></div>
+    <div class="popup__card" role="dialog" aria-modal="true"
+         aria-labelledby="openingTitle" tabindex="-1">
+      <div class="popup__body">
+        <p class="popup__eyebrow">개원 안내</p>
+        <h2 class="popup__title" id="openingTitle">10월 초,<br />문을 엽니다</h2>
+        <div class="popup__text">
+          <p>정진한의원은 10월 초 진료를 시작합니다.</p>
+          <p>표기된 진료시간은 개원 후 기준입니다.</p>
+          <p>정확한 날짜는 정해지는 대로 알려 드리겠습니다.</p>
+        </div>
+        <p class="popup__where">돌다리사거리 · 구리전통시장 입구 맞은편<br />투썸플레이스 건물 5층</p>
+        <a class="btn btn--accent popup__tel" href="tel:031-522-5923">전화로 문의하기 <span class="popup__no">031-522-5923</span></a>
+      </div>
+      <div class="popup__foot">
+        <button type="button" class="popup__today" data-popup-today>오늘 하루 보지 않기</button>
+        <button type="button" class="popup__close" data-popup-close>닫기</button>
+      </div>
+    </div>
+  </div>
 
   <div class="quickmenu" aria-label="바로가기">
     <a class="qm" href="https://blog.naver.com/yjj2923" target="_blank" rel="noopener" style="--qm:#262220" aria-label="블로그">
@@ -296,6 +317,6 @@
       <span class="qm__label">예약</span>
     </a>
   </div>
-  <script src="script.js?v=3"></script>
+  <script src="script.js?v=4"></script>
 </body>
 </html>

@@ -1575,3 +1575,64 @@ body, p, .why-text, .audience__item p,
    경계 하나에 신호가 둘이라 선을 뺍니다. */
 .section--alt, .section--cream { border-top: none; }
 
+
+/* ── 개원 안내 창 ──────────────────────────────────────────
+   개원 전까지만 뜹니다. partials.OPENING_ON 을 False 로 하면 마크업이 안 나갑니다.
+   script.js 가 hidden 을 벗겨야 열립니다 — 자바스크립트가 꺼져 있으면
+   닫을 수 없는 창이 되므로 그럴 때는 열지 않습니다.
+   이 디자인에는 그림자가 없습니다. 카드는 어두운 막과 1px 선으로만 띄웁니다. */
+.popup { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center;
+  padding: var(--sp-5); }
+.popup[hidden] { display: none; }
+.popup__dim { position: absolute; inset: 0; background: rgba(31,27,25,.62); }
+.popup__card {
+  position: relative; width: 100%; max-width: 400px; background: #fff;
+  border: 1px solid var(--line); border-radius: var(--radius);
+  max-height: 88vh; max-height: calc(100dvh - 40px); overflow-y: auto;
+  animation: popupIn .28s ease both;
+}
+.popup__body { padding: var(--sp-8) var(--sp-6) var(--sp-6); }
+.popup__eyebrow { font-size: var(--fs-sm); font-weight: 700; color: var(--accent-deep);
+  letter-spacing: var(--ls-label); margin-bottom: var(--sp-3); }
+.popup__title {
+  font-family: "Nanum Myeongjo", "Pretendard Variable", Pretendard, serif;
+  font-weight: 700; font-size: var(--fs-2xl); line-height: 1.35;
+  letter-spacing: var(--ls-title); color: var(--text);
+}
+.popup__text { margin-top: var(--sp-5); display: grid; gap: var(--sp-2); }
+.popup__text p { color: var(--muted); line-height: var(--lh-body); text-wrap: pretty; }
+.popup__where {
+  margin-top: var(--sp-5); padding-top: var(--sp-4); border-top: 1px solid var(--line);
+  font-size: var(--fs-sm); color: var(--muted); line-height: 1.7;
+}
+/* .btn 은 white-space:nowrap 입니다. 그대로 두면 이 버튼이 카드를 밀어내
+   좁은 화면에서 오른쪽이 잘립니다. 여기서만 줄바꿈을 허용합니다. */
+.popup__no { white-space: nowrap; }
+.popup__tel {
+  display: block; text-align: center; margin-top: var(--sp-5);
+  white-space: normal; padding-left: var(--sp-4); padding-right: var(--sp-4);
+}
+/* 창이 열리면 카드로 초점을 옮깁니다. 창 자체가 이미 눈에 띄므로
+   테두리선은 지웁니다 — 닫기 버튼에 초점을 주면 눌린 것처럼 보입니다. */
+.popup__card:focus { outline: none; }
+/* 아래 두 칸 — 왼쪽은 오늘 하루, 오른쪽은 이번 방문 동안만 */
+.popup__foot { display: flex; border-top: 1px solid var(--line); background: var(--bg-alt); }
+/* 320px 에서 '오늘 하루 보지 않기' 가 두 줄로 접히지 않도록,
+   두 칸을 반씩 나누지 않고 '닫기' 는 글자 폭만 쓰게 둡니다. */
+.popup__foot button {
+  flex: 0 0 auto; padding: 15px var(--sp-4); font-size: var(--fs-sm);
+  color: var(--muted); background: none; border: 0; cursor: pointer;
+  white-space: nowrap;
+}
+/* .popup__foot button (0,1,1) 을 이기려면 한 단계 더 좁혀야 합니다 */
+.popup__foot .popup__today { flex: 1 1 auto; text-align: left; }
+.popup__foot button:hover { color: var(--text); }
+/* .popup__foot button 의 border:0 을 이기려면 한 단계 더 좁혀야 합니다 */
+.popup__foot .popup__close { font-weight: 700; color: var(--text);
+  border-left: 1px solid var(--line); }
+@keyframes popupIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .popup__card { animation: none; } }
+@media (max-width: 400px) {
+  .popup { padding: var(--sp-3); }
+  .popup__body { padding: var(--sp-6) var(--sp-5) var(--sp-5); }
+}

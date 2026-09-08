@@ -144,3 +144,58 @@ if (!reduceMotion) {
     window.scrollTo(0, 0);
   });
 })();
+
+// 개원 안내 창.
+// hidden 을 여기서 벗깁니다 — 자바스크립트가 꺼져 있으면 닫을 방법이 없으므로
+// 아예 열지 않는 쪽이 맞습니다.
+// '오늘 하루 보지 않기' 는 그날 자정까지(localStorage),
+// 그냥 '닫기' 는 이번 방문 동안만(sessionStorage) 입니다.
+// 날짜는 UTC 가 아니라 이 자리의 날짜로 만듭니다 —
+// toISOString() 을 쓰면 한국에서 오전 9시에 '오늘' 이 넘어가 버립니다.
+(function () {
+  const p = document.getElementById('openingPopup');
+  if (!p) return;
+
+  const DAY = 'openingHideDate';
+  const SES = 'openingClosed';
+  const n = new Date();
+  const today = n.getFullYear() + '-' + (n.getMonth() + 1) + '-' + n.getDate();
+
+  const get = (s, k) => { try { return s.getItem(k); } catch (e) { return null; } };
+  const put = (s, k, v) => { try { s.setItem(k, v); } catch (e) {} };
+
+  if (get(localStorage, DAY) === today) return;
+  if (get(sessionStorage, SES) === '1') return;
+
+  const card = p.querySelector('.popup__card');
+  const back = document.activeElement;
+
+  function close() {
+    p.hidden = true;
+    document.body.style.overflow = '';
+    document.removeEventListener('keydown', onKey);
+    if (back && back.focus) back.focus();
+  }
+
+  // 열려 있는 동안 tab 이 창 밖으로 나가지 않게 붙잡습니다.
+  function onKey(e) {
+    if (e.key === 'Escape') { put(sessionStorage, SES, '1'); close(); return; }
+    if (e.key !== 'Tab') return;
+    const f = card.querySelectorAll('a[href], button');
+    if (!f.length) return;
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+
+  p.querySelectorAll('[data-popup-close]').forEach(function (el) {
+    el.addEventListener('click', function () { put(sessionStorage, SES, '1'); close(); });
+  });
+  const t = p.querySelector('[data-popup-today]');
+  if (t) t.addEventListener('click', function () { put(localStorage, DAY, today); close(); });
+
+  p.hidden = false;
+  document.body.style.overflow = 'hidden';
+  document.addEventListener('keydown', onKey);
+  card.focus();
+})();
