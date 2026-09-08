@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "DIR=\"${CLAUDE_PROJECT_DIR:-/Users/yjj/ohnew-clinic-site}\"; if lsof -ti :8765 >/dev/null 2>&1; then echo \"{\\\"systemMessage\\\":\\\"미리보기 이미 실행 중 — http://localhost:8765\\\"}\"; else nohup python3 -m http.server 8765 --directory \"$DIR\" >/tmp/jj-preview.log 2>&1 & sleep 1; echo \"{\\\"systemMessage\\\":\\\"미리보기 켰습니다 — http://localhost:8765\\\"}\"; fi",
+            "timeout": 15,
+            "statusMessage": "미리보기 서버 확인 중"
+          }
+        ]
+      }
+    ]
+  }
+}
