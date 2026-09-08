@@ -1408,13 +1408,13 @@ body, p, .why-text, .audience__item p,
 }
 /* 포스터는 영상이 뜨기 전과 '동작 줄이기' 를 켠 분을 위한 바탕입니다. */
 .hero {
-  background-image: url("assets/chuna-intro-poster.jpg?v=3");
+  background-image: url("assets/hero-treat-poster.jpg?v=3");
   background-size: cover; background-position: center;
 }
 @media (prefers-reduced-motion: reduce) {
   .hero__video { display: none; }
   .hero {
-    background-image: url("assets/chuna-intro-poster.jpg?v=2");
+    background-image: url("assets/hero-treat-poster.jpg?v=3");
     background-size: cover; background-position: center;
   }
 }
