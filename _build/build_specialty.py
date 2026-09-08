@@ -285,7 +285,8 @@ def build(d):
                  f'{_aside(d["intro_aside"])}'
                  f'    </div>\n  </section>\n')
     return (
-        P.head(d["slug"], title, desc, keywords=d.get("keywords", ""))
+        P.head(d["slug"], title, desc, keywords=d.get("keywords", ""),
+               extra=P.faq_ld(d.get("faq", [])))
         + P.topbar()
         + P.header(d["slug"])
         + P.page_hero(d["title"], d["desc"])

@@ -114,6 +114,7 @@ PAGE_LABELS = {"pain": "관절통증", "autonomic-disorders": "자율신경질�
 PAGE_LABELS.update({slug: label for slug, label, _ in SUBJECTS})
 
 
+import json as _json
 import re as _re
 
 # 한글 종결어미 뒤의 공백만 줄바꿈으로 바꿉니다.
@@ -234,6 +235,32 @@ SEO_DESC = {
  "privacy": "정진한의원 개인정보처리방침입니다. 수집 항목과 보유 기간, 진료기록 10년 보관 근거를 안내합니다. 구리 구리역 정진한의원.",
  "404": "요청하신 페이지를 찾을 수 없습니다. 진료과목과 오시는 길로 이동하실 수 있습니다. 구리 구리역 정진한의원.",
 }
+
+
+def faq_ld(pairs):
+    """문답 목록을 FAQPage JSON-LD 로. head() 의 extra 에 그대로 넣습니다.
+
+    화면에 보이는 답과 같은 글이어야 합니다 — 검색엔진은 페이지에 없는 내용을
+    스키마에만 넣는 것을 규정 위반으로 봅니다. 그래서 lines() 로 줄을 나누기
+    전의 원문을 쓰고, 태그만 걷어냅니다.
+    문답이 없으면 빈 문자열이라 부르는 쪽에서 따로 나눌 필요가 없습니다."""
+    if not pairs:
+        return ""
+
+    def plain(t):
+        t = t.replace("{TEL}", TEL)
+        t = _re.sub(r"<br\s*/?>", " ", t)      # 줄바꿈은 공백으로. 지우면 낱말이 붙습니다
+        return _re.sub(r"\s+", " ", _TAG.sub("", t)).strip()
+
+    body = _json.dumps(
+        {"@context": "https://schema.org", "@type": "FAQPage",
+         "mainEntity": [{"@type": "Question", "name": plain(q),
+                         "acceptedAnswer": {"@type": "Answer", "text": plain(a)}}
+                        for q, a in pairs]},
+        ensure_ascii=False, indent=2)
+    # 본문에 </script> 가 들어가면 태그가 거기서 끊깁니다
+    body = body.replace("</", "<\\/")
+    return '  <script type="application/ld+json">\n  ' + body.replace("\n", "\n  ") + "\n  </script>\n"
 
 
 def head(page, title, desc, extra="", keywords=""):

@@ -40,7 +40,8 @@ def _doctor_brief():
         '      </div>')
 
 
-def _detail(slug, label, title, desc, meta, blocks, extra="", with_subjects=False, notice=None):
+def _detail(slug, label, title, desc, meta, blocks, extra="", with_subjects=False,
+            notice=None, head_extra=""):
     """치료 방법 페이지 공통 뼈대."""
     body = "\n".join(blocks)
     sub = ""
@@ -74,7 +75,7 @@ def _detail(slug, label, title, desc, meta, blocks, extra="", with_subjects=Fals
         </ul>
       </div>
 """
-    return (P.head(slug, f"{label} | {P.CLINIC}", f"{meta} | {P.CLINIC}")
+    return (P.head(slug, f"{label} | {P.CLINIC}", f"{meta} | {P.CLINIC}", extra=head_extra)
             + P.topbar() + P.header(slug)
             + P.page_hero(title, desc) + P.crumb(label)
             + f"""
@@ -236,7 +237,8 @@ def all_pages():
       </div>
     </div>
   </section>
-""")
+""",
+        head_extra=P.faq_ld(H.FAQ))
     pages["care"] = pages["care"].replace(
         '지금 가장 불편한 것부터<br />말씀해 주세요',
         '궁금한 점이 있으면,<br class="only-mobile" /> 편히 물어보세요')
@@ -358,19 +360,11 @@ def all_pages():
         f'          <summary>{q}</summary>\n'
         f'          <div class="faq-item__a"><p>{P.lines(a_.replace("{TEL}", P.TEL))}</p></div>\n'
         f'        </details>' for q, a_ in H.FAQ_PAGE)
-    import json as _json, re as _re
-    faq_ld = _json.dumps({
-        "@context": "https://schema.org", "@type": "FAQPage",
-        "mainEntity": [{"@type": "Question", "name": q,
-                        "acceptedAnswer": {"@type": "Answer",
-                                           "text": _re.sub(r"<[^>]+>", "", a_.replace("{TEL}", P.TEL))}}
-                       for q, a_ in H.FAQ_PAGE]}, ensure_ascii=False, indent=2)
     pages["faq"] = (
         P.head("faq", f"{H.FAQ_PAGE_TITLE} | {P.CLINIC} ({P.STATION})",
                "예약·대기·건강보험·자동차보험·주차처럼 오시기 전에 궁금하신 것들을 "
                f"모았습니다. {P.REGION} {P.STATION} {P.CLINIC}.",
-               extra='  <script type="application/ld+json">\n  '
-                     + faq_ld.replace("\n", "\n  ") + "\n  </script>\n")
+               extra=P.faq_ld(H.FAQ_PAGE))
         + P.topbar() + P.header("faq")
         + P.page_hero(H.FAQ_PAGE_TITLE, H.FAQ_PAGE_LEAD.replace(" ", "{M}", 1).replace("{M}", M))
         + P.crumb(H.FAQ_PAGE_TITLE)
