@@ -1636,27 +1636,3 @@ body, p, .why-text, .audience__item p,
   .popup { padding: var(--sp-3); }
   .popup__body { padding: var(--sp-6) var(--sp-5) var(--sp-5); }
 }
-
-/* ── 진료 내용 (메인) ──────────────────────────────────────
-   메인에서 질환 페이지로 가는 유일한 길입니다. 이름만 폅니다 —
-   증상어와 설명은 각 페이지에 있고, 여기서 되풀이하면 메인이 길어집니다.
-   손가락으로 누르는 자리라 글자만 두지 않고 테두리를 줘 폭을 확보합니다. */
-.subjects { display: grid; gap: var(--sp-8); }
-/* 사이트 규칙대로 왼쪽 정렬입니다 — 위의 '가운데정렬 해제' 를 따릅니다 */
-.subjects__group { display: grid; gap: var(--sp-4); justify-items: start; }
-.subjects__axis {
-  font-size: var(--fs-sm); font-weight: 700; color: var(--muted);
-  letter-spacing: var(--ls-label);
-}
-.subjects__axis:hover { color: var(--accent-deep); }
-.subjects__names {
-  display: flex; flex-wrap: wrap; gap: var(--sp-3);
-  list-style: none; padding: 0; margin: 0;
-}
-.subjects__names a {
-  display: block; padding: 12px var(--sp-5);
-  border: 1px solid var(--line); border-radius: var(--btn-radius);
-  font-size: var(--fs-md); font-weight: 700; color: var(--text);
-  transition: border-color .2s ease, color .2s ease;
-}
-.subjects__names a:hover { border-color: var(--link); color: var(--link); }

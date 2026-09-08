@@ -136,28 +136,11 @@ def build_index():
         f'      <ol class="principles">\n{pri}\n      </ol>',
         sid="promise")
 
-    # ── 진료 내용 ─────────────────────────────────────────
-    # 메인 본문에 진료 페이지로 가는 길이 하나도 없었습니다. 상단 메뉴를
-    # 못 찾은 분은 무엇을 보는 곳인지 알 방법이 없었습니다. (2026-09-08)
-    # 이름만 폅니다 — 증상어와 설명은 각 페이지에 있습니다.
-    # 안전 문구는 메인에 이미 한 번 있어 여기서는 넣지 않습니다.
-    groups = "\n".join(
-        '      <div class="subjects__group">\n'
-        f'        <a class="subjects__axis" href="{axis}.html">{label}</a>\n'
-        '        <ul class="subjects__names">\n'
-        + "\n".join(f'          <li><a href="{slug}.html">{name}</a></li>'
-                     for slug, name, _ in P.AXIS_CHILDREN[axis])
-        + '\n        </ul>\n      </div>'
-        for axis, label in P.AXES)
-    subjects = _sec(
-        '      <div class="section__head section__head--center">\n'
-        '        <h2 class="section__title">진료 내용</h2>\n'
-        '      </div>\n'
-        f'      <div class="subjects">\n{groups}\n      </div>',
-        cls="section section--alt", sid="subjects")
+    # ※ '진료 내용' 구획(진단명 일곱)은 원장님 지시로 다시 뺐습니다(2026-09-09).
+    #    코드와 styles.css 규칙은 커밋 6c84922 에 그대로 있습니다.
 
     return (head_html + P.topbar() + P.header("index")
-            + hero + method + subjects + promise + story
+            + hero + method + promise + story
             + P.location_section() + P.tail(cta_title=H.CTA_TITLE, cta_desc=H.CTA_DESC))
 
 
