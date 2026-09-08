@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    /* PC 버전 선택을 기억했다가, 화면이 그려지기 전에 적용합니다 (깜빡임 방지) */
+    (function () {
+      try {
+        if (localStorage.getItem('viewMode') === 'pc') {
+          document.querySelector('meta[name="viewport"]').setAttribute('content', 'width=1280');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <meta name="theme-color" content="#262220" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v=3" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v=3" />
+  <link rel="manifest" href="site.webmanifest" />
+  <meta name="description" content="예약·대기 시간·건강보험·자동차보험·주차·한약 처방 일수까지, 오시기 전에 궁금하신 것을 모았습니다. 구리 구리역 정진한의원 진료 안내." />
+  <title>진료 전 자주 묻는 질문 | 정진한의원 (구리역)</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=104" />
+  <link rel="canonical" href="https://jungjinmedi.netlify.app/faq.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="정진한의원" />
+  <meta property="og:title" content="진료 전 자주 묻는 질문 | 정진한의원 (구리역)" />
+  <meta property="og:description" content="예약·대기 시간·건강보험·자동차보험·주차·한약 처방 일수까지, 오시기 전에 궁금하신 것을 모았습니다. 구리 구리역 정진한의원 진료 안내." />
+  <meta property="og:url" content="https://jungjinmedi.netlify.app/faq.html" />
+  <meta property="og:image" content="https://jungjinmedi.netlify.app/assets/logo.png?v=3" />
+  <meta property="og:locale" content="ko_KR" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "처음 방문하면 어떤 순서로 진행되나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "증상의 경과를 먼저 듣고, 가지고 오신 검사 자료가 있으면 함께 읽습니다. 그다음 손으로 짚어 굳은 자리와 눌렀을 때 통증이 재현되는 자리를 가립니다. 찾은 자리에 침을 놓은 뒤 치료반응을 확인하고, 오늘 무엇을 확인했는지 설명드리고 마칩니다. 자세한 순서는 치료 전 알아두실 점에 정리해 두었습니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "첫 진료는 시간이 얼마나 걸리나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "증상을 듣고 손으로 확인하는 데 시간이 걸려, 처음 오시는 날은 다시 오실 때보다 깁니다. 한 분께 쓰는 시간이 길어 대기가 생길 수 있습니다. 전화로 미리 시간을 잡아 두시면 기다리시는 시간을 줄일 수 있습니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "예약 없이 가도 되나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "가능합니다. 다만 대기가 생길 수 있습니다. 전화(031-522-5923)로 미리 말씀해 주시면 그날의 진료 상황을 보고 시간을 잡아 드립니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "침과 추나, 한약 중 무엇부터 받게 되나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "상태를 확인한 뒤 정합니다. 굳은 자리가 분명하면 침·약침부터 보고, 관절이 잘 움직이지 않으면 추나요법을 함께 봅니다. 소화나 잠처럼 몸 전체의 상태가 함께 걸려 있으면 한약을 씁니다. 무엇을 왜 쓰는지는 그 자리에서 설명드립니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "지금 먹는 약이 있는데 한약을 함께 먹어도 되나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "복용 중인 약을 임의로 중단하지 마시고 그대로 가져오세요. 무엇을 드시고 계신지 확인한 뒤 드시는 시간에 간격을 두는 방법을 안내합니다. 조정이 필요하다고 판단되면 담당 선생님과 상의하시도록 말씀드립니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "자동차보험으로 진료가 되나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "가능합니다. 사고 후에는 경과가 달라지므로 진행 상황에 맞춰 안내합니다. 접수에 필요한 서류가 있어 자세한 방법은 전화로 문의해 주세요."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "건강보험이 적용되는 항목이 있나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "침·뜸·부항과 추나요법은 건강보험이 적용됩니다. 추나요법은 연간 받을 수 있는 횟수에 한도가 있고, 상태에 따라 본인부담이 달라집니다. 한약과 약침은 비급여이며 금액은 비급여 진료비용에 적어 두었습니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "한약은 며칠분부터 처방되나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "20일분과 30일분을 기준으로 안내합니다. 몸이 반응하는 방향을 보며 이어서 드실지 그때 정합니다. 금액은 비급여 진료비용에서 확인하실 수 있습니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "주차는 가능한가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "건물 주차장을 이용하실 수 있습니다. 자리가 넉넉하지 않을 때가 있습니다. 구리역에서 걸어오실 수 있는 거리라, 지하철로 오시는 분도 많습니다."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문 바로가기</a>
+  <div class="topbar">
+    <div class="container topbar__inner">
+      <span class="topbar__hours">진료시간 평일 09:00–20:00 (점심 13:00–14:00) · 토·공휴일 09:00–15:00 · 일요일 휴진</span>
+      <a class="topbar__tel" href="tel:031-522-5923">031-522-5923</a>
+    </div>
+  </div>
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="index.html#hero" class="logo">
+        <img src="assets/logo.png?v=3" alt="정진한의원" class="logo__img" width="800" height="223" />
+      </a>
+      <nav class="nav" id="nav">
+        <ul class="nav__list">
+          <li class="has-sub" data-nav="story-philosophy">
+            <a href="story-philosophy.html">한의원 소개 <span class="caret" aria-hidden="true">▾</span></a>
+            <ul class="subnav">
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#story">원장 이야기</a></li>
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#philosophy">진료와 치료철학</a></li>
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#cv">약력 · 자격</a></li>
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#facility">내부 시설</a></li>
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#location">오시는 길</a></li>
+            </ul>
+          </li>
+          <li class="has-sub" data-nav="pain">
+            <a href="pain.html">관절통증 <span class="caret" aria-hidden="true">▾</span></a>
+            <ul class="subnav">
+              <li data-nav="stenosis"><a href="stenosis.html">척추관협착증</a></li>
+              <li data-nav="disc"><a href="disc.html">디스크</a></li>
+              <li data-nav="joint"><a href="joint.html">어깨·무릎 관절</a></li>
+            </ul>
+          </li>
+          <li class="has-sub" data-nav="autonomic-disorders">
+            <a href="autonomic-disorders.html">자율신경질환 <span class="caret" aria-hidden="true">▾</span></a>
+            <ul class="subnav">
+              <li data-nav="dizziness"><a href="dizziness.html">어지럼증</a></li>
+              <li data-nav="panic"><a href="panic.html">공황장애</a></li>
+              <li data-nav="stomach"><a href="stomach.html">역류성식도염</a></li>
+              <li data-nav="cough"><a href="cough.html">만성기침</a></li>
+            </ul>
+          </li>
+          <li class="is-active" data-nav="faq">
+            <a aria-current="page" href="faq.html">자주 묻는 질문</a>
+          </li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <section id="main" class="page-hero">
+    <div class="container">
+      <h1 class="page-hero__title">진료 전 자주 묻는 질문</h1>
+      <p class="page-hero__desc">예약·보험·주차처럼<br class="only-mobile" /> 오시기 전에 궁금하신 것들을 모았습니다.</p>
+    </div>
+  </section>
+
+  <div class="crumb">
+    <div class="container"><a href="index.html#hero">홈</a> &nbsp;›&nbsp; 진료 전 자주 묻는 질문</div>
+  </div>
+
+  <section class="section" id="faq">
+    <div class="container container--read">
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>처음 방문하면 어떤 순서로 진행되나요?</summary>
+          <div class="faq-item__a"><p>증상의 경과를 먼저 듣고, 가지고 오신 검사 자료가 있으면 함께 읽습니다.<br class="only-mobile" /> 그다음 손으로 짚어 굳은 자리와 눌렀을 때 통증이 재현되는 자리를 가립니다.<br class="only-mobile" /> 찾은 자리에 침을 놓은 뒤 치료반응을 확인하고, 오늘 무엇을 확인했는지 설명드리고 마칩니다.<br class="only-mobile" /> 자세한 순서는 <a href="care.html">치료 전 알아두실 점</a>에 정리해 두었습니다.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>첫 진료는 시간이 얼마나 걸리나요?</summary>
+          <div class="faq-item__a"><p>증상을 듣고 손으로 확인하는 데 시간이 걸려, 처음 오시는 날은 다시 오실 때보다 깁니다.<br class="only-mobile" /> 한 분께 쓰는 시간이 길어 대기가 생길 수 있습니다.<br class="only-mobile" /> 전화로 미리 시간을 잡아 두시면 기다리시는 시간을 줄일 수 있습니다.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>예약 없이 가도 되나요?</summary>
+          <div class="faq-item__a"><p>가능합니다.<br class="only-mobile" /> 다만 대기가 생길 수 있습니다.<br class="only-mobile" /> 전화(<a href="tel:031-522-5923">031-522-5923</a>)로 미리 말씀해 주시면 그날의 진료 상황을 보고 시간을 잡아 드립니다.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>침과 추나, 한약 중 무엇부터 받게 되나요?</summary>
+          <div class="faq-item__a"><p>상태를 확인한 뒤 정합니다.<br class="only-mobile" /> 굳은 자리가 분명하면 침·약침부터 보고, 관절이 잘 움직이지 않으면<br class="only-mobile" /> 추나요법을 함께 봅니다.<br class="only-mobile" /> 소화나 잠처럼 몸 전체의 상태가 함께 걸려 있으면 한약을 씁니다.<br class="only-mobile" /> 무엇을 왜 쓰는지는 그 자리에서 설명드립니다.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>지금 먹는 약이 있는데 한약을 함께 먹어도 되나요?</summary>
+          <div class="faq-item__a"><p>복용 중인 약을 임의로 중단하지 마시고 그대로 가져오세요.<br class="only-mobile" /> 무엇을 드시고 계신지 확인한 뒤 드시는 시간에 간격을 두는 방법을 안내합니다.<br class="only-mobile" /> 조정이 필요하다고 판단되면 담당 선생님과 상의하시도록 말씀드립니다.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>자동차보험으로 진료가 되나요?</summary>
+          <div class="faq-item__a"><p>가능합니다.<br class="only-mobile" /> 사고 후에는 경과가 달라지므로 진행 상황에 맞춰 안내합니다.<br class="only-mobile" /> 접수에 필요한 서류가 있어 자세한 방법은 전화로 문의해 주세요.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>건강보험이 적용되는 항목이 있나요?</summary>
+          <div class="faq-item__a"><p>침·뜸·부항과 추나요법은 건강보험이 적용됩니다.<br class="only-mobile" /> 추나요법은 연간 받을 수 있는 횟수에 한도가 있고, 상태에 따라 본인부담이 달라집니다.<br class="only-mobile" /> 한약과 약침은 비급여이며 금액은 <a href="pricing.html">비급여 진료비용</a>에 적어 두었습니다.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>한약은 며칠분부터 처방되나요?</summary>
+          <div class="faq-item__a"><p>20일분과 30일분을 기준으로 안내합니다.<br class="only-mobile" /> 몸이 반응하는 방향을 보며 이어서<br class="only-mobile" /> 드실지 그때 정합니다.<br class="only-mobile" /> 금액은 <a href="pricing.html">비급여 진료비용</a>에서 확인하실 수 있습니다.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>주차는 가능한가요?</summary>
+          <div class="faq-item__a"><p>건물 주차장을 이용하실 수 있습니다.<br class="only-mobile" /> 자리가 넉넉하지 않을 때가 있습니다.<br class="only-mobile" /> 구리역에서 걸어오실 수 있는 거리라, 지하철로 오시는 분도 많습니다.</p></div>
+        </details>
+      </div>
+      <p class="programs__note">상태와 원인에 따라 접근이 달라질 수 있으며, 정확한 진단이 우선입니다.</p>
+    </div>
+  </section>
+
+  <section class="cta-banner">
+    <div class="container">
+      <div class="cta-banner__inner">
+        <h2 class="cta-banner__title">지금,<br class="only-mobile" /> 원인부터 확인해 보세요</h2>
+        <p class="cta-banner__desc">무엇이 원인인지 판단해 설명드립니다.</p>
+        <a href="tel:031-522-5923" class="btn btn--primary btn--lg">진료 예약하기</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <img src="assets/logo-white.png?v=3" alt="정진한의원" class="footer__logo" width="800" height="223" />
+        <p class="footer__slogan">치료반응이 다음 자리를 정합니다.</p>
+      </div>
+      <div class="footer__info">
+        <p>대표 · 양정진 &nbsp;|&nbsp; 사업자등록번호 880-46-01214</p>
+        <p>경기도 구리시 경춘로 223 명동빌딩 5층</p>
+        <p>대표전화 <a href="tel:031-522-5923">031-522-5923</a> &nbsp;|&nbsp; 팩스 070-7507-5923</p>
+      </div>
+      <div class="footer__links">
+
+        <a href="terms.html">이용약관</a>
+        <a href="privacy.html">개인정보처리방침</a>
+        <a href="pricing.html">비급여 진료비용</a>
+      </div>
+    </div>
+    <div class="footer__copy">
+      <div class="container footer__copy-inner">
+        <span>© 2026 정진한의원</span>
+        <button type="button" class="view-toggle" id="viewToggle">PC 버전으로 보기</button>
+      </div>
+    </div>
+  </footer>
+
+  <div class="quickmenu" aria-label="바로가기">
+    <a class="qm" href="https://blog.naver.com/yjj2923" target="_blank" rel="noopener" style="--qm:#262220" aria-label="블로그">
+      <span class="qm__ico"><svg viewBox="0 0 24 24"><path d='M12 20h9'/><path d='M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z'/></svg></span>
+      <span class="qm__label">블로그</span>
+    </a>
+
+
+    <a class="qm" href="tel:031-522-5923" style="--qm:#262220" aria-label="전화">
+      <span class="qm__ico"><svg viewBox="0 0 24 24"><path d='M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L8 9.7a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.7 2z'/></svg></span>
+      <span class="qm__label">전화</span>
+    </a>
+    <a class="qm qm--book" href="tel:031-522-5923" style="--qm:#262220" aria-label="예약">
+      <span class="qm__ico"><svg viewBox="0 0 24 24"><rect x='3' y='4' width='18' height='18' rx='2.5'/><path d='M16 2v4M8 2v4M3 10h18'/></svg></span>
+      <span class="qm__label">예약</span>
+    </a>
+  </div>
+  <script src="script.js?v=3"></script>
+</body>
+</html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    /* PC 버전 선택을 기억했다가, 화면이 그려지기 전에 적용합니다 (깜빡임 방지) */
+    (function () {
+      try {
+        if (localStorage.getItem('viewMode') === 'pc') {
+          document.querySelector('meta[name="viewport"]').setAttribute('content', 'width=1280');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <meta name="theme-color" content="#262220" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v=3" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v=3" />
+  <link rel="manifest" href="site.webmanifest" />
+  <meta name="description" content="팔이 안 올라가고 계단을 내려가기 어려운 어깨·무릎 관절통. 관절에 실리는 부하를 위아래까지 짚어 봅니다. 구리 구리역 도보 정진한의원." />
+  <meta name="keywords" content="어깨 통증, 무릎 통증, 퇴행성 관절염, 오십견, 회전근개" />
+  <title>구리 어깨 통증·무릎 관절염 한의원 – 정진한의원(구리역)</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=104" />
+  <link rel="canonical" href="https://jungjinmedi.netlify.app/joint.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="정진한의원" />
+  <meta property="og:title" content="구리 어깨 통증·무릎 관절염 한의원 – 정진한의원(구리역)" />
+  <meta property="og:description" content="팔이 안 올라가고 계단을 내려가기 어려운 어깨·무릎 관절통. 관절에 실리는 부하를 위아래까지 짚어 봅니다. 구리 구리역 도보 정진한의원." />
+  <meta property="og:url" content="https://jungjinmedi.netlify.app/joint.html" />
+  <meta property="og:image" content="https://jungjinmedi.netlify.app/assets/logo.png?v=3" />
+  <meta property="og:locale" content="ko_KR" />
+</head>
+<body>
+  <a class="skip-link" href="#main">본문 바로가기</a>
+  <div class="topbar">
+    <div class="container topbar__inner">
+      <span class="topbar__hours">진료시간 평일 09:00–20:00 (점심 13:00–14:00) · 토·공휴일 09:00–15:00 · 일요일 휴진</span>
+      <a class="topbar__tel" href="tel:031-522-5923">031-522-5923</a>
+    </div>
+  </div>
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="index.html#hero" class="logo">
+        <img src="assets/logo.png?v=3" alt="정진한의원" class="logo__img" width="800" height="223" />
+      </a>
+      <nav class="nav" id="nav">
+        <ul class="nav__list">
+          <li class="has-sub" data-nav="story-philosophy">
+            <a href="story-philosophy.html">한의원 소개 <span class="caret" aria-hidden="true">▾</span></a>
+            <ul class="subnav">
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#story">원장 이야기</a></li>
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#philosophy">진료와 치료철학</a></li>
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#cv">약력 · 자격</a></li>
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#facility">내부 시설</a></li>
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#location">오시는 길</a></li>
+            </ul>
+          </li>
+          <li class="has-sub is-active" data-nav="pain">
+            <a href="pain.html">관절통증 <span class="caret" aria-hidden="true">▾</span></a>
+            <ul class="subnav">
+              <li data-nav="stenosis"><a href="stenosis.html">척추관협착증</a></li>
+              <li data-nav="disc"><a href="disc.html">디스크</a></li>
+              <li data-nav="joint" class="is-active"><a aria-current="page" href="joint.html">어깨·무릎 관절</a></li>
+            </ul>
+          </li>
+          <li class="has-sub" data-nav="autonomic-disorders">
+            <a href="autonomic-disorders.html">자율신경질환 <span class="caret" aria-hidden="true">▾</span></a>
+            <ul class="subnav">
+              <li data-nav="dizziness"><a href="dizziness.html">어지럼증</a></li>
+              <li data-nav="panic"><a href="panic.html">공황장애</a></li>
+              <li data-nav="stomach"><a href="stomach.html">역류성식도염</a></li>
+              <li data-nav="cough"><a href="cough.html">만성기침</a></li>
+            </ul>
+          </li>
+          <li data-nav="faq">
+            <a href="faq.html">자주 묻는 질문</a>
+          </li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <section id="main" class="page-hero">
+    <div class="container">
+      <h1 class="page-hero__title">관절만 봐서는<br class="only-mobile" /> 오래가지 않습니다</h1>
+      <p class="page-hero__desc">어깨는 목과 등에서,<br class="only-mobile" /> 무릎은 골반과 발목에서 —<br class="only-mobile" /> 그 관절에 실리는 부하부터 봅니다.</p>
+    </div>
+  </section>
+
+  <div class="crumb">
+    <div class="container"><a href="index.html#hero">홈</a> &nbsp;›&nbsp; <a href="pain.html">관절통증</a> &nbsp;›&nbsp; 어깨·무릎 관절</div>
+  </div>
+
+  <section class="section" id="symptoms">
+    <div class="container">
+      <div class="section__head section__head--center">
+        <h2 class="section__title">이런 증상이라면</h2>
+        <p class="section__lead">수술하기엔 이르다고 하는데 그 사이를 어떻게 지내야 할지 모르시겠다면, 아래에 해당되는 것이 있는지 보십시오.</p>
+      </div>
+      <h3 class="sym-group">무릎인 경우</h3>
+      <div class="audience__grid" style="margin-bottom:28px;">
+        <div class="audience__item">
+          <span class="audience__mark">✓</span>
+          <p>계단을 내려갈 때 시리거나 아픕니다</p>
+        </div>
+        <div class="audience__item">
+          <span class="audience__mark">✓</span>
+          <p>앉았다 일어날 때 유난히 아프고, 바닥에 앉기 어렵습니다</p>
+        </div>
+        <div class="audience__item">
+          <span class="audience__mark">✓</span>
+          <p>오래 걸으면 붓는 날이 있습니다</p>
+        </div>
+        <div class="audience__item">
+          <span class="audience__mark">✓</span>
+          <p>연골이 닳았다고 들었습니다</p>
+        </div>
+      </div>
+      <h3 class="sym-group">어깨인 경우</h3>
+      <div class="audience__grid" style="margin-bottom:28px;">
+        <div class="audience__item">
+          <span class="audience__mark">✓</span>
+          <p>팔이 위로 잘 올라가지 않습니다</p>
+        </div>
+        <div class="audience__item">
+          <span class="audience__mark">✓</span>
+          <p>등 뒤로 손이 안 가고, 머리 감거나 옷 입을 때 걸립니다</p>
+        </div>
+        <div class="audience__item">
+          <span class="audience__mark">✓</span>
+          <p>밤에 그쪽으로 누우면 아파서 잠이 깹니다</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--cream" id="why">
+    <div class="container container--read">
+      <div class="section__head section__head--center">
+        <h2 class="section__title">왜 낫지 않았을까</h2>
+      </div>
+      <p class="why-text"><strong>무릎에서 보는 것은 관절에 실리는 부하입니다.</strong><br class="only-mobile" /> 연골이 닳았다는 말을 들으시면 방법이 없다고 여기기 쉽지만, <strong>같은 연골 상태에서도 생활의 불편함은 크게 달라집니다.</strong></p>
+      <p class="why-text">무릎을 받치는 자리가 <strong>안쪽 허벅지 근육</strong>입니다.<br class="only-mobile" /> 이 자리가 약해지면 무릎 안쪽에 부하가 집중됩니다.</p>
+      <p class="why-text">그러나 무릎만 보지 않습니다.<br class="only-mobile" /> <strong>골반이 버티지 못하면<br class="only-mobile" /> 그 부하가 무릎으로 내려옵니다.</strong><br class="only-mobile" /> 걸을 때마다 체중이 지나가는 경로가 바뀌면 무릎 한 지점에 부하가 쌓입니다.<br class="only-mobile" /> 그래서 무릎 위의 골반과 아래의 발목을 함께 봅니다.</p>
+      <p class="why-text">그래서 진료실에서는 이렇게 말씀드립니다 — <strong>무릎이 안 좋으면 허리를 보고, 허리가 안 좋으면 배를 봅니다.</strong></p>
+      <p class="why-text"><strong>어깨도 같은 방식으로 봅니다.</strong><br class="only-mobile" /> 어깨는 관절 하나가 아니라, <strong>여러 근육이 각도를 나눠 맡아 팔을 올려주는 구조</strong>입니다.<br class="only-mobile" /> 처음 30도까지 올리는 근육이 따로 있습니다.<br class="only-mobile" /> 90도까지 올리는 근육이 또 따로 있고, 그 위로는 어깨뼈 자체를 돌려주는 근육이 맡습니다.</p>
+      <p class="why-text">그래서 <strong>어느 각도에서 걸리느냐에 따라 보는 자리가 달라집니다.</strong><br class="only-mobile" /> 아예 안 올라가는 것과, 중간 구간에서만 아픈 것과, 다 올라가는데 뒤로 손이 안 가는 것은 서로 다른 이야기입니다.</p>
+      <p class="why-text">주사를 맞으면 편했다가 다시 아파지는 것도 여기서 설명됩니다.<br class="only-mobile" /> <strong>염증은 가라앉았지만 어깨를 쓰는 방식은 그대로이기 때문입니다.</strong><br class="only-mobile" /> 그리고 <strong>팔로 가는 신경과 혈관은 모두 목을 지나갑니다.</strong><br class="only-mobile" /> 어깨만 풀어서<br class="only-mobile" /> 며칠 뒤 돌아온다면 그 위를 함께 봅니다.</p>
+      <div class="notice-box">
+        <p>통증을 덮지 않고, 기능을 되돌립니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt" id="points">
+    <div class="container container--read">
+      <div class="section__head section__head--center">
+        <h2 class="section__title">어디를 함께 보는가</h2>
+      </div>
+      <div class="table-scroll">
+        <table class="legal-table">
+          <tbody>
+            <tr><th scope="row">계단 내려갈 때의 통증</th><td>무릎에서 가장 민감하게 드러나는 기준입니다</td></tr>
+            <tr><th scope="row">연속해서 걸을 수 있는 거리</th><td>생활 기준으로 말씀해 주십니다</td></tr>
+            <tr><th scope="row">통증의 자리</th><td>안쪽 / 바깥쪽 / 앞쪽 / 뒷면 — 자리가 달라지면 보는 지점도 달라집니다</td></tr>
+            <tr><th scope="row">붓기와 잠김</th><td>얼마나 자주 붓는지,<br class="only-mobile" /> 갑자기 걸리거나 힘이 툭 빠지는지</td></tr>
+            <tr><th scope="row">어깨 — 올라가는 각도</th><td>앞·옆으로 어디까지, 등 뒤로 손이 어디까지 닿는지. 매번 재서 기록합니다</td></tr>
+            <tr><th scope="row">어깨 — 혼자와 도움의 차이</th><td>스스로 올릴 때와 남이 들어 올려줄 때가 다른지. 이 차이가 보는 방향을 가릅니다</td></tr>
+            <tr><th scope="row">어깨 — 밤에 깨는 횟수</th><td>그쪽으로 누웠을 때 몇 번이나 깨는지</td></tr>
+            <tr><th scope="row">일상 동작</th><td>계단 / 바닥에 앉기 / 머리 감기 / 뒷주머니에 손 넣기</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="method-section">
+    <div class="container container--read">
+
+      <h3 class="sub-head" id="method">어떤 방법을 쓰는가</h3>
+      <p class="why-text">치료와 함께 <strong>집에서 할 운동 하나</strong>를 지정해 드립니다.<br class="only-mobile" /> 무릎은 치료만으로 유지되지 않고 받치는 근육이 있어야 합니다.<br class="only-mobile" /> 양쪽 무릎으로 번지거나, 붓기가 반복되거나, 회복이 더딘 경우에는 회복하는 힘을 함께 올리는 방향을 권합니다.</p>
+      <p class="methods-band">치료는 <a href="acupuncture.html">원인 자리 침·약침 치료</a>와 <a href="chuna.html">추나요법</a>을 기본으로, 필요할 때 <a href="herb.html">1:1 맞춤 한약</a>을 함께 씁니다. 처음 오시는 분을 위해 <a href="care.html">치료 전 알아두실 점</a>에 진료 순서를 정리해 두었습니다.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container--read">
+      <div class="section__head section__head--center">
+        <h2 class="section__title">집에서 지킬 것</h2>
+      </div>
+      <div class="notice-box">
+        <ul>
+          <li><strong>바닥에 앉기·쪼그려 앉기·양반다리를 줄입니다</strong></li>
+          <li><strong>평지 걷기 위주로 합니다.</strong><br class="only-mobile" /> 산과 계단을 내려가는 것이 무릎에 가장 부담입니다</li>
+          <li><strong>지정해 드린 운동을 매일 합니다</strong></li>
+          <li><strong>어깨가 아픈 쪽으로 눕지 않습니다.</strong><br class="only-mobile" /> 옆으로 누우실 때는 아픈 어깨가 위로 오게 하고, 팔 아래에 베개를 받쳐 둡니다</li>
+          <li><strong>아프게 끝까지 늘리지 않습니다.</strong><br class="only-mobile" /> 통증을 참고 스트레칭하면 근육이 오히려 조여져 다칠 수 있습니다.<br class="only-mobile" /> 어깨 운동은 호전이 먼저 보이기 시작한 다음에, 강도를 정해 드린 뒤에 시작합니다</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt" id="faq">
+    <div class="container">
+      <div class="section__head section__head--center">
+        <h2 class="section__title">자주 묻는 질문</h2>
+      </div>
+      <div class="faq__list">
+        <details class="faq-item">
+          <summary>치료로 무엇이 달라지나요?</summary>
+          <div class="faq-item__a"><p>무릎에 실리는 부하를 줄여, 계단을 내려갈 때와 걸을 때가 달라지도록 봅니다.<br class="only-mobile" /> 같은 연골 상태에서도 이 부분은 크게 달라집니다.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>걸으면 더 닳는 것 아닌가요?</summary>
+          <div class="faq-item__a"><p>적절한 평지 보행은 오히려 도움이 됩니다.<br class="only-mobile" /> 부담이 큰 것은 계단과 내리막길입니다.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>팔이 안 올라가는데 오십견인가요?</summary>
+          <div class="faq-item__a"><p>팔이 올라가지 않는 데는 여러 이유가 있습니다.<br class="only-mobile" /> 어디까지 올라가는지,<br class="only-mobile" /> 남이 들어 올려주면 더 올라가는지,<br class="only-mobile" /> 밤에 아픈지를 확인한 뒤에 말씀드립니다.<br class="only-mobile" /> 이름부터 붙이지 않습니다.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>오십견은 1년 지나면 저절로 낫는다던데요?</summary>
+          <div class="faq-item__a"><p>시간이 지나면서 달라지는 경우도 있습니다.<br class="only-mobile" /> 다만 그 사이에 굳어버리는 범위가 넘어가는지를 함께 보셔야 합니다.<br class="only-mobile" /> 각도를 재서 기록해 두면 그 흐름이 보입니다.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>언제 수술해야 하나요?</summary>
+          <div class="faq-item__a"><p>근육이 파열된 정도에 따라 다르지만, 수술하지 않고 회복하시는 경우도 많습니다.<br class="only-mobile" /> 다만 수술 여부와 시기는 주치의와 상의하셔야 합니다.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container--read">
+      <p class="programs__note">상태와 원인에 따라 접근이 달라질 수 있으며, 정확한 진단이 우선입니다.</p>
+    </div>
+  </section>
+
+  <section class="cta-banner">
+    <div class="container">
+      <div class="cta-banner__inner">
+        <h2 class="cta-banner__title">어디까지 되는지,<br class="only-mobile" /> 그것부터 보여주세요</h2>
+        <p class="cta-banner__desc">무릎은 계단을 내려갈 때 어떤지, 어깨는 팔이 어디까지 올라가는지. 그 자리에서 재고, 치료 뒤에 다시 재서 직접 비교해 보시게 합니다.</p>
+        <a href="tel:031-522-5923" class="btn btn--primary btn--lg">진료 예약하기</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <img src="assets/logo-white.png?v=3" alt="정진한의원" class="footer__logo" width="800" height="223" />
+        <p class="footer__slogan">치료반응이 다음 자리를 정합니다.</p>
+      </div>
+      <div class="footer__info">
+        <p>대표 · 양정진 &nbsp;|&nbsp; 사업자등록번호 880-46-01214</p>
+        <p>경기도 구리시 경춘로 223 명동빌딩 5층</p>
+        <p>대표전화 <a href="tel:031-522-5923">031-522-5923</a> &nbsp;|&nbsp; 팩스 070-7507-5923</p>
+      </div>
+      <div class="footer__links">
+
+        <a href="terms.html">이용약관</a>
+        <a href="privacy.html">개인정보처리방침</a>
+        <a href="pricing.html">비급여 진료비용</a>
+      </div>
+    </div>
+    <div class="footer__copy">
+      <div class="container footer__copy-inner">
+        <span>© 2026 정진한의원</span>
+        <button type="button" class="view-toggle" id="viewToggle">PC 버전으로 보기</button>
+      </div>
+    </div>
+  </footer>
+
+  <div class="quickmenu" aria-label="바로가기">
+    <a class="qm" href="https://blog.naver.com/yjj2923" target="_blank" rel="noopener" style="--qm:#262220" aria-label="블로그">
+      <span class="qm__ico"><svg viewBox="0 0 24 24"><path d='M12 20h9'/><path d='M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z'/></svg></span>
+      <span class="qm__label">블로그</span>
+    </a>
+
+
+    <a class="qm" href="tel:031-522-5923" style="--qm:#262220" aria-label="전화">
+      <span class="qm__ico"><svg viewBox="0 0 24 24"><path d='M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L8 9.7a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.7 2z'/></svg></span>
+      <span class="qm__label">전화</span>
+    </a>
+    <a class="qm qm--book" href="tel:031-522-5923" style="--qm:#262220" aria-label="예약">
+      <span class="qm__ico"><svg viewBox="0 0 24 24"><rect x='3' y='4' width='18' height='18' rx='2.5'/><path d='M16 2v4M8 2v4M3 10h18'/></svg></span>
+      <span class="qm__label">예약</span>
+    </a>
+  </div>
+  <script src="script.js?v=3"></script>
+</body>
+</html>

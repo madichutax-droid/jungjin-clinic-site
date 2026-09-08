@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    /* PC 버전 선택을 기억했다가, 화면이 그려지기 전에 적용합니다 (깜빡임 방지) */
+    (function () {
+      try {
+        if (localStorage.getItem('viewMode') === 'pc') {
+          document.querySelector('meta[name="viewport"]').setAttribute('content', 'width=1280');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <meta name="theme-color" content="#262220" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v=3" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v=3" />
+  <link rel="manifest" href="site.webmanifest" />
+  <meta name="description" content="교통사고로 두 달을 누워 있던 한의사가, 왜 손으로 짚고 왜 치료반응을 확인하는지 씁니다. 양정진 원장 이야기와 진료철학. 구리 구리역 정진한의원." />
+  <title>한의원 소개 | 정진한의원</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=104" />
+  <link rel="canonical" href="https://jungjinmedi.netlify.app/story-philosophy.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="정진한의원" />
+  <meta property="og:title" content="한의원 소개 | 정진한의원" />
+  <meta property="og:description" content="교통사고로 두 달을 누워 있던 한의사가, 왜 손으로 짚고 왜 치료반응을 확인하는지 씁니다. 양정진 원장 이야기와 진료철학. 구리 구리역 정진한의원." />
+  <meta property="og:url" content="https://jungjinmedi.netlify.app/story-philosophy.html" />
+  <meta property="og:image" content="https://jungjinmedi.netlify.app/assets/logo.png?v=3" />
+  <meta property="og:locale" content="ko_KR" />
+</head>
+<body>
+  <a class="skip-link" href="#main">본문 바로가기</a>
+  <div class="topbar">
+    <div class="container topbar__inner">
+      <span class="topbar__hours">진료시간 평일 09:00–20:00 (점심 13:00–14:00) · 토·공휴일 09:00–15:00 · 일요일 휴진</span>
+      <a class="topbar__tel" href="tel:031-522-5923">031-522-5923</a>
+    </div>
+  </div>
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="index.html#hero" class="logo">
+        <img src="assets/logo.png?v=3" alt="정진한의원" class="logo__img" width="800" height="223" />
+      </a>
+      <nav class="nav" id="nav">
+        <ul class="nav__list">
+          <li class="has-sub is-active" data-nav="story-philosophy">
+            <a aria-current="page" href="story-philosophy.html">한의원 소개 <span class="caret" aria-hidden="true">▾</span></a>
+            <ul class="subnav">
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#story">원장 이야기</a></li>
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#philosophy">진료와 치료철학</a></li>
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#cv">약력 · 자격</a></li>
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#facility">내부 시설</a></li>
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#location">오시는 길</a></li>
+            </ul>
+          </li>
+          <li class="has-sub" data-nav="pain">
+            <a href="pain.html">관절통증 <span class="caret" aria-hidden="true">▾</span></a>
+            <ul class="subnav">
+              <li data-nav="stenosis"><a href="stenosis.html">척추관협착증</a></li>
+              <li data-nav="disc"><a href="disc.html">디스크</a></li>
+              <li data-nav="joint"><a href="joint.html">어깨·무릎 관절</a></li>
+            </ul>
+          </li>
+          <li class="has-sub" data-nav="autonomic-disorders">
+            <a href="autonomic-disorders.html">자율신경질환 <span class="caret" aria-hidden="true">▾</span></a>
+            <ul class="subnav">
+              <li data-nav="dizziness"><a href="dizziness.html">어지럼증</a></li>
+              <li data-nav="panic"><a href="panic.html">공황장애</a></li>
+              <li data-nav="stomach"><a href="stomach.html">역류성식도염</a></li>
+              <li data-nav="cough"><a href="cough.html">만성기침</a></li>
+            </ul>
+          </li>
+          <li data-nav="faq">
+            <a href="faq.html">자주 묻는 질문</a>
+          </li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <section id="main" class="page-hero">
+    <div class="container">
+      <h1 class="page-hero__title">한의원 소개</h1>
+      <p class="page-hero__desc">환자였던 시간을 지나 온 한의사가,<br class="only-mobile" /> 무엇을 보고 어떻게 판단하는지 씁니다.</p>
+    </div>
+  </section>
+
+  <div class="crumb">
+    <div class="container"><a href="index.html#hero">홈</a> &nbsp;›&nbsp; 한의원 소개</div>
+  </div>
+
+  <main class="section" id="story">
+    <div class="container article__container">
+      <h2 class="article__title">저는 진료실 밖에서 먼저 환자였습니다</h2>
+
+      <div class="article__section">
+        <h3>1. 서류상으로는 다 나은 사람이었습니다</h3>
+        <p>교통사고로 두 달을 병원에 누워 있었습니다.<br class="only-mobile" /> 골절, 여러 곳의 근육 완전파열, 피부이식. 두 번의 수술을 받았습니다.</p>
+        <p>퇴원하던 날 검사지에는 뼈가 제자리로 붙었다고 적혀 있었습니다.<br class="only-mobile" /> 서류상으로 저는 다 나은 사람이었습니다.</p>
+        <p>진짜 시간은 그다음부터였습니다.</p>
+        <figure class="story-photo">
+          <details class="story-photo__box">
+            <summary class="story-photo__toggle">
+              <span class="is-closed">사고 당시 사진 보기</span>
+              <span class="is-open">사진 접기</span>
+            </summary>
+            <img src="assets/doctor-scar.jpg?v=3" alt="교통사고 수술 뒤 원장의 몸에 남은 절개 자리"
+                 width="399" height="900" loading="lazy" decoding="async" />
+          </details>
+          <figcaption>퇴원 무렵 제 몸에 남아 있던 수술 자리입니다.</figcaption>
+        </figure>
+      </div>
+
+      <div class="article__section">
+        <h3>2. 아픈 곳이 옮겨 다녔습니다</h3>
+        <p>무릎이 시큰해 아껴 쓰니 허리가 그 몫을 감당했고, 허리가 버티는 동안 목이 뻣뻣해졌습니다.<br class="only-mobile" /> 매일 살갗이 남의 살처럼 무뎠습니다.</p>
+        <p>“어디가 아프세요?”<br class="only-mobile" /> 한 곳을 짚을 수가 없었습니다.<br class="only-mobile" /> 통증이 계속 옮겨 다녔기 때문입니다.</p>
+        <p>힘든 것은 통증만이 아니었습니다.<br class="only-mobile" /> 아직 불편한데 더 이상 해 줄 게 없다는 말이었습니다.</p>
+      </div>
+
+      <div class="article__section">
+        <h3>3. 저를 치료하려고 공부했습니다</h3>
+        <p>그때부터 제 공부는 시험과 남을 위한 것이 아니었습니다.<br class="only-mobile" /> 제 몸부터 치료하려고 다시 처음부터 배웠습니다.</p>
+        <p>한 곳이 못 하는 일을 어디가 대신 감당하는지, 감각이 둔해진 몸을 어떻게 살펴야 하는지 — 제게 당장 답이 필요한 질문이었습니다.</p>
+        <p>책으로 읽은 것은 손으로 익혔고, 손으로 익힌 것은 제 몸에 먼저 대어 보았습니다.<br class="only-mobile" /> 확인하는 방법은 결국 하나였습니다.<br class="only-mobile" /> 눌러 보고, 해 보고,<br class="only-mobile" /> 치료반응을 다시 확인하는 것.</p>
+      </div>
+
+      <div class="article__section">
+        <h3>4. 그때 제게 필요했던 사람</h3>
+        <p>그 시간이 알려준 것은 둘입니다.<br class="only-mobile" /> 아픈 자리와 그 자리를 만든 곳은 다를 수 있다는 것, 그리고 치료반응을 일으키려면 충분한 치료 강도가 필요하다는 것.</p>
+        <p>누워 있던 저에게 가장 필요했던 사람은 괜찮아질 거라고 말해 주는 사람이 아니었습니다.<br class="only-mobile" /> 제 증상이 어디서 온 것인지 짚어 내고, 그 자리를 치료할 수 있는 사람이었습니다.</p>
+        <p>그래서 저는 침을 놓고 끝내지 않습니다.<br class="only-mobile" /> 무엇을 찾았고 왜 그 자리인지 말씀드리고, 놓은 뒤에 치료반응을 확인합니다.<br class="only-mobile" /> 그 반응이 다음 자리를 정합니다.</p>
+      </div>
+
+      <div class="article__section">
+        <h3>5. 진료에서 지키는 기준</h3>
+        <p>저는 모든 것을 해결해 드린다고 말하지 않습니다.<br class="only-mobile" /> 다만 한 가지는 분명히 합니다.<br class="only-mobile" /> 자리를 찾았다면 반응이 날 만큼 충분히 치료합니다.</p>
+        <p>약하게 지나간 치료는 그날만 편합니다.<br class="only-mobile" /> 며칠이면 몸은 원래 상태로 돌아갑니다.<br class="only-mobile" /> 돌아가지 않으려면 그만한 강도가 필요합니다.<br class="only-mobile" /> 제가 환자로 지나온 시간에서 가장 크게 갈린 것이 이 부분이었습니다.</p>
+        <p>다만 그 강도는 환자분이 감당하실 수 있는 선 안에서 올립니다.<br class="only-mobile" /> 그리고 다음 세 가지를 진료의 기준으로 둡니다.</p>
+      </div>
+      <ul class="blk-list"><li>오늘 무엇을 확인했고 무엇을 근거로 판단했는지 설명합니다.</li><li>확인되지 않은 것은 확인되지 않았다고 말합니다.</li><li>여기서 볼 수 있는 것과, 다른 진료나 검사가 먼저인 것을 구분해 말합니다.</li></ul>
+
+      <p class="article__pull">환자였던 시간에 배운 것은 하나입니다.<br class="only-mobile" /> “시간이 지나면 좋아질 거다”보다 충분한 치료 강도가 먼저라는 것.</p>
+    </div>
+  </main>
+
+  <section class="section section--cream" id="philosophy">
+    <div class="container article__container">
+      <h2 class="article__title">진료와 치료철학<br />— 찾고, 놓고, 확인합니다</h2>
+
+      <p class="article__pull">“침을 놓은 자리가 맞는지는,<br class="only-mobile" /> 환자분의 몸이 알려줍니다.”</p>
+
+      <div class="article__section venn-block">
+        <h3>치료반응을 일으키는 세 가지 조건</h3>
+        <p>이 셋이 한자리에서 만나야 몸이 반응합니다.</p>
+      <svg class="venn" viewBox="0 0 640 560" role="img"
+             aria-label="아픈 자리·원인 자리·충분한 치료 강도가 겹치는 곳에서 치료반응이 일어납니다">
+          <g class="venn__ring">
+            <circle cx="320" cy="196" r="152" />
+            <circle cx="232" cy="356" r="152" />
+            <circle class="venn__ring--key" cx="408" cy="356" r="152" />
+          </g>
+          <text class="venn__label" x="320" y="104" text-anchor="middle">아픈 자리</text>
+          <text class="venn__label" x="168" y="436" text-anchor="middle">원인 자리</text>
+          <text class="venn__label venn__label--key" x="470" y="414" text-anchor="middle">충분한
+            <tspan x="470" dy="31">치료 강도</tspan></text>
+          <text class="venn__core" x="320" y="326" text-anchor="middle">치료반응</text>
+        </svg>
+          <ol class="venn__legend">
+          <li><b>아픈 자리</b><br />아프다고 하신 곳부터 확인합니다.<br class="only-mobile" /> 다만 여기서 끝내지 않습니다.</li>
+          <li><b>원인 자리</b><br />사진이나 검사지에 늘 나오지는 않습니다.<br class="only-mobile" /> 손으로 만져 보고 침으로 진단합니다.</li>
+          <li class="is-key"><b>충분한 치료 강도</b><br />여기서 갈립니다.<br class="only-mobile" /> 자리를 정확히 찾아도<br class="only-mobile" /> 약하게 지나가면 그날뿐입니다.<br class="only-mobile" /> 오래 굳은 자리일수록 충분한 치료 강도가 필요합니다.<br class="only-mobile" /> 침을 놓은 뒤 치료반응을 확인하고, 반응이 없으면 강도와 자리를 다시 봅니다.<br class="only-mobile" /> 다만 환자분이 감당하실 수 있는 선 안에서만 올립니다.</li>
+        </ol>
+        <p class="venn__key">정진한의원이 가장 공을 들이는 곳은 세 번째입니다.</p>
+        <p class="venn__note">앞의 둘은 진단이고,<br class="only-mobile" /> 셋째는 치료의 본질입니다.<br class="only-mobile" /> 강도가 모자라면 치료반응을 일으킬 수 없습니다.<br class="only-mobile" /> 그래서 한 분께 쓰는 시간이 길어지고,<br class="only-mobile" /> 대기가 생깁니다.</p>
+      </div>
+
+      <div class="article__section">
+        <h3>손으로 찾고, 침으로 확인합니다</h3>
+        <p>굳어 있는지, 눌렀을 때 그 통증이 그대로 재현되는지 — 손으로 짚어 판단합니다.</p>
+        <p>자리를 잡고 침을 놓은 뒤에는 반드시 치료반응을 확인합니다.<br class="only-mobile" /> 반응은 제 판단이 맞았는지 알려주는 가장 정확한 지표입니다.</p>
+      </div>
+
+      <div class="article__section">
+        <h3>왜 아픈 곳만 보지 않는가</h3>
+        <p>허리가 아파서 오신 분의 허리만 치료하면<br class="only-mobile" /> 그날은 편해지고,<br class="only-mobile" /> 며칠 지나면 같은 자리가 다시 아파옵니다.</p>
+        <p>몸은 한 덩어리로 움직입니다.<br class="only-mobile" /> 한 곳이 제 일을 못 하면 다른 곳이 그 몫까지 감당하고, 오래 감당한 자리가 결국 아파옵니다.<br class="only-mobile" /> 도해의 “원인 자리”가 여기서 나옵니다.</p>
+      </div>
+
+      <p class="programs__note">상태와 원인에 따라 접근이 달라질 수 있으며, 정확한 진단이 우선입니다.</p>
+    </div>
+  </section>
+
+  <section class="section" id="cv">
+    <div class="container container--read">
+      <div class="section__head section__head--center">
+        <h2 class="section__title">약력 · 자격</h2>
+      </div>
+      <div class="doctor-brief">
+        <img class="doctor-brief__photo" src="assets/doctor-profile.jpg?v=3" alt="정진한의원 대표원장 양정진 한의사"
+             width="900" height="1200" loading="lazy" decoding="async" />
+        <div class="doctor-brief__body">
+          <h3>양정진</h3>
+          <p class="doctor-brief__role">대표원장 · 한의사</p>
+          <p class="doctor-brief__desc">아픈 자리와 그 자리를 만든 곳은 다를 수 있습니다.<br class="only-mobile" /> 자리를 찾았다면 반응이 날 만큼 충분히 치료합니다.</p>
+        </div>
+      </div>
+      <dl class="cv">
+          <div class="cv__row">
+            <dt>주요 경력</dt>
+            <dd>
+              <ul>
+                <li>현) 정진한의원 대표원장</li>
+                <li>전) 마디추한의원 대표원장</li>
+                <li>전) 본스필한의원 대구점 진료원장</li>
+                <li>전) 바를정한방병원 신림점 진료원장</li>
+                <li>전) 군산시 나포보건지소 한방과장</li>
+                <li>전) 군산시 보건소 이동진료팀 한방과장</li>
+              </ul>
+            </dd>
+          </div>
+          <div class="cv__row">
+            <dt>소속 학회</dt>
+            <dd>
+              <ul>
+                <li>대한한방비만학회 회원</li>
+                <li>대한한의영상학회 회원</li>
+                <li>한의레이저의학회 회원</li>
+                <li>대한한방부인과학회 회원</li>
+              </ul>
+            </dd>
+          </div>
+          <div class="cv__row">
+            <dt>수료 · 자격</dt>
+            <dd>
+              <ul>
+                <li>턱관절균형의학회 전문가과정 수료</li>
+                <li>면역약침 임상실습과정 수료</li>
+              </ul>
+            </dd>
+          </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- 내부 시설 -->
+  <section class="section section--alt" id="facility">
+    <div class="container">
+      <div class="section__head section__head--center">
+        <h2 class="section__title">내부 시설</h2>
+        <p class="section__lead">진료 공간은 네 곳으로 나뉘어 있습니다.</p>
+      </div>
+      <dl class="location__list">
+        <div class="location__row"><dt>대기실</dt><dd>처음 오신 분이 앉아 기다리시는 곳입니다.</dd></div>
+        <div class="location__row"><dt>진료실</dt><dd>문진하고, 손으로 짚어 판단하고,<br class="only-mobile" /> 설명드리는 곳입니다.</dd></div>
+        <div class="location__row"><dt>치료실</dt><dd>침 치료와 추나가 이루어지는 곳입니다.</dd></div>
+        <div class="location__row"><dt>탕전실</dt><dd>한약을 달이는 곳입니다.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- 오시는 길 -->
+  <section class="section location" id="location">
+    <div class="container">
+      <div class="section__head section__head--center">
+        <h2 class="section__title">오시는 길</h2>
+        <p class="section__lead">돌다리사거리 · 구리전통시장 입구 맞은편 투썸플레이스 건물 5층입니다.</p>
+      </div>
+      <div class="location__grid">
+        <div class="location__map">
+          <iframe src="https://www.google.com/maps?q=%EA%B2%BD%EA%B8%B0%EB%8F%84+%EA%B5%AC%EB%A6%AC%EC%8B%9C+%EA%B2%BD%EC%B6%98%EB%A1%9C+223&amp;hl=ko&amp;z=17&amp;output=embed"
+            title="정진한의원 위치 — 경기도 구리시 경춘로 223 명동빌딩 5층"
+            loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+        </div>
+        <div class="location__info">
+          <dl class="location__list">
+            <div class="location__row"><dt>주소</dt><dd>경기도 구리시 경춘로 223<br />명동빌딩 5층</dd></div>
+            <div class="location__row"><dt>지하철</dt><dd>구리역(경의중앙·경춘선)에서 도보 이용</dd></div>
+            <div class="location__row"><dt>버스</dt><dd>구리역·롯데백화점 정류장 하차<br /><span class="hours__sub">광역·좌석 <span class="bus__no">1115-6</span> · <span class="bus__no">1330-2</span> · <span class="bus__no">1330-3</span> · <span class="bus__no">1330-4</span> · <span class="bus__no">1330-44</span> · <span class="bus__no">8005</span> · <span class="bus__no">8409</span></span><br /><span class="hours__sub">일반 <span class="bus__no">10-5</span> · <span class="bus__no">30</span> · <span class="bus__no">65</span> · <span class="bus__no">65-1</span> · <span class="bus__no">165</span> · <span class="bus__no">166-1</span> · <span class="bus__no">167-1</span> · <span class="bus__no">2000-1</span></span></dd></div>
+            <div class="location__row"><dt>전화</dt><dd><a href="tel:031-522-5923">031-522-5923</a></dd></div>
+            <div class="location__row"><dt>팩스</dt><dd>070-7507-5923</dd></div>
+            <div class="location__row"><dt>진료시간</dt><dd>평일 09:00–20:00<br /><span class="hours__sub">점심시간 13:00–14:00</span><br />토요일·공휴일 09:00–15:00<br /><span class="hours__sub">점심시간 없이 진료합니다</span><br />일요일 휴진<br /><span class="hours__sub">설·추석 연휴는 휴진합니다</span></dd></div>
+            <div class="location__row"><dt>주차</dt><dd>건물 주차장 이용</dd></div>
+          </dl>
+          <div class="location__actions">
+            <a href="https://map.naver.com/p/search/경기도%20구리시%20경춘로%20223%20명동빌딩" target="_blank" rel="noopener" class="btn btn--accent">네이버 지도에서 보기</a>
+          </div>
+          <p class="location__note">※ 지도를 눌러 확대·이동하실 수 있습니다. 길찾기는 위 버튼으로 네이버 지도에서 이용해 주세요.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-banner">
+    <div class="container">
+      <div class="cta-banner__inner">
+        <h2 class="cta-banner__title">지금,<br class="only-mobile" /> 원인부터 확인해 보세요</h2>
+        <p class="cta-banner__desc">무엇이 원인인지 판단해 설명드립니다.</p>
+        <a href="tel:031-522-5923" class="btn btn--primary btn--lg">진료 예약하기</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <img src="assets/logo-white.png?v=3" alt="정진한의원" class="footer__logo" width="800" height="223" />
+        <p class="footer__slogan">치료반응이 다음 자리를 정합니다.</p>
+      </div>
+      <div class="footer__info">
+        <p>대표 · 양정진 &nbsp;|&nbsp; 사업자등록번호 880-46-01214</p>
+        <p>경기도 구리시 경춘로 223 명동빌딩 5층</p>
+        <p>대표전화 <a href="tel:031-522-5923">031-522-5923</a> &nbsp;|&nbsp; 팩스 070-7507-5923</p>
+      </div>
+      <div class="footer__links">
+
+        <a href="terms.html">이용약관</a>
+        <a href="privacy.html">개인정보처리방침</a>
+        <a href="pricing.html">비급여 진료비용</a>
+      </div>
+    </div>
+    <div class="footer__copy">
+      <div class="container footer__copy-inner">
+        <span>© 2026 정진한의원</span>
+        <button type="button" class="view-toggle" id="viewToggle">PC 버전으로 보기</button>
+      </div>
+    </div>
+  </footer>
+
+  <div class="quickmenu" aria-label="바로가기">
+    <a class="qm" href="https://blog.naver.com/yjj2923" target="_blank" rel="noopener" style="--qm:#262220" aria-label="블로그">
+      <span class="qm__ico"><svg viewBox="0 0 24 24"><path d='M12 20h9'/><path d='M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z'/></svg></span>
+      <span class="qm__label">블로그</span>
+    </a>
+
+
+    <a class="qm" href="tel:031-522-5923" style="--qm:#262220" aria-label="전화">
+      <span class="qm__ico"><svg viewBox="0 0 24 24"><path d='M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L8 9.7a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.7 2z'/></svg></span>
+      <span class="qm__label">전화</span>
+    </a>
+    <a class="qm qm--book" href="tel:031-522-5923" style="--qm:#262220" aria-label="예약">
+      <span class="qm__ico"><svg viewBox="0 0 24 24"><rect x='3' y='4' width='18' height='18' rx='2.5'/><path d='M16 2v4M8 2v4M3 10h18'/></svg></span>
+      <span class="qm__label">예약</span>
+    </a>
+  </div>
+  <script src="script.js?v=3"></script>
+</body>
+</html>

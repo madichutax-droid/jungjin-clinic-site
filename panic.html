@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    /* PC 버전 선택을 기억했다가, 화면이 그려지기 전에 적용합니다 (깜빡임 방지) */
+    (function () {
+      try {
+        if (localStorage.getItem('viewMode') === 'pc') {
+          document.querySelector('meta[name="viewport"]').setAttribute('content', 'width=1280');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <meta name="theme-color" content="#262220" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v=3" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v=3" />
+  <link rel="manifest" href="site.webmanifest" />
+  <meta name="description" content="가슴이 두근거리고 숨이 막히는데 검사는 괜찮다고 들으셨다면. 몸을 편하게 만드는 일과 피해온 자리로 돌아가는 일을 함께 봅니다. 구리역 정진한의원." />
+  <meta name="keywords" content="공황장애, 가슴 두근거림, 불안, 호흡곤란" />
+  <title>구리 공황장애 한의원 – 정진한의원(구리역)</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=104" />
+  <link rel="canonical" href="https://jungjinmedi.netlify.app/panic.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="정진한의원" />
+  <meta property="og:title" content="구리 공황장애 한의원 – 정진한의원(구리역)" />
+  <meta property="og:description" content="가슴이 두근거리고 숨이 막히는데 검사는 괜찮다고 들으셨다면. 몸을 편하게 만드는 일과 피해온 자리로 돌아가는 일을 함께 봅니다. 구리역 정진한의원." />
+  <meta property="og:url" content="https://jungjinmedi.netlify.app/panic.html" />
+  <meta property="og:image" content="https://jungjinmedi.netlify.app/assets/logo.png?v=3" />
+  <meta property="og:locale" content="ko_KR" />
+</head>
+<body>
+  <a class="skip-link" href="#main">본문 바로가기</a>
+  <div class="topbar">
+    <div class="container topbar__inner">
+      <span class="topbar__hours">진료시간 평일 09:00–20:00 (점심 13:00–14:00) · 토·공휴일 09:00–15:00 · 일요일 휴진</span>
+      <a class="topbar__tel" href="tel:031-522-5923">031-522-5923</a>
+    </div>
+  </div>
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="index.html#hero" class="logo">
+        <img src="assets/logo.png?v=3" alt="정진한의원" class="logo__img" width="800" height="223" />
+      </a>
+      <nav class="nav" id="nav">
+        <ul class="nav__list">
+          <li class="has-sub" data-nav="story-philosophy">
+            <a href="story-philosophy.html">한의원 소개 <span class="caret" aria-hidden="true">▾</span></a>
+            <ul class="subnav">
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#story">원장 이야기</a></li>
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#philosophy">진료와 치료철학</a></li>
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#cv">약력 · 자격</a></li>
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#facility">내부 시설</a></li>
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#location">오시는 길</a></li>
+            </ul>
+          </li>
+          <li class="has-sub" data-nav="pain">
+            <a href="pain.html">관절통증 <span class="caret" aria-hidden="true">▾</span></a>
+            <ul class="subnav">
+              <li data-nav="stenosis"><a href="stenosis.html">척추관협착증</a></li>
+              <li data-nav="disc"><a href="disc.html">디스크</a></li>
+              <li data-nav="joint"><a href="joint.html">어깨·무릎 관절</a></li>
+            </ul>
+          </li>
+          <li class="has-sub is-active" data-nav="autonomic-disorders">
+            <a href="autonomic-disorders.html">자율신경질환 <span class="caret" aria-hidden="true">▾</span></a>
+            <ul class="subnav">
+              <li data-nav="dizziness"><a href="dizziness.html">어지럼증</a></li>
+              <li data-nav="panic" class="is-active"><a aria-current="page" href="panic.html">공황장애</a></li>
+              <li data-nav="stomach"><a href="stomach.html">역류성식도염</a></li>
+              <li data-nav="cough"><a href="cough.html">만성기침</a></li>
+            </ul>
+          </li>
+          <li data-nav="faq">
+            <a href="faq.html">자주 묻는 질문</a>
+          </li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <section id="main" class="page-hero">
+    <div class="container">
+      <h1 class="page-hero__title">피해온 자리로<br class="only-mobile" /> 한 걸음씩 돌아가는 일까지<br class="only-mobile" /> 치료 범위로 봅니다.</h1>
+      <p class="page-hero__desc">몸을 편하게 만드는 일과<br class="only-mobile" /> 피해온 장소로 돌아가는 일을<br class="only-mobile" /> 같은 기간 안에 함께 진행합니다.</p>
+    </div>
+  </section>
+
+  <div class="crumb">
+    <div class="container"><a href="index.html#hero">홈</a> &nbsp;›&nbsp; <a href="autonomic-disorders.html">자율신경질환</a> &nbsp;›&nbsp; 가슴 두근거림·불안</div>
+  </div>
+
+  <section class="section" id="symptoms">
+    <div class="container">
+      <div class="section__head section__head--center">
+        <h2 class="section__title">이런 증상이라면</h2>
+      </div>
+      <div class="audience__grid">
+        <div class="audience__item">
+          <span class="audience__mark">✓</span>
+          <p>갑자기 심장이 뛰고 숨이 막히면서, 이대로 큰일이 날 것 같은 두려움이 옵니다</p>
+        </div>
+        <div class="audience__item">
+          <span class="audience__mark">✓</span>
+          <p>지하철·엘리베이터·버스처럼 특정 장소에서 그 느낌이 옵니다</p>
+        </div>
+        <div class="audience__item">
+          <span class="audience__mark">✓</span>
+          <p>그 장소를 피하기 시작했고, 갈 수 있는 곳이 점점 줄었습니다</p>
+        </div>
+        <div class="audience__item">
+          <span class="audience__mark">✓</span>
+          <p>약을 먹고는 지내지만, 끊는 것이 두렵습니다</p>
+        </div>
+        <div class="audience__item">
+          <span class="audience__mark">✓</span>
+          <p>언제 또 올지 몰라 늘 긴장하고 있습니다</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--cream" id="why">
+    <div class="container container--read">
+      <div class="section__head section__head--center">
+        <h2 class="section__title">왜 낫지 않았을까</h2>
+      </div>
+      <p class="why-text">놀라거나 두려움을 겪은 뒤, 아래에서 위로 기운이 치받아 올라오는 상태로 봅니다.<br class="only-mobile" /> 가슴이 뛰고 숨이 막히는 그 느낌이 여기서 나옵니다.</p>
+      <p class="why-text">이 증상이 오래 남는 이유는 두 가지가 겹쳐 있기 때문입니다.<br class="only-mobile" /> <strong>몸의 상태와, 그 장소를 피해온 시간입니다.</strong><br class="only-mobile" /> 몸이 편해져도 피해온 장소가 그대로 남아 있으면 두려움은 줄지 않습니다.<br class="only-mobile" /> 반대로 마음만 다잡아도 몸이 긴장한 채면 같은 일이 반복됩니다.</p>
+      <p class="why-text">그래서 저희는 <strong>몸을 편하게 만드는 일과, 피해온 장소로 한 걸음씩 돌아가는 일을 같은 기간 안에 함께</strong> 진행합니다.<br class="only-mobile" /> 그 과정에서 원장이 옆에서 함께 걷는 역할을 맡습니다.</p>
+    </div>
+  </section>
+
+  <section class="section section--alt" id="points">
+    <div class="container container--read">
+      <div class="section__head section__head--center">
+        <h2 class="section__title">어디를 함께 보는가</h2>
+      </div>
+      <div class="notice-box">
+        <ul>
+          <li>어떤 상황에서 증상이 오는지 (밀폐된 공간, 넓은 광장, 지하철, 엘리베이터, 높은 곳, 비행기)</li>
+          <li>잠, 소화, 가슴 답답함의 정도</li>
+          <li>복용 중인 약의 종류와 용량</li>
+          <li>지금 갈 수 있는 곳과 피하고 있는 곳의 목록</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="method-section">
+    <div class="container container--read">
+
+      <h3 class="sub-head" id="method">어떤 방법을 쓰는가</h3>
+      <p class="why-text">한약 치료와 침 치료, 그리고 생활에서 실행할 단계별 과제를 함께 씁니다.<br class="only-mobile" /> 복용 중인 약은 임의로 끊지 않으며,<br class="only-mobile" /> 조정이 필요한 시점이 되면 담당 선생님과 상의하도록 안내합니다.</p>
+      <p class="methods-band">치료는 <a href="herb.html">1:1 맞춤 한약</a>과 <a href="acupuncture.html">원인 자리 침·약침 치료</a>를 상태에 따라 함께 씁니다. 처음 오시는 분을 위해 <a href="care.html">치료 전 알아두실 점</a>에 진료 순서를 정리해 두었습니다.</p>
+    </div>
+  </section>
+
+  <section class="section section--alt" id="faq">
+    <div class="container">
+      <div class="section__head section__head--center">
+        <h2 class="section__title">자주 묻는 질문</h2>
+      </div>
+      <div class="faq__list">
+        <details class="faq-item">
+          <summary>기간이 길게 느껴집니다. 더 빨리 끝낼 수 없나요?</summary>
+          <div class="faq-item__a"><p>증상이 줄어드는 것은 비교적 이른 시기에 느끼시는 경우가 있습니다.<br class="only-mobile" /> 다만 피해온 장소로 돌아가는 데는 시간이 필요합니다.<br class="only-mobile" /> 이 과정을 건너뛰면 다시 제자리로 돌아가는 경우가 많아, 처음부터 넉넉하게 잡고 시작합니다.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>지금 먹는 약을 끊어야 하나요?</summary>
+          <div class="faq-item__a"><p>아닙니다.<br class="only-mobile" /> 시작하면서 끊지 않습니다.<br class="only-mobile" /> 증상이 없는 기간이 충분히 지난 뒤에 담당 선생님과 상의하여 서서히 조정하는 순서로 진행합니다.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>다시 시작되면 어떻게 하나요?</summary>
+          <div class="faq-item__a"><p>다시 나타나는 경우가 있습니다.<br class="only-mobile" /> 그때는 처음만큼 오래 걸리지 않는 편이며, 어떻게 대응할지를 미리 정해두고 마무리합니다.<br class="only-mobile" /> 그래서 마지막에 “다시 오면 이렇게 하시면 됩니다”를 함께 정하고 끝냅니다.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container--read">
+      <p class="programs__note">상태와 원인에 따라 접근이 달라질 수 있으며, 정확한 진단이 우선입니다.</p>
+    </div>
+  </section>
+
+  <section class="cta-banner">
+    <div class="container">
+      <div class="cta-banner__inner">
+        <h2 class="cta-banner__title">한 달만,<br class="only-mobile" /> 함께 해보시죠</h2>
+        <p class="cta-banner__desc">지금 갈 수 있는 곳과 피하고 있는 곳을 적어 오시면 거기서부터 시작합니다.</p>
+        <a href="tel:031-522-5923" class="btn btn--primary btn--lg">진료 예약하기</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <img src="assets/logo-white.png?v=3" alt="정진한의원" class="footer__logo" width="800" height="223" />
+        <p class="footer__slogan">치료반응이 다음 자리를 정합니다.</p>
+      </div>
+      <div class="footer__info">
+        <p>대표 · 양정진 &nbsp;|&nbsp; 사업자등록번호 880-46-01214</p>
+        <p>경기도 구리시 경춘로 223 명동빌딩 5층</p>
+        <p>대표전화 <a href="tel:031-522-5923">031-522-5923</a> &nbsp;|&nbsp; 팩스 070-7507-5923</p>
+      </div>
+      <div class="footer__links">
+
+        <a href="terms.html">이용약관</a>
+        <a href="privacy.html">개인정보처리방침</a>
+        <a href="pricing.html">비급여 진료비용</a>
+      </div>
+    </div>
+    <div class="footer__copy">
+      <div class="container footer__copy-inner">
+        <span>© 2026 정진한의원</span>
+        <button type="button" class="view-toggle" id="viewToggle">PC 버전으로 보기</button>
+      </div>
+    </div>
+  </footer>
+
+  <div class="quickmenu" aria-label="바로가기">
+    <a class="qm" href="https://blog.naver.com/yjj2923" target="_blank" rel="noopener" style="--qm:#262220" aria-label="블로그">
+      <span class="qm__ico"><svg viewBox="0 0 24 24"><path d='M12 20h9'/><path d='M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z'/></svg></span>
+      <span class="qm__label">블로그</span>
+    </a>
+
+
+    <a class="qm" href="tel:031-522-5923" style="--qm:#262220" aria-label="전화">
+      <span class="qm__ico"><svg viewBox="0 0 24 24"><path d='M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L8 9.7a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.7 2z'/></svg></span>
+      <span class="qm__label">전화</span>
+    </a>
+    <a class="qm qm--book" href="tel:031-522-5923" style="--qm:#262220" aria-label="예약">
+      <span class="qm__ico"><svg viewBox="0 0 24 24"><rect x='3' y='4' width='18' height='18' rx='2.5'/><path d='M16 2v4M8 2v4M3 10h18'/></svg></span>
+      <span class="qm__label">예약</span>
+    </a>
+  </div>
+  <script src="script.js?v=3"></script>
+</body>
+</html>

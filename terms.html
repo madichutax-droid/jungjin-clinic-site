@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    /* PC 버전 선택을 기억했다가, 화면이 그려지기 전에 적용합니다 (깜빡임 방지) */
+    (function () {
+      try {
+        if (localStorage.getItem('viewMode') === 'pc') {
+          document.querySelector('meta[name="viewport"]').setAttribute('content', 'width=1280');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <meta name="theme-color" content="#262220" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v=3" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v=3" />
+  <link rel="manifest" href="site.webmanifest" />
+  <meta name="description" content="정진한의원 홈페이지 이용약관입니다. 서비스 이용 조건과 책임 범위, 최종 개정일을 안내합니다. 구리 구리역 정진한의원." />
+  <title>이용약관 | 정진한의원</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=104" />
+  <link rel="canonical" href="https://jungjinmedi.netlify.app/terms.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="정진한의원" />
+  <meta property="og:title" content="이용약관 | 정진한의원" />
+  <meta property="og:description" content="정진한의원 홈페이지 이용약관입니다. 서비스 이용 조건과 책임 범위, 최종 개정일을 안내합니다. 구리 구리역 정진한의원." />
+  <meta property="og:url" content="https://jungjinmedi.netlify.app/terms.html" />
+  <meta property="og:image" content="https://jungjinmedi.netlify.app/assets/logo.png?v=3" />
+  <meta property="og:locale" content="ko_KR" />
+</head>
+<body>
+  <a class="skip-link" href="#main">본문 바로가기</a>
+  <div class="topbar">
+    <div class="container topbar__inner">
+      <span class="topbar__hours">진료시간 평일 09:00–20:00 (점심 13:00–14:00) · 토·공휴일 09:00–15:00 · 일요일 휴진</span>
+      <a class="topbar__tel" href="tel:031-522-5923">031-522-5923</a>
+    </div>
+  </div>
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="index.html#hero" class="logo">
+        <img src="assets/logo.png?v=3" alt="정진한의원" class="logo__img" width="800" height="223" />
+      </a>
+      <nav class="nav" id="nav">
+        <ul class="nav__list">
+          <li class="has-sub" data-nav="story-philosophy">
+            <a href="story-philosophy.html">한의원 소개 <span class="caret" aria-hidden="true">▾</span></a>
+            <ul class="subnav">
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#story">원장 이야기</a></li>
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#philosophy">진료와 치료철학</a></li>
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#cv">약력 · 자격</a></li>
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#facility">내부 시설</a></li>
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#location">오시는 길</a></li>
+            </ul>
+          </li>
+          <li class="has-sub" data-nav="pain">
+            <a href="pain.html">관절통증 <span class="caret" aria-hidden="true">▾</span></a>
+            <ul class="subnav">
+              <li data-nav="stenosis"><a href="stenosis.html">척추관협착증</a></li>
+              <li data-nav="disc"><a href="disc.html">디스크</a></li>
+              <li data-nav="joint"><a href="joint.html">어깨·무릎 관절</a></li>
+            </ul>
+          </li>
+          <li class="has-sub" data-nav="autonomic-disorders">
+            <a href="autonomic-disorders.html">자율신경질환 <span class="caret" aria-hidden="true">▾</span></a>
+            <ul class="subnav">
+              <li data-nav="dizziness"><a href="dizziness.html">어지럼증</a></li>
+              <li data-nav="panic"><a href="panic.html">공황장애</a></li>
+              <li data-nav="stomach"><a href="stomach.html">역류성식도염</a></li>
+              <li data-nav="cough"><a href="cough.html">만성기침</a></li>
+            </ul>
+          </li>
+          <li data-nav="faq">
+            <a href="faq.html">자주 묻는 질문</a>
+          </li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <section id="main" class="page-hero">
+    <div class="container">
+      <h1 class="page-hero__title">이용약관</h1>
+      <p class="page-hero__desc">홈페이지 이용에 관한 안내입니다.</p>
+    </div>
+  </section>
+
+  <div class="crumb">
+    <div class="container"><a href="index.html#hero">홈</a> &nbsp;›&nbsp; 이용약관</div>
+  </div>
+
+  <section class="section">
+    <div class="container container--read">
+      <article class="legal">
+        <h2>제1조 (목적)</h2>
+        <p>본 약관은 정진한의원(이하 ‘본원’)이 운영하는 홈페이지의 이용 조건과 절차, 이용자와 본원의 권리·의무 및 책임사항을 정함을 목적으로 합니다.</p>
+        <h2>제2조 (약관의 효력 및 변경)</h2>
+        <ul>
+          <li>본 약관은 홈페이지에 게시함으로써 효력이 발생합니다.</li>
+          <li>본원은 관련 법령을 위배하지 않는 범위에서 약관을 변경할 수 있으며, 변경 시 시행일과 변경 내용을 사전에 공지합니다.</li>
+        </ul>
+        <h2>제3조 (서비스의 내용)</h2>
+        <p>본원이 홈페이지를 통해 제공하는 것은 다음과 같습니다. 홈페이지에서 직접 예약이 이루어지지는 않으며, 예약은 전화로 받습니다.</p>
+        <ul>
+          <li>진료 안내 및 병원 정보 제공</li>
+          <li>진료 시간·위치 안내</li>
+          <li>건강 정보 콘텐츠 제공</li>
+        </ul>
+        <h2>제4조 (서비스의 중단)</h2>
+        <p>본원은 시스템 점검·교체, 통신 두절, 천재지변 등 부득이한 사유가 발생한 경우 서비스 제공을 일시적으로 중단할 수 있습니다. 이 경우 사전에 공지하되, 미리 알릴 수 없는 사정이 있으면 사후에 공지합니다.</p>
+        <h2>제5조 (이용자의 의무)</h2>
+        <p>이용자는 다음 행위를 하여서는 안 됩니다.</p>
+        <ul>
+          <li>타인의 정보를 도용하거나 허위 사실을 등록하는 행위</li>
+          <li>본원 및 제3자의 저작권 등 권리를 침해하는 행위</li>
+          <li>홈페이지 운영을 방해하거나 안정적 운영에 지장을 주는 행위</li>
+        </ul>
+        <h2>제6조 (저작권)</h2>
+        <p>홈페이지에 게시된 모든 콘텐츠(문구, 이미지, 영상 등)의 저작권은 본원 또는 정당한 권리자에게 있으며, 무단 복제·배포·전송을 금합니다.</p>
+        <h2>제7조 (의료 정보에 관한 면책)</h2>
+        <ul>
+          <li>홈페이지에 게시된 건강 정보는 <strong>일반적인 정보 제공을 목적</strong>으로 하며, 개별 환자에 대한 진단이나 처방을 대신하지 않습니다.</li>
+          <li>같은 병명이라도 상태와 원인에 따라 접근이 달라질 수 있으며, 정확한 진단과 치료는 반드시 <strong>내원 후 의료진의 진료</strong>를 통해 이루어져야 합니다.</li>
+          <li>본원은 이용자가 홈페이지의 정보만을 근거로 행한 판단에 대하여 책임을 지지 않습니다.</li>
+        </ul>
+        <h2>제8조 (개인정보의 보호)</h2>
+        <p>본원은 이용자의 개인정보를 관계 법령에 따라 보호합니다. 자세한 내용은 <a href="privacy.html">개인정보처리방침</a>에서 확인하실 수 있습니다.</p>
+        <h2>제9조 (분쟁의 해결)</h2>
+        <p>본 약관과 관련하여 분쟁이 발생한 경우 본원과 이용자는 성실히 협의하여 해결합니다. 협의가 이루어지지 않으면 관계 법령과 상관례에 따릅니다.</p>
+        <h2>부칙</h2>
+        <p>본 약관은 2026년 9월 1일부터 시행합니다.</p>
+      </article>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <img src="assets/logo-white.png?v=3" alt="정진한의원" class="footer__logo" width="800" height="223" />
+        <p class="footer__slogan">치료반응이 다음 자리를 정합니다.</p>
+      </div>
+      <div class="footer__info">
+        <p>대표 · 양정진 &nbsp;|&nbsp; 사업자등록번호 880-46-01214</p>
+        <p>경기도 구리시 경춘로 223 명동빌딩 5층</p>
+        <p>대표전화 <a href="tel:031-522-5923">031-522-5923</a> &nbsp;|&nbsp; 팩스 070-7507-5923</p>
+      </div>
+      <div class="footer__links">
+
+        <a href="terms.html">이용약관</a>
+        <a href="privacy.html">개인정보처리방침</a>
+        <a href="pricing.html">비급여 진료비용</a>
+      </div>
+    </div>
+    <div class="footer__copy">
+      <div class="container footer__copy-inner">
+        <span>© 2026 정진한의원</span>
+        <button type="button" class="view-toggle" id="viewToggle">PC 버전으로 보기</button>
+      </div>
+    </div>
+  </footer>
+
+  <div class="quickmenu" aria-label="바로가기">
+    <a class="qm" href="https://blog.naver.com/yjj2923" target="_blank" rel="noopener" style="--qm:#262220" aria-label="블로그">
+      <span class="qm__ico"><svg viewBox="0 0 24 24"><path d='M12 20h9'/><path d='M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z'/></svg></span>
+      <span class="qm__label">블로그</span>
+    </a>
+
+
+    <a class="qm" href="tel:031-522-5923" style="--qm:#262220" aria-label="전화">
+      <span class="qm__ico"><svg viewBox="0 0 24 24"><path d='M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L8 9.7a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.7 2z'/></svg></span>
+      <span class="qm__label">전화</span>
+    </a>
+    <a class="qm qm--book" href="tel:031-522-5923" style="--qm:#262220" aria-label="예약">
+      <span class="qm__ico"><svg viewBox="0 0 24 24"><rect x='3' y='4' width='18' height='18' rx='2.5'/><path d='M16 2v4M8 2v4M3 10h18'/></svg></span>
+      <span class="qm__label">예약</span>
+    </a>
+  </div>
+  <script src="script.js?v=3"></script>
+</body>
+</html>

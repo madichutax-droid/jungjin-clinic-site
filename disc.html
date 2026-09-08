@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    /* PC 버전 선택을 기억했다가, 화면이 그려지기 전에 적용합니다 (깜빡임 방지) */
+    (function () {
+      try {
+        if (localStorage.getItem('viewMode') === 'pc') {
+          document.querySelector('meta[name="viewport"]').setAttribute('content', 'width=1280');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <meta name="theme-color" content="#262220" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v=3" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v=3" />
+  <link rel="manifest" href="site.webmanifest" />
+  <meta name="description" content="허리·목에서 팔다리로 내려가는 저림. 영상에 보이는 크기와 실제 통증이 늘 비례하지는 않아, 눌렀을 때 통증이 재현되는 자리를 손으로 찾습니다. 구리역 정진한의원." />
+  <meta name="keywords" content="허리디스크, 목디스크, 추간판탈출증, 다리 저림, 손 저림" />
+  <title>구리 허리디스크·목디스크 한의원 – 정진한의원(구리역)</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=104" />
+  <link rel="canonical" href="https://jungjinmedi.netlify.app/disc.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="정진한의원" />
+  <meta property="og:title" content="구리 허리디스크·목디스크 한의원 – 정진한의원(구리역)" />
+  <meta property="og:description" content="허리·목에서 팔다리로 내려가는 저림. 영상에 보이는 크기와 실제 통증이 늘 비례하지는 않아, 눌렀을 때 통증이 재현되는 자리를 손으로 찾습니다. 구리역 정진한의원." />
+  <meta property="og:url" content="https://jungjinmedi.netlify.app/disc.html" />
+  <meta property="og:image" content="https://jungjinmedi.netlify.app/assets/logo.png?v=3" />
+  <meta property="og:locale" content="ko_KR" />
+</head>
+<body>
+  <a class="skip-link" href="#main">본문 바로가기</a>
+  <div class="topbar">
+    <div class="container topbar__inner">
+      <span class="topbar__hours">진료시간 평일 09:00–20:00 (점심 13:00–14:00) · 토·공휴일 09:00–15:00 · 일요일 휴진</span>
+      <a class="topbar__tel" href="tel:031-522-5923">031-522-5923</a>
+    </div>
+  </div>
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="index.html#hero" class="logo">
+        <img src="assets/logo.png?v=3" alt="정진한의원" class="logo__img" width="800" height="223" />
+      </a>
+      <nav class="nav" id="nav">
+        <ul class="nav__list">
+          <li class="has-sub" data-nav="story-philosophy">
+            <a href="story-philosophy.html">한의원 소개 <span class="caret" aria-hidden="true">▾</span></a>
+            <ul class="subnav">
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#story">원장 이야기</a></li>
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#philosophy">진료와 치료철학</a></li>
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#cv">약력 · 자격</a></li>
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#facility">내부 시설</a></li>
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#location">오시는 길</a></li>
+            </ul>
+          </li>
+          <li class="has-sub is-active" data-nav="pain">
+            <a href="pain.html">관절통증 <span class="caret" aria-hidden="true">▾</span></a>
+            <ul class="subnav">
+              <li data-nav="stenosis"><a href="stenosis.html">척추관협착증</a></li>
+              <li data-nav="disc" class="is-active"><a aria-current="page" href="disc.html">디스크</a></li>
+              <li data-nav="joint"><a href="joint.html">어깨·무릎 관절</a></li>
+            </ul>
+          </li>
+          <li class="has-sub" data-nav="autonomic-disorders">
+            <a href="autonomic-disorders.html">자율신경질환 <span class="caret" aria-hidden="true">▾</span></a>
+            <ul class="subnav">
+              <li data-nav="dizziness"><a href="dizziness.html">어지럼증</a></li>
+              <li data-nav="panic"><a href="panic.html">공황장애</a></li>
+              <li data-nav="stomach"><a href="stomach.html">역류성식도염</a></li>
+              <li data-nav="cough"><a href="cough.html">만성기침</a></li>
+            </ul>
+          </li>
+          <li data-nav="faq">
+            <a href="faq.html">자주 묻는 질문</a>
+          </li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <section id="main" class="page-hero">
+    <div class="container">
+      <h1 class="page-hero__title">MRI는 괜찮다는데,<br class="only-mobile" /> 왜 계속 아플까요?</h1>
+      <p class="page-hero__desc">굳은 자리를 손으로 눌러 확인하고,<br class="only-mobile" /> 치료반응을 보며 자리를 정합니다.</p>
+    </div>
+  </section>
+
+  <div class="crumb">
+    <div class="container"><a href="index.html#hero">홈</a> &nbsp;›&nbsp; <a href="pain.html">관절통증</a> &nbsp;›&nbsp; 허리·목에서 팔다리로 내려가는 저림</div>
+  </div>
+
+  <section class="section" id="symptoms">
+    <div class="container">
+      <div class="section__head section__head--center">
+        <h2 class="section__title">이런 증상이라면</h2>
+      </div>
+      <h3 class="sym-group">허리인 경우</h3>
+      <div class="audience__grid" style="margin-bottom:28px;">
+        <div class="audience__item">
+          <span class="audience__mark">✓</span>
+          <p>허리에서 엉덩이·허벅지·종아리로 내려가는 통증이나 저림이 있습니다</p>
+        </div>
+        <div class="audience__item">
+          <span class="audience__mark">✓</span>
+          <p>허리를 숙이거나 기침·재채기를 할 때 찌릿합니다</p>
+        </div>
+        <div class="audience__item">
+          <span class="audience__mark">✓</span>
+          <p>오래 앉아 있다 일어나면 한참 펴지지 않습니다</p>
+        </div>
+      </div>
+      <h3 class="sym-group">목인 경우</h3>
+      <div class="audience__grid" style="margin-bottom:28px;">
+        <div class="audience__item">
+          <span class="audience__mark">✓</span>
+          <p>목에서 어깨·팔·손끝으로 내려가는 저림이 있습니다</p>
+        </div>
+        <div class="audience__item">
+          <span class="audience__mark">✓</span>
+          <p>물건을 집을 때 힘이 예전 같지 않습니다</p>
+        </div>
+        <div class="audience__item">
+          <span class="audience__mark">✓</span>
+          <p>목을 젖히거나 돌릴 때, 자다가 손이 저립니다</p>
+        </div>
+      </div>
+      <h3 class="sym-group">공통</h3>
+      <div class="audience__grid" style="margin-bottom:28px;">
+        <div class="audience__item">
+          <span class="audience__mark">✓</span>
+          <p>MRI를 찍었는데 생각보다 괜찮다고 들었는데 계속 아픕니다</p>
+        </div>
+        <div class="audience__item">
+          <span class="audience__mark">✓</span>
+          <p>주사를 맞으면 편해졌다가 다시 돌아옵니다</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--cream" id="why">
+    <div class="container container--read">
+      <div class="section__head section__head--center">
+        <h2 class="section__title">왜 낫지 않았을까</h2>
+      </div>
+      <p class="why-text">디스크가 신경을 자극해서<br class="only-mobile" /> 생기는 통증이 맞습니다.<br class="only-mobile" /> 그런데 진료실에서 보는 풍경은 이렇습니다.<br class="only-mobile" /> <strong>같은 영상 소견이어도<br class="only-mobile" /> 어떤 분은 괜찮고 어떤 분은 아픕니다.</strong></p>
+      <p class="why-text">차이는 그 자리를 잡아주는 근육들의 상태입니다.<br class="only-mobile" /> <strong>뒤쪽 옆구리 자리와 앞쪽 깊은 자리, 이 둘이 허리 자세를 만듭니다.</strong><br class="only-mobile" /> 여기가 버틸 힘을 잃으면<br class="only-mobile" /> 한 지점에 부하가 몰립니다.</p>
+      <p class="why-text">목도 같은 방식입니다.<br class="only-mobile" /> 머리를 받쳐 지탱해야 하는 자리가 계속 긴장해 있으면, 그 장력이 팔로 내려가는 길까지 이어집니다.</p>
+      <p class="why-text">눌러서 찾은 자리와 아프다고 하시는 자리가 서로 다를 때가 있습니다.<br class="only-mobile" /> 이상한 것이 아닙니다.<br class="only-mobile" /> <strong>통증은 그 자리에서 느끼는 것이 아니라 뇌가 느끼는 것</strong>이라, 원인이 되는 자리와 아픈 자리가 떨어져 있을 수 있습니다.</p>
+      <p class="why-text">그리고 <strong>아랫배가 제 일을 못 하면 그 부담이 허리로 옮겨 옵니다.</strong><br class="only-mobile" /> 허리만 눌러 봐서 답이 나오지 않을 때 배를 함께 보는 이유입니다.</p>
+      <p class="why-text">그리고 <strong>통증이 드러난 자리와 그 통증을 만든 자리는 다를 수 있습니다.</strong><br class="only-mobile" /> 엉덩이나 종아리까지 원인이 이어지는 경우도 있습니다.<br class="only-mobile" /> 주사로 통증은 줄었지만 다시 돌아온다는 말은, 그 통증을 만들어낸 조건이 그대로라는 뜻이기도 합니다.</p>
+      <div class="notice-box">
+        <p>영상보다, 오늘의 몸을 봅니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt" id="points">
+    <div class="container container--read">
+      <div class="section__head section__head--center">
+        <h2 class="section__title">어디를 함께 보는가</h2>
+      </div>
+      <div class="notice-box">
+        <ul>
+          <li><strong>어떤 자세에서 심해지는지</strong> — 숙일 때인지 펼 때인지. 이것으로 협착증과 가릅니다</li>
+          <li><strong>저림이 어디까지 내려오는지</strong> — 엉덩이 / 허벅지 / 무릎 아래 / 발등·발바닥</li>
+          <li>허리를 앞뒤에서 잡아주는 자리의 상태</li>
+          <li>엉덩이와 다리 뒷면으로 이어지는 자리</li>
+          <li><strong>호흡이 어떻게 이루어지는지</strong> — 숨이 얕은 분은 허리에 가는 부하가 늡니다</li>
+          <li>배에 가스가 차고 대변이 다 나오지 않은 느낌이 있는지</li>
+          <li>지금까지 받으신 치료와 그때의 치료반응</li>
+        </ul>
+      </div>
+      <div class="notice-box">
+        <p><strong>약속 04 — 어제의 기록보다 오늘의 몸을 보겠습니다.</strong><br class="only-mobile" /> “이 분은 허리 환자”로 각인해 같은 자리만 치료하지 않고, 매번 다시 평가합니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="method-section">
+    <div class="container container--read">
+
+      <h3 class="sub-head" id="method">어떤 방법을 쓰는가</h3>
+      <p class="why-text">원인 자리를 손으로 고정한 뒤 치료반응이 나는 지점을 확인하며 치료합니다.<br class="only-mobile" /> 가만히 있어도 아프거나 회복이 더딜 때는 회복하는 힘을 함께 올리는 방향을 권합니다.</p>
+      <p class="why-text">집에서 할 것은 <strong>한 번에 하나나 둘만</strong> 구체적으로 지정해 드립니다.<br class="only-mobile" /> 진료실에서 보는 시간보다 그 사이의 일주일이 회복을 좌우합니다.</p>
+      <p class="methods-band">치료는 <a href="acupuncture.html">원인 자리 침·약침 치료</a>와 <a href="chuna.html">추나요법</a>을 기본으로, 필요할 때 <a href="herb.html">1:1 맞춤 한약</a>을 함께 씁니다. 처음 오시는 분을 위해 <a href="care.html">치료 전 알아두실 점</a>에 진료 순서를 정리해 두었습니다.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container--read">
+      <div class="section__head section__head--center">
+        <h2 class="section__title">집에서 지킬 것</h2>
+        <p class="section__lead">아래는 아랫배 쪽 순환을 돕는 기본입니다.</p>
+      </div>
+      <div class="notice-box">
+        <ul>
+          <li><strong>벽에 다리를 올리고 10분.</strong> 누워서 엉덩이를 벽에 붙이고 다리를 세워 L자로 둡니다</li>
+          <li><strong>주무실 때 발쪽을 5~10cm 높입니다.</strong><br class="only-mobile" /> 이불이나 얇은 베개를 발밑에 둡니다</li>
+          <li><strong>케겔 운동을 매일 합니다.</strong><br class="only-mobile" /> 한 번에 오래 하기보다 짧게라도 매일 하시는 편이 낫습니다</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt" id="faq">
+    <div class="container">
+      <div class="section__head section__head--center">
+        <h2 class="section__title">자주 묻는 질문</h2>
+      </div>
+      <div class="faq__list">
+        <details class="faq-item">
+          <summary>MRI는 괜찮다는데 왜 아픈가요?</summary>
+          <div class="faq-item__a"><p>영상에서 보이는 크기와 실제 통증이 늘 비례하지는 않습니다.<br class="only-mobile" /> 그래서 손으로 눌러보면서 어느 자리에서 통증이 재현되는지 확인합니다.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>아픈 곳과 다른 곳을 치료하시네요?</summary>
+          <div class="faq-item__a"><p>통증이 시작된 자리가 따로 있는 경우가 많습니다.<br class="only-mobile" /> 왜 그 자리를 치료하는지 매번 설명드립니다.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>몇 번 맞으면 되나요?</summary>
+          <div class="faq-item__a"><p>회복 속도는 나이·체력·생활 습관에 따라 다릅니다.<br class="only-mobile" /> 첫날 기간을 단정해 말씀드리지 않고, 치료반응을 보며 계획을 조정합니다.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>수술해야 하나요?</summary>
+          <div class="faq-item__a"><p>지금 상태에서 확인된 것과 지켜봐야 할 것을 구분해 말씀드립니다.<br class="only-mobile" /> 검사나 다른 진료가 먼저라고 판단되면<br class="only-mobile" /> 그렇게 안내합니다.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>한약도 꼭 먹어야 하나요?</summary>
+          <div class="faq-item__a"><p>가만히 있어도 아프거나 회복이 더딜 때는 회복하는 힘을 함께 올리는 편이 유리합니다.<br class="only-mobile" /> 필요 없는 경우에는 권하지 않습니다.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container--read">
+      <p class="programs__note">상태와 원인에 따라 접근이 달라질 수 있으며, 정확한 진단이 우선입니다.</p>
+    </div>
+  </section>
+
+  <section class="cta-banner">
+    <div class="container">
+      <div class="cta-banner__inner">
+        <h2 class="cta-banner__title">지금까지 받으신 치료와,<br class="only-mobile" /> 그때의 치료반응을 들려주세요</h2>
+        <p class="cta-banner__desc">주사가 얼마나 갔는지, 어떤 자세에서 심해지는지 — 그 이야기가 어디를 볼지 정해 줍니다.</p>
+        <a href="tel:031-522-5923" class="btn btn--primary btn--lg">진료 예약하기</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <img src="assets/logo-white.png?v=3" alt="정진한의원" class="footer__logo" width="800" height="223" />
+        <p class="footer__slogan">치료반응이 다음 자리를 정합니다.</p>
+      </div>
+      <div class="footer__info">
+        <p>대표 · 양정진 &nbsp;|&nbsp; 사업자등록번호 880-46-01214</p>
+        <p>경기도 구리시 경춘로 223 명동빌딩 5층</p>
+        <p>대표전화 <a href="tel:031-522-5923">031-522-5923</a> &nbsp;|&nbsp; 팩스 070-7507-5923</p>
+      </div>
+      <div class="footer__links">
+
+        <a href="terms.html">이용약관</a>
+        <a href="privacy.html">개인정보처리방침</a>
+        <a href="pricing.html">비급여 진료비용</a>
+      </div>
+    </div>
+    <div class="footer__copy">
+      <div class="container footer__copy-inner">
+        <span>© 2026 정진한의원</span>
+        <button type="button" class="view-toggle" id="viewToggle">PC 버전으로 보기</button>
+      </div>
+    </div>
+  </footer>
+
+  <div class="quickmenu" aria-label="바로가기">
+    <a class="qm" href="https://blog.naver.com/yjj2923" target="_blank" rel="noopener" style="--qm:#262220" aria-label="블로그">
+      <span class="qm__ico"><svg viewBox="0 0 24 24"><path d='M12 20h9'/><path d='M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z'/></svg></span>
+      <span class="qm__label">블로그</span>
+    </a>
+
+
+    <a class="qm" href="tel:031-522-5923" style="--qm:#262220" aria-label="전화">
+      <span class="qm__ico"><svg viewBox="0 0 24 24"><path d='M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L8 9.7a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.7 2z'/></svg></span>
+      <span class="qm__label">전화</span>
+    </a>
+    <a class="qm qm--book" href="tel:031-522-5923" style="--qm:#262220" aria-label="예약">
+      <span class="qm__ico"><svg viewBox="0 0 24 24"><rect x='3' y='4' width='18' height='18' rx='2.5'/><path d='M16 2v4M8 2v4M3 10h18'/></svg></span>
+      <span class="qm__label">예약</span>
+    </a>
+  </div>
+  <script src="script.js?v=3"></script>
+</body>
+</html>

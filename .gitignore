@@ -1,0 +1,10 @@
+# macOS
+.DS_Store
+._*
+
+# 편집기
+.vscode/
+*.swp
+
+# 미리보기·임시 파일
+_*-preview.html

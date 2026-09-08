@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    /* PC 버전 선택을 기억했다가, 화면이 그려지기 전에 적용합니다 (깜빡임 방지) */
+    (function () {
+      try {
+        if (localStorage.getItem('viewMode') === 'pc') {
+          document.querySelector('meta[name="viewport"]').setAttribute('content', 'width=1280');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <meta name="theme-color" content="#262220" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v=3" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v=3" />
+  <link rel="manifest" href="site.webmanifest" />
+  <meta name="description" content="처음 오시면 어떤 순서로 진행되는지, 침을 놓은 뒤 몸에서 무엇이 느껴지는지 미리 정리했습니다. 회복의 기준과 자주 받는 질문도 함께 담았습니다. 구리역 정진한의원." />
+  <title>치료 전 알아두실 점 | 정진한의원</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=104" />
+  <link rel="canonical" href="https://jungjinmedi.netlify.app/care.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="정진한의원" />
+  <meta property="og:title" content="치료 전 알아두실 점 | 정진한의원" />
+  <meta property="og:description" content="처음 오시면 어떤 순서로 진행되는지, 침을 놓은 뒤 몸에서 무엇이 느껴지는지 미리 정리했습니다. 회복의 기준과 자주 받는 질문도 함께 담았습니다. 구리역 정진한의원." />
+  <meta property="og:url" content="https://jungjinmedi.netlify.app/care.html" />
+  <meta property="og:image" content="https://jungjinmedi.netlify.app/assets/logo.png?v=3" />
+  <meta property="og:locale" content="ko_KR" />
+</head>
+<body>
+  <a class="skip-link" href="#main">본문 바로가기</a>
+  <div class="topbar">
+    <div class="container topbar__inner">
+      <span class="topbar__hours">진료시간 평일 09:00–20:00 (점심 13:00–14:00) · 토·공휴일 09:00–15:00 · 일요일 휴진</span>
+      <a class="topbar__tel" href="tel:031-522-5923">031-522-5923</a>
+    </div>
+  </div>
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="index.html#hero" class="logo">
+        <img src="assets/logo.png?v=3" alt="정진한의원" class="logo__img" width="800" height="223" />
+      </a>
+      <nav class="nav" id="nav">
+        <ul class="nav__list">
+          <li class="has-sub" data-nav="story-philosophy">
+            <a href="story-philosophy.html">한의원 소개 <span class="caret" aria-hidden="true">▾</span></a>
+            <ul class="subnav">
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#story">원장 이야기</a></li>
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#philosophy">진료와 치료철학</a></li>
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#cv">약력 · 자격</a></li>
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#facility">내부 시설</a></li>
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#location">오시는 길</a></li>
+            </ul>
+          </li>
+          <li class="has-sub" data-nav="pain">
+            <a href="pain.html">관절통증 <span class="caret" aria-hidden="true">▾</span></a>
+            <ul class="subnav">
+              <li data-nav="stenosis"><a href="stenosis.html">척추관협착증</a></li>
+              <li data-nav="disc"><a href="disc.html">디스크</a></li>
+              <li data-nav="joint"><a href="joint.html">어깨·무릎 관절</a></li>
+            </ul>
+          </li>
+          <li class="has-sub" data-nav="autonomic-disorders">
+            <a href="autonomic-disorders.html">자율신경질환 <span class="caret" aria-hidden="true">▾</span></a>
+            <ul class="subnav">
+              <li data-nav="dizziness"><a href="dizziness.html">어지럼증</a></li>
+              <li data-nav="panic"><a href="panic.html">공황장애</a></li>
+              <li data-nav="stomach"><a href="stomach.html">역류성식도염</a></li>
+              <li data-nav="cough"><a href="cough.html">만성기침</a></li>
+            </ul>
+          </li>
+          <li data-nav="faq">
+            <a href="faq.html">자주 묻는 질문</a>
+          </li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <section id="main" class="page-hero">
+    <div class="container">
+      <h1 class="page-hero__title">치료 전 알아두실 점</h1>
+      <p class="page-hero__desc">진료가 어떤 순서로 이루어지는지,<br class="only-mobile" /> 치료 중 몸에서 무엇이 느껴지는지 정리했습니다.</p>
+    </div>
+  </section>
+
+  <div class="crumb">
+    <div class="container"><a href="index.html#hero">홈</a> &nbsp;›&nbsp; 치료 전 알아두실 점</div>
+  </div>
+
+  <section class="section">
+    <div class="container container--read">
+      <div class="svc-detail__block">
+        <h2>근육이 “툭” 하고 움직일 때가 있습니다</h2>
+        <p>침이 굳어 있던 자리에 정확히 닿으면 근육이 순간적으로 움찔합니다.<br class="only-mobile" /> 놀라실 수 있지만,<br class="only-mobile" /> 그 자리를 제대로 찾았다는 신호입니다.</p>
+      </div>
+      <div class="svc-detail__block">
+        <h2>치료반응이 다른 곳에서 느껴질 수 있습니다</h2>
+        <p>아픈 곳이 아니라 전혀 다른 곳에서 느낌이 올 때가 있습니다.<br class="only-mobile" /> 이상한 것이 아니라, 그 자리들이 서로 이어져 있다는 뜻입니다.</p>
+      </div>
+      <div class="svc-detail__block">
+        <h2>치료 당일이나 다음 날 뻐근할 수 있습니다</h2>
+        <p>오래 굳어 있던 자리가 움직이기 시작하면서 생기는 치료반응입니다.<br class="only-mobile" /> 대개 하루이틀 안에 가라앉습니다.<br class="only-mobile" /> 오래가거나 심해지면 알려주세요.</p>
+      </div>
+      <div class="svc-detail__block">
+        <h2>개수는 줄이고, 자리에는 충분히 합니다</h2>
+        <p>침의 개수로 효과가 정해지지는 않습니다.<br class="only-mobile" /> 다만 자리를 찾은 뒤 약하게 지나가면 그날로 끝납니다.<br class="only-mobile" /> 꼭 필요한 자리에, 감당하실 수 있는 선 안에서 충분히 하는 것을 기준으로 삼습니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--cream" id="flow">
+    <div class="container container--read">
+      <div class="section__head section__head--center">
+        <h2 class="section__title">처음 오시면 이렇게 진행됩니다</h2>
+      </div>
+      <div class="programs__grid">
+        <article class="program-card">
+          <span class="program-card__step">STEP 1</span>
+          <h3 class="program-card__title">증상의 경과를 듣습니다</h3>
+          <p class="program-card__desc">가장 불편한 것, 시작된 시점, 심해지는 상황을 순서대로 확인합니다.</p>
+        </article>
+        <article class="program-card">
+          <span class="program-card__step">STEP 2</span>
+          <h3 class="program-card__title">지난 검사와 기록을 읽습니다</h3>
+          <p class="program-card__desc">가지고 오신 자료는 판단에 넣습니다.<br class="only-mobile" /> 없으면 진찰로 대신합니다.</p>
+        </article>
+        <article class="program-card">
+          <span class="program-card__step">STEP 3</span>
+          <h3 class="program-card__title">손으로 짚어 자리를 가립니다</h3>
+          <p class="program-card__desc">굳어 있는 자리와, 눌렀을 때 그 통증이 재현되는 자리를 짚어 냅니다.</p>
+        </article>
+        <article class="program-card">
+          <span class="program-card__step">STEP 4</span>
+          <h3 class="program-card__title">치료반응으로 판단을 검증합니다</h3>
+          <p class="program-card__desc">침을 놓은 뒤 치료반응을 확인하고, 그 결과로 그날의 자리를 정합니다.</p>
+        </article>
+        <article class="program-card">
+          <span class="program-card__step">STEP 5</span>
+          <h3 class="program-card__title">판단한 내용을 설명합니다</h3>
+          <p class="program-card__desc">오늘 무엇을 확인했고 무엇을 조심해야 하는지 설명한 뒤 보내드립니다.</p>
+        </article>
+      </div>
+      <p class="programs__note">치료 횟수나 기간을 미리 단정하지 않습니다.<br class="only-mobile" /> 상태를 확인한 뒤 계획을 세워 말씀드립니다.<br class="only-mobile" /> 다른 진료나 검사가 먼저라고 판단되면<br class="only-mobile" /> 그렇게 안내합니다.</p>
+    </div>
+  </section>
+
+  <section class="section" id="recovery">
+    <div class="container container--read">
+      <div class="section__head section__head--center">
+        <h2 class="section__title">회복의 기준은 일상에 둡니다</h2>
+        <p class="section__lead">통증 점수보다 생활이 어떻게 달라지는지로 경과를 판단합니다.</p>
+      </div>
+      <ul class="blk-list blk-list--two">
+          <li>쉬지 않고 걸을 수 있는 거리</li>
+          <li>계단을 내려갈 때의 통증</li>
+          <li>밤에 깨는 횟수와 자고 난 뒤의 상태</li>
+          <li>저리거나 감각이 둔한 범위의 변화</li>
+          <li>기침이 터지는 상황과 횟수</li>
+          <li>체함·트림·신물·속쓰림의 순서와 부담되는 음식</li>
+          <li>어지럼의 횟수와 상황</li>
+          <li>피하던 장소에 다시 갈 수 있는지</li>
+          <li>하던 일로 돌아갈 수 있는지</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--cream" id="faq">
+    <div class="container container--read">
+      <div class="section__head section__head--center">
+        <h2 class="section__title">자주 받는 질문</h2>
+      </div>
+      <div class="faq__list">
+        <details class="faq-item">
+          <summary>몇 번 치료하면 될까요?</summary>
+          <div class="faq-item__a"><p>횟수를 미리 단정하지 않습니다.<br class="only-mobile" /> 상태를 확인하고 치료반응을 보며 계획을 조정합니다.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>검사 자료가 없는데 가도 될까요?</summary>
+          <div class="faq-item__a"><p>됩니다.<br class="only-mobile" /> 문진과 촉진으로 판단하는 것이 먼저입니다.<br class="only-mobile" /> 검사가 먼저 필요하다고 판단되면<br class="only-mobile" /> 그렇게 안내합니다.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>침이 무서운데 괜찮을까요?</summary>
+          <div class="faq-item__a"><p>놓기 전에 무엇을 할지 설명하고, 놓은 뒤에는 치료반응을 확인합니다.<br class="only-mobile" /> 부담되시는 부분은 그대로 말씀해 주십시오.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>수술을 권유받았는데요.</summary>
+          <div class="faq-item__a"><p>수술 시기는 주치의와 상의하시는 것이 원칙입니다.<br class="only-mobile" /> 지금 상태에서 볼 수 있는 부분과 그렇지 않은 부분을 구분해 말씀드립니다.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container--read">
+      <p class="programs__note">상태와 원인에 따라 접근이 달라질 수 있으며, 정확한 진단이 우선입니다.</p>
+    </div>
+  </section>
+
+  <section class="cta-banner">
+    <div class="container">
+      <div class="cta-banner__inner">
+        <h2 class="cta-banner__title">지금,<br class="only-mobile" /> 원인부터 확인해 보세요</h2>
+        <p class="cta-banner__desc">무엇이 원인인지 판단해 설명드립니다.</p>
+        <a href="tel:031-522-5923" class="btn btn--primary btn--lg">진료 예약하기</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <img src="assets/logo-white.png?v=3" alt="정진한의원" class="footer__logo" width="800" height="223" />
+        <p class="footer__slogan">치료반응이 다음 자리를 정합니다.</p>
+      </div>
+      <div class="footer__info">
+        <p>대표 · 양정진 &nbsp;|&nbsp; 사업자등록번호 880-46-01214</p>
+        <p>경기도 구리시 경춘로 223 명동빌딩 5층</p>
+        <p>대표전화 <a href="tel:031-522-5923">031-522-5923</a> &nbsp;|&nbsp; 팩스 070-7507-5923</p>
+      </div>
+      <div class="footer__links">
+
+        <a href="terms.html">이용약관</a>
+        <a href="privacy.html">개인정보처리방침</a>
+        <a href="pricing.html">비급여 진료비용</a>
+      </div>
+    </div>
+    <div class="footer__copy">
+      <div class="container footer__copy-inner">
+        <span>© 2026 정진한의원</span>
+        <button type="button" class="view-toggle" id="viewToggle">PC 버전으로 보기</button>
+      </div>
+    </div>
+  </footer>
+
+  <div class="quickmenu" aria-label="바로가기">
+    <a class="qm" href="https://blog.naver.com/yjj2923" target="_blank" rel="noopener" style="--qm:#262220" aria-label="블로그">
+      <span class="qm__ico"><svg viewBox="0 0 24 24"><path d='M12 20h9'/><path d='M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z'/></svg></span>
+      <span class="qm__label">블로그</span>
+    </a>
+
+
+    <a class="qm" href="tel:031-522-5923" style="--qm:#262220" aria-label="전화">
+      <span class="qm__ico"><svg viewBox="0 0 24 24"><path d='M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L8 9.7a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.7 2z'/></svg></span>
+      <span class="qm__label">전화</span>
+    </a>
+    <a class="qm qm--book" href="tel:031-522-5923" style="--qm:#262220" aria-label="예약">
+      <span class="qm__ico"><svg viewBox="0 0 24 24"><rect x='3' y='4' width='18' height='18' rx='2.5'/><path d='M16 2v4M8 2v4M3 10h18'/></svg></span>
+      <span class="qm__label">예약</span>
+    </a>
+  </div>
+  <script src="script.js?v=3"></script>
+</body>
+</html>

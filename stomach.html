@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    /* PC 버전 선택을 기억했다가, 화면이 그려지기 전에 적용합니다 (깜빡임 방지) */
+    (function () {
+      try {
+        if (localStorage.getItem('viewMode') === 'pc') {
+          document.querySelector('meta[name="viewport"]').setAttribute('content', 'width=1280');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <meta name="theme-color" content="#262220" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v=3" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v=3" />
+  <link rel="manifest" href="site.webmanifest" />
+  <meta name="description" content="속쓰림·트림·체함이 반복될 때, 증상이 시작된 순서를 되짚어 어디서 비롯됐는지 가립니다. 구리 구리역 정진한의원 역류성식도염·기능성 소화불량." />
+  <meta name="keywords" content="역류성식도염, 기능성 소화불량, 속쓰림, 트림, 체함, 복부 팽만" />
+  <title>구리 역류성식도염·소화불량 한의원 – 정진한의원(구리역)</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=104" />
+  <link rel="canonical" href="https://jungjinmedi.netlify.app/stomach.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="정진한의원" />
+  <meta property="og:title" content="구리 역류성식도염·소화불량 한의원 – 정진한의원(구리역)" />
+  <meta property="og:description" content="속쓰림·트림·체함이 반복될 때, 증상이 시작된 순서를 되짚어 어디서 비롯됐는지 가립니다. 구리 구리역 정진한의원 역류성식도염·기능성 소화불량." />
+  <meta property="og:url" content="https://jungjinmedi.netlify.app/stomach.html" />
+  <meta property="og:image" content="https://jungjinmedi.netlify.app/assets/logo.png?v=3" />
+  <meta property="og:locale" content="ko_KR" />
+</head>
+<body>
+  <a class="skip-link" href="#main">본문 바로가기</a>
+  <div class="topbar">
+    <div class="container topbar__inner">
+      <span class="topbar__hours">진료시간 평일 09:00–20:00 (점심 13:00–14:00) · 토·공휴일 09:00–15:00 · 일요일 휴진</span>
+      <a class="topbar__tel" href="tel:031-522-5923">031-522-5923</a>
+    </div>
+  </div>
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="index.html#hero" class="logo">
+        <img src="assets/logo.png?v=3" alt="정진한의원" class="logo__img" width="800" height="223" />
+      </a>
+      <nav class="nav" id="nav">
+        <ul class="nav__list">
+          <li class="has-sub" data-nav="story-philosophy">
+            <a href="story-philosophy.html">한의원 소개 <span class="caret" aria-hidden="true">▾</span></a>
+            <ul class="subnav">
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#story">원장 이야기</a></li>
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#philosophy">진료와 치료철학</a></li>
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#cv">약력 · 자격</a></li>
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#facility">내부 시설</a></li>
+              <li data-nav="story-philosophy"><a href="story-philosophy.html#location">오시는 길</a></li>
+            </ul>
+          </li>
+          <li class="has-sub" data-nav="pain">
+            <a href="pain.html">관절통증 <span class="caret" aria-hidden="true">▾</span></a>
+            <ul class="subnav">
+              <li data-nav="stenosis"><a href="stenosis.html">척추관협착증</a></li>
+              <li data-nav="disc"><a href="disc.html">디스크</a></li>
+              <li data-nav="joint"><a href="joint.html">어깨·무릎 관절</a></li>
+            </ul>
+          </li>
+          <li class="has-sub is-active" data-nav="autonomic-disorders">
+            <a href="autonomic-disorders.html">자율신경질환 <span class="caret" aria-hidden="true">▾</span></a>
+            <ul class="subnav">
+              <li data-nav="dizziness"><a href="dizziness.html">어지럼증</a></li>
+              <li data-nav="panic"><a href="panic.html">공황장애</a></li>
+              <li data-nav="stomach" class="is-active"><a aria-current="page" href="stomach.html">역류성식도염</a></li>
+              <li data-nav="cough"><a href="cough.html">만성기침</a></li>
+            </ul>
+          </li>
+          <li data-nav="faq">
+            <a href="faq.html">자주 묻는 질문</a>
+          </li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <section id="main" class="page-hero">
+    <div class="container">
+      <h1 class="page-hero__title">위장 증상에는<br class="only-mobile" /> 순서가 있습니다</h1>
+      <p class="page-hero__desc">체함에서 시작해<br class="only-mobile" /> 트림·신물·속쓰림·가슴 답답함까지 —<br class="only-mobile" /> 한 줄기로 이어진 증상입니다.</p>
+    </div>
+  </section>
+
+  <div class="crumb">
+    <div class="container"><a href="index.html#hero">홈</a> &nbsp;›&nbsp; <a href="autonomic-disorders.html">자율신경질환</a> &nbsp;›&nbsp; 역류성식도염</div>
+  </div>
+
+  <section class="section">
+    <div class="container container--read">
+      <div class="notice-box">
+        <p><strong>가슴이 아파 심장 검사를 받았는데<br class="only-mobile" /> 정상이라고 들으신 분들</strong> — 이 페이지를 끝까지 읽어보시기 바랍니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="symptoms">
+    <div class="container">
+      <div class="section__head section__head--center">
+        <h2 class="section__title">이런 증상이라면</h2>
+      </div>
+      <div class="audience__grid">
+        <div class="audience__item">
+          <span class="audience__mark">✓</span>
+          <p>먹는 도중에 배가 빵빵해져서 더 못 먹겠습니다</p>
+        </div>
+        <div class="audience__item">
+          <span class="audience__mark">✓</span>
+          <p>잘 체하고, 배에 가스가 차며 트림이 잦습니다</p>
+        </div>
+        <div class="audience__item">
+          <span class="audience__mark">✓</span>
+          <p>신물이 올라오고 속이 쓰립니다</p>
+        </div>
+        <div class="audience__item">
+          <span class="audience__mark">✓</span>
+          <p>가슴이 답답해서 미칠 것 같은데, 심장 검사는 괜찮다고 들었습니다</p>
+        </div>
+        <div class="audience__item">
+          <span class="audience__mark">✓</span>
+          <p>목에 무언가 걸린 것 같은데 뱉어지지도 삼켜지지도 않습니다</p>
+        </div>
+        <div class="audience__item">
+          <span class="audience__mark">✓</span>
+          <p>입이 자주 마르고, 아침에 일어나면 입냄새가 신경 쓰입니다</p>
+        </div>
+        <div class="audience__item">
+          <span class="audience__mark">✓</span>
+          <p>새벽에 속이 쓰려 깬 적이 있습니다</p>
+        </div>
+        <div class="audience__item">
+          <span class="audience__mark">✓</span>
+          <p>입맛이 없고 소화도 안 되며, 피로하고 만사가 귀찮습니다</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--cream" id="why">
+    <div class="container container--read">
+      <div class="section__head section__head--center">
+        <h2 class="section__title">왜 낫지 않았을까</h2>
+        <p class="section__lead">순서를 따라가 보면 이해가 쉽습니다.</p>
+      </div>
+      <div class="programs__grid">
+        <article class="program-card">
+          <span class="program-card__step">01</span>
+          <h3 class="program-card__title">신경을 많이 쓰거나 산성 음식을 자주 먹으면 위산이 많이 나옵니다</h3>
+        </article>
+        <article class="program-card">
+          <span class="program-card__step">02</span>
+          <h3 class="program-card__title">아래로 내려보내는 문이 닫히면서 음식이 머무릅니다</h3>
+          <p class="program-card__desc">— 체한 느낌</p>
+        </article>
+        <article class="program-card">
+          <span class="program-card__step">03</span>
+          <h3 class="program-card__title">머무는 동안 가스가 생깁니다</h3>
+          <p class="program-card__desc">— 배가 빵빵하고 더 못 먹겠는 느낌</p>
+        </article>
+        <article class="program-card">
+          <span class="program-card__step">04</span>
+          <h3 class="program-card__title">가스는 아래가 아니라 위로 올라옵니다</h3>
+          <p class="program-card__desc">— 트림</p>
+        </article>
+        <article class="program-card">
+          <span class="program-card__step">05</span>
+          <h3 class="program-card__title">올라올 때 위산을 함께 끌고 옵니다</h3>
+          <p class="program-card__desc">— 신물</p>
+        </article>
+        <article class="program-card">
+          <span class="program-card__step">06</span>
+          <h3 class="program-card__title">위산이 위벽을 자극합니다</h3>
+          <p class="program-card__desc">— 속쓰림</p>
+        </article>
+        <article class="program-card">
+          <span class="program-card__step">07</span>
+          <h3 class="program-card__title">식도까지 올라오면 식도는 이를 바로 느낍니다</h3>
+          <p class="program-card__desc">— 가슴이 타는 통증, 답답함</p>
+        </article>
+        <article class="program-card">
+          <span class="program-card__step">08</span>
+          <h3 class="program-card__title">목까지 올라와 자극하면</h3>
+          <p class="program-card__desc">— 목에 걸린 느낌, 간질간질한 마른기침</p>
+        </article>
+      </div>
+      <p class="why-text"><strong>앞의 세 단계가 소화불량이고,<br class="only-mobile" /> 그 뒤가 역류입니다.</strong><br class="only-mobile" /> 한 줄기로 이어져 있어 따로 떼어 보지 않습니다.<br class="only-mobile" /> 앞단에서 정리되면 뒤에 오는 증상까지 함께 줄어드는 경우가 있습니다.</p>
+      <p class="why-text">여기서 중요한 대목이 있습니다.<br class="only-mobile" /> <strong>이 통증은 가슴 가운데에만 생기지 않고 왼쪽 가슴에도 옵니다.</strong><br class="only-mobile" /> 그래서 심장 문제로 알고 검사를 받으셨다가 정상이라는 말을 듣고 답답해하시는 분이 많습니다.<br class="only-mobile" /> 위와 가슴은 서로 통하는 관계로 보며, 위를 함께 살펴서 가슴 통증이 정리되는 경우가 있습니다.</p>
+      <p class="why-text">위산이 목까지 올라오면 <strong>목에 무언가 걸린 듯한 느낌</strong>이 생기고,<br class="only-mobile" /> 입까지 올라오면 입이 마릅니다.<br class="only-mobile" /> 침이 줄면 입안을 지켜주던 일을 못 하게 되어 <strong>입냄새, 잘 낫지 않는 구내염, 잇몸 문제</strong>로 이어집니다.<br class="only-mobile" /> 아침에 입냄새가 유독 신경 쓰이는 것도 자는 동안 침이 나오지 않아서입니다.</p>
+      <p class="why-text"><strong>위는 원래 주먹만 합니다.</strong><br class="only-mobile" /> 그런데 늘었다 줄었다를 오래 반복하면 원래대로 잘 돌아오지 않고, 위 위쪽의 <strong>가스가 머무는 공간이 사라집니다.</strong><br class="only-mobile" /> 그러면 가스가 곧장 올라옵니다.<br class="only-mobile" /> 늘 과식하시던 분이 트림이 잦아지는 이유입니다.</p>
+      <p class="why-text">술도 같은 자리를 건드립니다.<br class="only-mobile" /> 술은 위산을 더 나오게 하고 위에 가스를 차게 합니다.<br class="only-mobile" /> <strong>가득 찬 가스와 위산을 몸이 한꺼번에 밀어내는 것이 구토입니다.</strong><br class="only-mobile" /> 마신 다음 날 설사를 하는 것은 위와 장에 생긴 물이 내려온 것이고,<br class="only-mobile" /> 그래서 냄새가 유독 심합니다.</p>
+      <p class="why-text">마지막 단계인 기침은 따로 다룹니다.<br class="only-mobile" /> <a href="cough.html">멈추지 않는 기침</a> 페이지에서 목이 아니라 위를 봐야 하는 기침을 구별하는 방법을 보실 수 있습니다.</p>
+      <div class="notice-box">
+        <p>가슴을 짚기 전에, 위를 봅니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt" id="points">
+    <div class="container container--read">
+      <div class="section__head section__head--center">
+        <h2 class="section__title">어디를 함께 보는가</h2>
+      </div>
+      <div class="notice-box">
+        <ul>
+          <li>증상이 시작된 순서 — 위 여덟 단계 가운데 어디서부터인지</li>
+          <li>트림이 나는 시점 — 밥을 먹자마자인지, 공복에도인지</li>
+          <li>체하는 빈도와 배에 가스가 차는 정도</li>
+          <li>가슴 통증의 자리 — 가운데인지 왼쪽인지</li>
+          <li>목의 이물감, 입 마름과 입냄새</li>
+          <li>식사 시간과 간식·야식·음주 습관</li>
+          <li>받으신 검사 결과</li>
+        </ul>
+      </div>
+      <div class="notice-box">
+        <p>평소 소화를 잘 시키던 분은 정작 본인이 못 느끼는 경우가 있습니다.<br class="only-mobile" /> 트림이 나고 신물이 올라오는데도 대수롭지 않게 여기시는 경우입니다.<br class="only-mobile" /> 그래서 진료 때 직접 여쭈어 확인합니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="method-section">
+    <div class="container container--read">
+
+      <h3 class="sub-head" id="method">어떤 방법을 쓰는가</h3>
+      <p class="why-text">한약 치료와 침 치료를 상태에 따라 함께 씁니다.<br class="only-mobile" /> 여기에 식습관 조정과 가슴을 펴주는 동작을 함께 지도합니다.</p>
+      <p class="methods-band">치료는 <a href="herb.html">1:1 맞춤 한약</a>과 <a href="acupuncture.html">원인 자리 침·약침 치료</a>를 상태에 따라 함께 씁니다. 처음 오시는 분을 위해 <a href="care.html">치료 전 알아두실 점</a>에 진료 순서를 정리해 두었습니다.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container--read">
+      <div class="section__head section__head--center">
+        <h2 class="section__title">집에서 지킬 것 — 식습관 6가지</h2>
+        <p class="section__lead">여기에 더해, <strong>본인에게 안 맞는 음식은 사람마다 다릅니다.</strong> 대개는 무엇을 먹으면 불편한지 스스로 알고 계십니다. 그 목록을 함께 적어 두고 시작합니다.</p>
+      </div>
+      <div class="notice-box">
+        <ul>
+          <li><strong>야식을 하지 않습니다.</strong><br class="only-mobile" /> 먹고 4시간 뒤에 눕는 것이 좋습니다.<br class="only-mobile" /> 먹고 한 시간 뒤에 누우면 소화되지 않은 채로 머무릅니다</li>
+          <li><strong>신맛 나는 음식을 줄입니다.</strong><br class="only-mobile" /> 신맛은 위산을 더 나오게 합니다</li>
+          <li><strong>먹고 바로 눕지 않습니다.</strong><br class="only-mobile" /> 누우면 올라옵니다</li>
+          <li><strong>과음하지 않습니다.</strong><br class="only-mobile" /> 술도 위산을 더 나오게 합니다</li>
+          <li><strong>담백하게 먹습니다</strong></li>
+          <li><strong>떡·빵·라면 같은 가루 음식을 줄입니다</strong></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container--read">
+      <div class="section__head section__head--center">
+        <h2 class="section__title">몸이 무겁고 잘 피곤한 분께 — 5가지</h2>
+        <p class="section__lead">몸이 무겁고, 배에서 소리가 나며, 쉽게 살이 찌고 자주 피곤한 상태가 있습니다. 여기 해당되는 분은 아래를 1~2주만 지켜보셔도 달라지는 것을 느끼는 경우가 있습니다. 먹는 문제에서 오는 피로가 생각보다 많습니다.</p>
+      </div>
+      <div class="notice-box">
+        <ul>
+          <li>식사 사이에 간식을 하지 않습니다.<br class="only-mobile" /> 계속 먹으면 위가 쉬지 못합니다</li>
+          <li>저녁을 일찍 먹습니다</li>
+          <li>일찍 잡니다.<br class="only-mobile" /> 늦게 자면 아침에 붓고 더 피곤합니다</li>
+          <li>물을 한꺼번에 많이 마시지 않습니다.<br class="only-mobile" /> 특히 식사 직후는 피합니다</li>
+          <li>하루 1시간 정도 팔다리를 움직이는 운동을 합니다</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt" id="faq">
+    <div class="container">
+      <div class="section__head section__head--center">
+        <h2 class="section__title">자주 묻는 질문</h2>
+      </div>
+      <div class="faq__list">
+        <details class="faq-item">
+          <summary>가슴이 아픈데 심장은 괜찮다고 합니다.</summary>
+          <div class="faq-item__a"><p>가슴 가운데뿐 아니라 왼쪽 가슴에도 통증이 생길 수 있습니다.<br class="only-mobile" /> 위와 가슴은 서로 통하는 관계로 보며, 위를 함께 살펴서 정리되는 경우가 있습니다.<br class="only-mobile" /> 다만 심장 쪽 확인이 먼저 필요한 경우도 있으므로, 받으신 검사 결과를 말씀해 주시면 좋습니다.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>목에 뭐가 걸린 것 같은데 이비인후과에서는 괜찮다고 합니다.</summary>
+          <div class="faq-item__a"><p>위산이 목까지 올라와 자극하면 뱉어지지도 삼켜지지도 않는 느낌이 생깁니다.<br class="only-mobile" /> 목을 보아도 원인이 잡히지 않는다면 위를 함께 살펴볼 만합니다.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>좋아지고 나서 다시 나빠졌습니다.</summary>
+          <div class="faq-item__a"><p>속이 편해지면 예전에 못 드시던 음식이 갑자기 당깁니다.<br class="only-mobile" /> 그동안 못 먹은 것을 몰아서 드시다가 다시 체하는 경우가 많습니다.<br class="only-mobile" /> 편해졌을 때가 오히려 조심할 때입니다.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>술을 꼭 끊어야 하나요?</summary>
+          <div class="faq-item__a"><p>한 번에 끊으라고 말씀드리지 않습니다.<br class="only-mobile" /> 직업상 어려운 분도 계십니다.<br class="only-mobile" /> 줄이는 정도와 복용 시간을 함께 조정해 현실적으로 지킬 수 있게 맞춥니다.<br class="only-mobile" /> 다만 많이 드신 채 그대로 잠드는 것은 특히 조심하시도록 지도합니다.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>토하는 증상까지 있습니다. 큰 병일까요?</summary>
+          <div class="faq-item__a"><p>오래 묵으면서 음식이 잘 내려가지 않고 토하게 되는 경우가 있습니다.<br class="only-mobile" /> 다만 체중이 빠지거나 삼키기가 점점 어려워지거나 피가 섞이는 경우는 먼저 검사를 받으셔야 합니다.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container--read">
+      <p class="programs__note">상태와 원인에 따라 접근이 달라질 수 있으며, 정확한 진단이 우선입니다.</p>
+    </div>
+  </section>
+
+  <section class="cta-banner">
+    <div class="container">
+      <div class="cta-banner__inner">
+        <h2 class="cta-banner__title">여덟 단계 중 어디서부터인지,<br class="only-mobile" /> 함께 짚어 봅니다</h2>
+        <p class="cta-banner__desc">받으신 검사 결과가 있으면 가져오세요. 무엇을 먹으면 불편한지 적어 오시면 더 좋습니다.</p>
+        <a href="tel:031-522-5923" class="btn btn--primary btn--lg">진료 예약하기</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <img src="assets/logo-white.png?v=3" alt="정진한의원" class="footer__logo" width="800" height="223" />
+        <p class="footer__slogan">치료반응이 다음 자리를 정합니다.</p>
+      </div>
+      <div class="footer__info">
+        <p>대표 · 양정진 &nbsp;|&nbsp; 사업자등록번호 880-46-01214</p>
+        <p>경기도 구리시 경춘로 223 명동빌딩 5층</p>
+        <p>대표전화 <a href="tel:031-522-5923">031-522-5923</a> &nbsp;|&nbsp; 팩스 070-7507-5923</p>
+      </div>
+      <div class="footer__links">
+
+        <a href="terms.html">이용약관</a>
+        <a href="privacy.html">개인정보처리방침</a>
+        <a href="pricing.html">비급여 진료비용</a>
+      </div>
+    </div>
+    <div class="footer__copy">
+      <div class="container footer__copy-inner">
+        <span>© 2026 정진한의원</span>
+        <button type="button" class="view-toggle" id="viewToggle">PC 버전으로 보기</button>
+      </div>
+    </div>
+  </footer>
+
+  <div class="quickmenu" aria-label="바로가기">
+    <a class="qm" href="https://blog.naver.com/yjj2923" target="_blank" rel="noopener" style="--qm:#262220" aria-label="블로그">
+      <span class="qm__ico"><svg viewBox="0 0 24 24"><path d='M12 20h9'/><path d='M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z'/></svg></span>
+      <span class="qm__label">블로그</span>
+    </a>
+
+
+    <a class="qm" href="tel:031-522-5923" style="--qm:#262220" aria-label="전화">
+      <span class="qm__ico"><svg viewBox="0 0 24 24"><path d='M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L8 9.7a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.7 2z'/></svg></span>
+      <span class="qm__label">전화</span>
+    </a>
+    <a class="qm qm--book" href="tel:031-522-5923" style="--qm:#262220" aria-label="예약">
+      <span class="qm__ico"><svg viewBox="0 0 24 24"><rect x='3' y='4' width='18' height='18' rx='2.5'/><path d='M16 2v4M8 2v4M3 10h18'/></svg></span>
+      <span class="qm__label">예약</span>
+    </a>
+  </div>
+  <script src="script.js?v=3"></script>
+</body>
+</html>

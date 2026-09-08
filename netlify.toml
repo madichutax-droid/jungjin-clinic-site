@@ -1,0 +1,25 @@
+# 정진한의원 홈페이지 — Netlify 설정
+# 정적 사이트라 빌드 과정이 없습니다. 폴더를 그대로 게시합니다.
+
+[build]
+  publish = "."
+
+# 보안 헤더
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# 정적 자원 캐시 (로고·사진)
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# 생성기 폴더는 공개하지 않습니다
+[[redirects]]
+  from = "/_build/*"
+  to = "/404.html"
+  status = 404
