@@ -19,7 +19,17 @@
     Cache-Control = "public, max-age=31536000, immutable"
 
 # 생성기 폴더는 공개하지 않습니다
+# force = true 가 있어야 합니다 — Netlify 의 리다이렉트는 실제로 있는 파일에는
+# 적용되지 않아, 이 줄이 없으면 .py 원본이 그대로 나갑니다 (2026-09-09 확인)
 [[redirects]]
   from = "/_build/*"
   to = "/404.html"
   status = 404
+  force = true
+
+# 작업 규칙 문서도 공개하지 않습니다 — 내부 메모와 미해결 과제가 적혀 있습니다
+[[redirects]]
+  from = "/CLAUDE.md"
+  to = "/404.html"
+  status = 404
+  force = true
