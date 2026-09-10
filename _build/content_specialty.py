@@ -143,7 +143,7 @@ STOMACH = dict(
     cta_desc="받으신 검사 결과가 있으면 가져오세요. "
              "무엇을 먹으면 불편한지 적어 오시면 더 좋습니다.",
 
-    intro_aside="<strong>가슴이 아파 심장 검사를 받았는데 정상이라고 들으신 분들</strong> — "
+    intro_aside=f"<strong>가슴이 아파 심장 검사를 받았는데 정상이라고 들으신 분들</strong> —{M}"
                 "이 페이지를 끝까지 읽어보시기 바랍니다.",
 
     symptoms=[
