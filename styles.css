@@ -472,12 +472,19 @@ h1, h2, h3, .section__title { font-weight: 700; color: var(--text); }
 
 /* ===== 오시는 길 ===== */
 .location { border-top: 1px solid var(--line); }
-.location__grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: var(--sp-12); align-items: center; }
+/* 왼칸(약도·지도)과 오른칸(주소)의 윗줄을 맞춥니다 —
+   가운데 정렬로 두면 약도가 '주소' 보다 80px 쯤 내려앉습니다. */
+.location__grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: var(--sp-12); align-items: start; }
 .location__map { border: 1px solid var(--line); border-radius: var(--radius);
   overflow: hidden; box-shadow: var(--shadow); background: #fff; }
 /* 인터넷 지도 — 컨테이너 폭에 맞춰 3:2 로 표시합니다 */
 .location__map iframe { display: block; width: 100%; aspect-ratio: 3 / 2; border: 0; }
 @media (max-width: 640px) { .location__map iframe { aspect-ratio: 4 / 3; } }
+/* 약도와 인터넷 지도를 위아래로 둡니다 — 약도가 먼저입니다.
+   약도는 주변 가게로 자리를 잡는 그림이고, 아래 지도는 확대·길찾기용입니다. */
+.location__maps { display: grid; gap: var(--sp-5); }
+.location__map--guide { margin: 0; }
+.location__map--guide img { display: block; width: 100%; height: auto; }
 .location__list { display: grid; gap: var(--sp-4); margin-bottom: 26px; }
 .location__row { display: flex; gap: var(--sp-4); align-items: flex-start;
   padding-bottom: var(--sp-4); border-bottom: 1px solid var(--line); }

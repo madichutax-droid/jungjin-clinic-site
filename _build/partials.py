@@ -7,9 +7,9 @@
 20개 파일을 손대야 했습니다.
 """
 
-CSS_V = "108"
+CSS_V = "109"
 JS_V  = "4"
-IMG_V = "3"
+IMG_V = "4"
 
 CLINIC   = "정진한의원"
 ADDRESS  = "경기도 구리시 경춘로 223 명동빌딩 5층"
@@ -540,8 +540,15 @@ def location_section(lead=f"{LANDMARK} {LANDMARK_BLDG}입니다."):
         <p class="section__lead">{lead}</p>
       </div>
       <div class="location__grid">
-        <div class="location__map">
-          {map_embed()}
+        <div class="location__maps">
+          <figure class="location__map location__map--guide">
+            <img src="assets/map-guide.jpg?v={IMG_V}" width="886" height="421"
+                 alt="{CLINIC} 약도 — {LANDMARK} {LANDMARK_BLDG}. 건물 뒷편에 지상주차장 입구가 있습니다."
+                 loading="lazy" decoding="async" />
+          </figure>
+          <div class="location__map">
+            {map_embed()}
+          </div>
         </div>
         <div class="location__info">
           <dl class="location__list">
