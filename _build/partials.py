@@ -6,6 +6,7 @@
 예전에는 이 부분이 페이지마다 복사돼 있어서, 진료시간 한 줄 바꾸는 데
 20개 파일을 손대야 했습니다.
 """
+from datetime import date
 
 CSS_V = "109"
 JS_V  = "4"
@@ -18,7 +19,7 @@ FAX      = "070-7507-5923"
 BIZNO    = "880-46-01214"
 # 진료 안내문은 각 페이지 본문 끝에 한 번만 둡니다(푸터 중복 제거, 2026-09-01).
 NOTICE_LINE = "상태와 원인에 따라 접근이 달라질 수 있으며, 정확한 진단이 우선입니다."
-YEAR = "2026"
+SINCE = "2026"                  # 홈페이지를 연 해 — 저작권 표시의 시작점
 LEGAL_DATE = "2026년 9월 1일"   # 약관·처리방침 시행일. 실제 공개일로 맞추십시오.
 PRICE_DATE = "2026. 09. 01."   # 비급여 고지 시행일. 금액이 바뀌면 함께 갱신하십시오.
 PRIVACY_OFFICER = "양정진"      # 개인정보 보호책임자
@@ -422,6 +423,18 @@ def _channel_links():
     return "\n".join(out)
 
 
+def _copyright():
+    """저작권 연도는 찍어낼 때의 해로 맞춥니다.
+
+    해를 박아 두면 새해가 되는 순간 낡은 표시가 됩니다. 시작한 해와 올해가
+    다르면 '2026–2027' 처럼 범위로 적습니다 — 저작권 표시의 관례입니다.
+    약관·처리방침의 시행일(LEGAL_DATE)은 바뀌면 안 되는 날짜라 건드리지 않습니다.
+    """
+    올해 = str(date.today().year)
+    연도 = SINCE if 올해 == SINCE else f"{SINCE}–{올해}"
+    return f"© {연도} {CLINIC}. All rights reserved."
+
+
 def _bizno():
     """사업자등록번호는 확정된 뒤에만 내보냅니다 — 가짜 번호를 띄우지 않기 위해서입니다."""
     return f" &nbsp;|&nbsp; 사업자등록번호 {BIZNO}" if BIZNO else ""
@@ -449,7 +462,7 @@ def footer():
     </div>
     <div class="footer__copy">
       <div class="container footer__copy-inner">
-        <span>© {YEAR} {CLINIC}</span>
+        <span>{_copyright()}</span>
         <button type="button" class="view-toggle" id="viewToggle">PC 버전으로 보기</button>
       </div>
     </div>
