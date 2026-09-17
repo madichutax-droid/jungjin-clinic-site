@@ -1,6 +1,12 @@
 # 정진한의원 홈페이지
 
-https://jungjinmedi.netlify.app · 정적 사이트 22페이지 (공개 20 · 회원 전용 2) · 의료광고 규제 대상
+https://jungjinhani.com · 정적 사이트 22페이지 (공개 20 · 회원 전용 2) · 의료광고 규제 대상
+
+---
+
+주소가 둘입니다. **https://jungjinhani.com 가 정본이고**, `jungjinmedi.netlify.app` 은
+`_redirects` 가 301 로 넘깁니다. 한 내용이 두 주소로 잡히면 검색이 갈라집니다.
+`partials.DOMAIN` 하나만 바꾸면 canonical · og:url · sitemap 이 함께 따라갑니다.
 
 ---
 

@@ -1,3 +1,8 @@
+# 옛 주소를 산 도메인으로 넘깁니다 (2026-09-17)
+# 같은 내용이 두 주소에 있으면 검색이 갈라집니다. 여기서 한 곳으로 모읍니다.
+# 느낌표(301!)는 파일이 실제로 있어도 넘기라는 뜻입니다.
+https://jungjinmedi.netlify.app/*   https://jungjinhani.com/:splat   301!
+
 # 확장자 없이 오시는 분 — 같은 쪽으로 보냅니다
 /reviews        /reviews.html   301
 /login          /login.html     301

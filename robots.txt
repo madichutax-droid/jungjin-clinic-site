@@ -12,4 +12,4 @@ Disallow: /reviews
 Disallow: /login.html
 Disallow: /login
 
-Sitemap: https://jungjinmedi.netlify.app/sitemap.xml
+Sitemap: https://jungjinhani.com/sitemap.xml

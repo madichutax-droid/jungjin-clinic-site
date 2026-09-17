@@ -47,7 +47,8 @@ def bus_nos(s):
 BLOG     = "https://blog.naver.com/yjj2923"
 PLACE    = ""   # TODO: 네이버 플레이스 주소
 INSTA    = ""   # TODO: 인스타그램 주소
-DOMAIN   = "https://jungjinmedi.netlify.app"
+DOMAIN   = "https://jungjinhani.com"   # 2026-09-17, 산 도메인으로 옮겼습니다.
+#                                  canonical · og:url · sitemap 이 모두 이 값을 따릅니다.
 HOURS_BAR  = "진료시간 평일 09:00–20:00 (점심 13:00–14:00) · 토·공휴일 09:00–15:00 · 일요일 휴진"
 HOURS_ROWS = ("평일 09:00–20:00<br />"
               "<span class=\"hours__sub\">점심시간 13:00–14:00</span><br />"
