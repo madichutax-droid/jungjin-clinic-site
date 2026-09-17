@@ -25,7 +25,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=118" />
+  <link rel="stylesheet" href="styles.css?v=120" />
   <link rel="canonical" href="https://jungjinhani.com/reviews.html" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="정진한의원" />
@@ -140,6 +140,29 @@
                      placeholder="차OO님" aria-label="성함 표기" required />
             </span>
             <span class="field__hint">이렇게 나옵니다 — <strong id="titlePreview">척추관협착증, 66세, 여, 차OO님</strong></span>
+          </div>
+
+          <div class="field">
+            <span class="field__label">사진</span>
+            <input type="file" id="reviewPhoto" class="field__file"
+                   accept="image/jpeg,image/png,image/webp" />
+            <span class="field__hint">
+              <strong>서면 동의를 받은 사진만</strong> 올리십시오. 이 사진은
+              로그인하지 않은 분께도 보입니다. 한 번 공개되면 거두기 어렵습니다.
+            </span>
+
+            <!-- 얼굴 가리기 — 사진을 고르면 열립니다 -->
+            <div class="shot" id="shotBox" hidden>
+              <canvas id="shotCanvas" class="shot__canvas"></canvas>
+              <p class="shot__help">
+                얼굴 위를 <strong>손가락이나 마우스로 문지르면</strong> 그 자리가 가려집니다.
+                여러 번 칠하셔도 됩니다.
+              </p>
+              <div class="shot__act">
+                <button type="button" class="btn btn--outline btn--check" id="shotUndo">되돌리기</button>
+                <button type="button" class="btn btn--outline btn--check" id="shotClear">사진 빼기</button>
+              </div>
+            </div>
           </div>
 
           <label class="field">
@@ -260,7 +283,7 @@
     window.JJ_SUPABASE = { url: "https://weutytwetagqfdqahvgd.supabase.co", key: "sb_publishable_qYwzPBU690Xx3IGaHz3sGw_lvQfzIMx" };
   </script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.js"></script>
-  <script src="auth.js?v=10"></script>
+  <script src="auth.js?v=11"></script>
 
   <div class="quickmenu" aria-label="바로가기">
     <a class="qm" href="https://blog.naver.com/yjj2923" target="_blank" rel="noopener" style="--qm:#262220" aria-label="블로그">
@@ -278,6 +301,6 @@
       <span class="qm__label">예약</span>
     </a>
   </div>
-  <script src="script.js?v=10"></script>
+  <script src="script.js?v=11"></script>
 </body>
 </html>

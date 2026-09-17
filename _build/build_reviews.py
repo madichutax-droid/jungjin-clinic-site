@@ -145,6 +145,29 @@ def build_reviews():
             <span class="field__hint">이렇게 나옵니다 — <strong id="titlePreview">척추관협착증, 66세, 여, 차OO님</strong></span>
           </div>
 
+          <div class="field">
+            <span class="field__label">사진</span>
+            <input type="file" id="reviewPhoto" class="field__file"
+                   accept="image/jpeg,image/png,image/webp" />
+            <span class="field__hint">
+              <strong>서면 동의를 받은 사진만</strong> 올리십시오. 이 사진은
+              로그인하지 않은 분께도 보입니다. 한 번 공개되면 거두기 어렵습니다.
+            </span>
+
+            <!-- 얼굴 가리기 — 사진을 고르면 열립니다 -->
+            <div class="shot" id="shotBox" hidden>
+              <canvas id="shotCanvas" class="shot__canvas"></canvas>
+              <p class="shot__help">
+                얼굴 위를 <strong>손가락이나 마우스로 문지르면</strong> 그 자리가 가려집니다.
+                여러 번 칠하셔도 됩니다.
+              </p>
+              <div class="shot__act">
+                <button type="button" class="btn btn--outline btn--check" id="shotUndo">되돌리기</button>
+                <button type="button" class="btn btn--outline btn--check" id="shotClear">사진 빼기</button>
+              </div>
+            </div>
+          </div>
+
           <label class="field">
             <span class="field__label">내용</span>
             <textarea id="reviewBody" class="field__input field__input--area"
@@ -347,5 +370,90 @@ def build_login():
 """ + P.tail(with_cta=False, extra_scripts=P.auth_scripts()))
 
 
+# ── 환자 사진·후기 게시 동의서 ────────────────────────────────
+#
+# 종이로 받아 보관하시는 서식입니다. 메뉴에 없고 검색에도 안 걸립니다.
+# 주소를 직접 쳐서 열고 인쇄하십시오 — jungjinhani.com/consent.html
+#
+# 이 서식이 지켜 주는 것과 못 지켜 주는 것이 다릅니다.
+#   지켜 줍니다 — 초상권, 개인정보보호법(민감정보 처리)
+#   못 지켜 줍니다 — 의료법 제56조. 환자가 동의해도 의료기관이 게시하면
+#                   광고 규제를 받습니다. 동의서로 면제되지 않습니다.
+CONSENT_TITLE = "치료 후기·사진 게시 동의서"
+
+CONSENT = [
+ ("1. 무엇에 동의하시는 것입니까",
+  ["아래에 적으신 분은 {CLINIC}이 진료 경험에 관한 글과 사진을 "
+   "홈페이지에 싣는 것에 동의하십니다.",
+   "<strong>사진과 제목은 회원이 아닌 분께도 보입니다.</strong> 글 내용은 "
+   "회원으로 가입해 로그인하신 분만 보실 수 있습니다."], []),
+
+ ("2. 어떤 것이 실립니까", [],
+  ["분류(질환명)·나이·성별과 <strong>성(姓)만 적은 표기</strong> — 예: 차OO님",
+   "진료 경험에 관한 글",
+   "사진 (동의하신 경우에만)"]),
+
+ ("3. 사진에 대하여",
+  ["사진은 <strong>한 번 공개되면 거두기 어렵습니다.</strong> 다른 사람이 "
+   "내려받거나 옮겨 담은 것까지는 본원이 막을 수 없습니다.",
+   "원하시면 <strong>얼굴을 가려서</strong> 실어 드립니다. 아래에 표시해 주십시오."],
+  ["□ 얼굴이 보이는 그대로 실어도 좋습니다",
+   "□ 얼굴을 가려 주십시오",
+   "□ 사진은 싣지 말아 주십시오"]),
+
+ ("4. 언제든 그만두실 수 있습니다",
+  ["동의는 <strong>언제든 철회하실 수 있습니다.</strong> 전화 한 통이면 됩니다 — "
+   "{TEL}",
+   "말씀하시면 글과 사진을 지체 없이 내립니다. 다만 이미 다른 곳으로 "
+   "퍼진 것은 되돌릴 수 없습니다.",
+   "동의하지 않으셔도 <strong>진료에는 아무런 불이익이 없습니다.</strong>"], []),
+
+ ("5. 보관",
+  ["이 동의서는 본원이 종이로 보관합니다. 글과 사진을 내린 뒤에는 "
+   "동의서도 함께 파기합니다."], []),
+]
+
+
+def build_consent():
+    arts = []
+    for h, paras, lis in CONSENT:
+        arts.append(f"        <h2>{h}</h2>")
+        for t in paras:
+            arts.append(f'        <p>{t.replace("{CLINIC}", P.CLINIC).replace("{TEL}", P.TEL)}</p>')
+        if lis:
+            arts.append("        <ul>")
+            arts += [f"          <li>{x}</li>" for x in lis]
+            arts.append("        </ul>")
+
+    return (P.head("consent", f"{CONSENT_TITLE} | {P.CLINIC}",
+                   "환자분께 서면으로 받는 동의서입니다.", noindex=True)
+            + P.topbar() + P.header("consent")
+            + P.page_hero(CONSENT_TITLE,
+                          f"진료 경험에 관한 글과 사진을{M}홈페이지에 싣는 것에 대한 동의서입니다.")
+            + P.crumb(CONSENT_TITLE)
+            + f"""
+  <section class="section">
+    <div class="container container--read">
+      <div class="consent-print">
+        <button type="button" class="btn btn--outline" onclick="window.print()">인쇄하기</button>
+      </div>
+      <article class="legal">
+{chr(10).join(arts)}
+        <h2>서명</h2>
+        <dl class="consent-sign">
+          <div><dt>성명</dt><dd></dd></div>
+          <div><dt>생년월일</dt><dd></dd></div>
+          <div><dt>연락처</dt><dd></dd></div>
+          <div><dt>날짜</dt><dd>&nbsp; 년 &nbsp; 월 &nbsp; 일</dd></div>
+          <div><dt>서명</dt><dd>(서명 또는 인)</dd></div>
+        </dl>
+        <p class="consent-foot">{P.CLINIC} · {P.ADDRESS} · {P.TEL}</p>
+      </article>
+    </div>
+  </section>
+""" + P.tail(with_cta=False))
+
+
 def all_reviews():
-    return {"reviews": build_reviews(), "login": build_login()}
+    return {"reviews": build_reviews(), "login": build_login(),
+            "consent": build_consent()}

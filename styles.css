@@ -1802,7 +1802,10 @@ select.field__input {
 @media (max-width: 420px) {
   .field__row { flex-wrap: wrap; }
   .field__row .field__input { flex: 1 1 100%; }
-  .btn--check { width: 100%; padding: 10px var(--sp-4); }
+  /* 중복확인 단추만 아래로 내려 넓힙니다.
+     .btn--check 로만 잡으면 사진 칸의 '되돌리기·사진 빼기' 까지 각각
+     화면 폭을 차지해 가로로 넘칩니다(2026-09-17 320px 에서 잡았습니다). */
+  .field__row > .btn--check { width: 100%; padding: 10px var(--sp-4); }
   /* 이메일은 앞뒤가 한 줄에 있어야 읽힙니다. 대신 글자를 줄이고 여백을
      좁혀 'hanmail.net' 이 다 보이게 합니다. 320px 에서 잰 값입니다. */
   .field__row--email { flex-wrap: nowrap; gap: var(--sp-1); }
@@ -1936,4 +1939,69 @@ select.field__input {
   .rv-notice { padding: var(--sp-5); }
   .rv-notice__act { width: 100%; }
   .rv-notice__act .btn { flex: 1 1 0; text-align: center; }
+}
+
+/* ── 후기 사진 (2026-09-17) ───────────────────────────────────
+   환자 얼굴이 담기는 자리입니다. 서면 동의를 받은 사진만 올립니다. */
+
+/* 목록 썸네일 */
+.rv--shot .rv__head { grid-template-columns: 96px auto 1fr auto; }
+.rv__shot {
+  width: 96px; height: 64px; object-fit: cover;
+  border-radius: var(--radius-sm); border: 1px solid var(--line);
+  background: var(--bg-alt);
+}
+
+/* 사진 고르는 칸 */
+.field__file {
+  display: block; width: 100%; padding: var(--sp-3) var(--sp-4);
+  font-size: var(--fs-sm); color: var(--muted);
+  border: 1px dashed var(--line-2); border-radius: var(--radius-sm);
+  background: var(--bg-alt); cursor: pointer;
+}
+.field__file::file-selector-button {
+  font: inherit; margin-right: var(--sp-3); padding: 6px var(--sp-4);
+  color: var(--text); background: var(--surface);
+  border: 1px solid var(--line); border-radius: var(--btn-radius); cursor: pointer;
+}
+
+/* 얼굴 가리는 판 */
+.shot { margin-top: var(--sp-4); }
+.shot__canvas {
+  display: block; max-width: 100%; height: auto;
+  border: 1px solid var(--line); border-radius: var(--radius-sm);
+  cursor: crosshair; touch-action: none;   /* 문지를 때 화면이 따라 움직이지 않게 */
+}
+.shot__help {
+  margin-top: var(--sp-3); font-size: var(--fs-sm);
+  line-height: 1.7; color: var(--muted);
+}
+.shot__act { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-top: var(--sp-3); }
+.shot__act .btn--check { flex: 1 1 auto; padding: 9px var(--sp-4); }
+
+@media (max-width: 640px) {
+  .rv--shot .rv__head { grid-template-columns: 76px auto 1fr; }
+  .rv--shot .rv__title { grid-column: 2 / -1; }
+  .rv--shot .rv__when { grid-column: 2 / -1; justify-self: start; }
+  .rv__shot { width: 76px; height: 54px; }
+}
+
+/* ── 동의서 (2026-09-17) — 종이로 받는 서식입니다 ─────────────── */
+.consent-print { margin-bottom: var(--sp-8); }
+.consent-sign { margin-top: var(--sp-5); }
+.consent-sign > div {
+  display: grid; grid-template-columns: 110px 1fr; gap: var(--sp-4);
+  align-items: end; padding: var(--sp-5) 0; border-bottom: 1px solid var(--line);
+}
+.consent-sign dt { font-size: var(--fs-sm); color: var(--muted); }
+.consent-sign dd { margin: 0; color: var(--muted); }
+.consent-foot { margin-top: var(--sp-8); font-size: var(--fs-sm); color: var(--muted); }
+
+/* 인쇄할 때는 화면용 껍데기를 걷어냅니다 */
+@media print {
+  .topbar, .header, .page-hero, .crumb, .footer, .quickmenu,
+  .consent-print, .popup { display: none !important; }
+  .section { padding: 0 !important; }
+  .legal h2 { break-after: avoid; }
+  .consent-sign > div { break-inside: avoid; }
 }

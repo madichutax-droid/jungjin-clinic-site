@@ -115,6 +115,7 @@ alter table public.reviews add column if not exists category text;
 alter table public.reviews add column if not exists age      integer;
 alter table public.reviews add column if not exists sex      text;
 alter table public.reviews add column if not exists who      text;
+alter table public.reviews add column if not exists photo    text;   -- 사진 파일 이름
 
 do $$
 begin
@@ -187,6 +188,8 @@ create policy "원장만 지웁니다"
 --  제목을 누르면 로그인 화면으로 갑니다.
 --
 --  ★ 이 통로에 body 를 넣지 마십시오. ★
+--    photo 는 일부러 넣었습니다 — 사진은 공개하기로 했습니다.
+--    금지된 것은 body 하나입니다.
 --  아래 select 에 적힌 칸만 밖으로 나갑니다. body 가 여기 없기 때문에
 --  후기 본문은 어떤 방법으로도 비로그인에게 가지 않습니다. 정책이 아니라
 --  '아예 담지 않는' 방식이라, 실수로 열릴 여지가 없습니다.
@@ -194,11 +197,39 @@ create policy "원장만 지웁니다"
 --  뷰는 만든 사람(postgres) 권한으로 돌아 reviews 의 잠금을 지나갑니다.
 --  그래서 칸 목록이 곧 벽입니다. 한 칸도 더하지 마십시오.
 create or replace view public.reviews_public as
-  select id, category, age, sex, who, created_at
+  select id, category, age, sex, who, photo, created_at
     from public.reviews;
 
 grant select on public.reviews_public to anon, authenticated;
 
+
+-- ── 4-3. 사진 창고 ────────────────────────────────────────────
+--
+--  후기에 붙는 사진을 담습니다. **공개 창고입니다** — 주소를 아는 사람은
+--  로그인 없이 볼 수 있습니다(2026-09-17 원장님 지시).
+--
+--  올리고 지우는 것은 원장만 합니다.
+--
+--  ※ 환자 얼굴이 담기는 곳입니다. 서면 동의를 받은 사진만 올리십시오.
+--    환자분이 내려 달라고 하시면 글과 사진을 함께 지우셔야 합니다.
+--    한 번 공개된 사진은 이미 퍼진 것을 거둘 수 없습니다.
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('reviews', 'reviews', true, 5242880,
+        array['image/jpeg', 'image/png', 'image/webp'])
+on conflict (id) do update
+  set public = true,
+      file_size_limit = 5242880,
+      allowed_mime_types = array['image/jpeg', 'image/png', 'image/webp'];
+
+drop policy if exists "원장만 사진을 올립니다" on storage.objects;
+create policy "원장만 사진을 올립니다"
+  on storage.objects for insert to authenticated
+  with check (bucket_id = 'reviews' and public.is_author());
+
+drop policy if exists "원장만 사진을 지웁니다" on storage.objects;
+create policy "원장만 사진을 지웁니다"
+  on storage.objects for delete to authenticated
+  using (bucket_id = 'reviews' and public.is_author());
 
 -- ── 5. 원장 계정 등록 ─────────────────────────────────────────
 --

@@ -160,7 +160,7 @@ if __name__ == "__main__":
     # 404 와 아직 준비 중인 페이지는 검색에 올리지 않습니다.
     # 치료 후기와 로그인은 회원 전용이라 검색에 올리지 않습니다.
     # 세 곳이 함께 걸려 있어야 합니다 — 여기(sitemap) · robots.txt · 페이지의 noindex.
-    SKIP = {"404", "accident", "reviews", "login"}
+    SKIP = {"404", "accident", "reviews", "login", "consent"}
     urls = []
     for name in sorted(pages):
         if name in SKIP:

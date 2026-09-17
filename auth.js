@@ -159,6 +159,12 @@
   const 창고 = { 전부: [], 분류: '', 검색: '', 쪽: 1, 원장: false, 회원: false };
   const 한쪽 = 10;
 
+  /** 사진 주소. 공개 창고라 로그인 없이도 열립니다. */
+  function 사진주소(이름) {
+    if (!이름) return '';
+    return CFG.url + '/storage/v1/object/public/reviews/' + 이름;
+  }
+
   function 제목(r) {
     return r.category + ', ' + r.age + '세, ' + r.sex + ', ' + r.who;
   }
@@ -181,6 +187,17 @@
     } else {
       head.href = 'login.html';
       li.classList.add('rv--locked');
+    }
+
+    if (row.photo) {
+      const shot = document.createElement('img');
+      shot.className = 'rv__shot';
+      shot.src = 사진주소(row.photo);
+      shot.alt = '';                       // 제목이 바로 옆에 있어 읽어 줄 필요가 없습니다
+      shot.loading = 'lazy';
+      shot.decoding = 'async';
+      head.appendChild(shot);
+      li.classList.add('rv--shot');
     }
 
     const cat = document.createElement('span');
@@ -219,6 +236,9 @@
         if (!window.confirm('이 글을 지웁니다. 되돌릴 수 없습니다.')) return;
         const r = await sb.from('reviews').delete().eq('id', row.id);
         if (r.error) { window.alert(말로(r.error)); return; }
+        // 글을 지우면 사진도 함께 지웁니다. 남겨 두면 주소를 아는 사람에게
+        // 계속 보입니다 — 환자분이 내려 달라고 하셨을 때 이것이 남으면 안 됩니다.
+        if (row.photo) await sb.storage.from('reviews').remove([row.photo]);
         목록();
       });
       body.appendChild(del);
@@ -314,10 +334,10 @@
     // reviews_public 에는 body 칸이 없어서 새어 나갈 수가 없습니다.
     const r = 창고.회원
       ? await sb.from('reviews')
-          .select('id, category, age, sex, who, body, created_at')
+          .select('id, category, age, sex, who, photo, body, created_at')
           .order('created_at', { ascending: false }).limit(500)
       : await sb.from('reviews_public')
-          .select('id, category, age, sex, who, created_at')
+          .select('id, category, age, sex, who, photo, created_at')
           .order('created_at', { ascending: false }).limit(500);
 
     if (r.error) {
@@ -359,6 +379,124 @@
         }, 200);
       });
     }
+  }
+
+  // ── 사진 고르기와 얼굴 가리기 ────────────────────────────────
+  //
+  // 환자 얼굴이 담기는 사진이고, 로그인하지 않은 분께도 보입니다.
+  // 올리기 전에 얼굴을 가릴 수 있게 해 두었습니다. 가린 자국은 그림 자체에
+  // 찍혀 나갑니다 — 화면에서 덮는 것이 아니라 원본을 바꿔서 올립니다.
+  // 그래서 나중에 벗겨낼 수 없습니다. 그게 맞습니다.
+  const 사진 = { canvas: null, ctx: null, 되돌리기: [], 있음: false };
+  const 최대폭 = 1400;
+  const 붓 = 34;          // 문지르는 붓의 굵기
+  const 알갱이 = 14;      // 모자이크 알갱이 크기
+
+  function 모자이크(x, y, r) {
+    const c = 사진.canvas, ctx = 사진.ctx;
+    const x0 = Math.max(0, Math.round(x - r)), y0 = Math.max(0, Math.round(y - r));
+    const w = Math.min(c.width - x0, Math.round(r * 2));
+    const h = Math.min(c.height - y0, Math.round(r * 2));
+    if (w <= 0 || h <= 0) return;
+
+    const 작게 = document.createElement('canvas');
+    작게.width = Math.max(1, Math.round(w / 알갱이));
+    작게.height = Math.max(1, Math.round(h / 알갱이));
+    작게.getContext('2d').drawImage(c, x0, y0, w, h, 0, 0, 작게.width, 작게.height);
+
+    ctx.save();
+    ctx.imageSmoothingEnabled = false;      // 뭉개져야 알갱이가 보입니다
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.clip();
+    ctx.drawImage(작게, 0, 0, 작게.width, 작게.height, x0, y0, w, h);
+    ctx.restore();
+  }
+
+  function 사진붙이기() {
+    const 고르기 = $('reviewPhoto'), box = $('shotBox'), c = $('shotCanvas');
+    if (!고르기 || !box || !c) return;
+
+    사진.canvas = c;
+    사진.ctx = c.getContext('2d', { willReadFrequently: true });
+
+    고르기.addEventListener('change', function () {
+      const f = 고르기.files && 고르기.files[0];
+      if (!f) { box.hidden = true; 사진.있음 = false; return; }
+
+      const url = URL.createObjectURL(f);
+      const img = new Image();
+      img.onload = function () {
+        // 큰 사진을 그대로 올리면 휴대폰에서 느립니다. 긴 변을 1400px 으로 줄입니다.
+        const 배 = Math.min(1, 최대폭 / Math.max(img.width, img.height));
+        c.width = Math.round(img.width * 배);
+        c.height = Math.round(img.height * 배);
+        사진.ctx.drawImage(img, 0, 0, c.width, c.height);
+        사진.되돌리기 = [사진.ctx.getImageData(0, 0, c.width, c.height)];
+        사진.있음 = true;
+        box.hidden = false;
+        URL.revokeObjectURL(url);
+      };
+      img.onerror = function () {
+        URL.revokeObjectURL(url);
+        window.alert('사진을 읽지 못했습니다. 다른 파일로 해 보십시오.');
+      };
+      img.src = url;
+    });
+
+    // 문지르면 가려집니다
+    let 칠하는중 = false;
+    function 자리(e) {
+      const r = c.getBoundingClientRect();
+      const t = e.touches ? e.touches[0] : e;
+      return { x: (t.clientX - r.left) * (c.width / r.width),
+               y: (t.clientY - r.top) * (c.height / r.height) };
+    }
+    function 시작(e) {
+      if (!사진.있음) return;
+      e.preventDefault();
+      // 한 번 칠하기 시작할 때만 담아 둡니다 — 획마다 되돌아갑니다
+      사진.되돌리기.push(사진.ctx.getImageData(0, 0, c.width, c.height));
+      if (사진.되돌리기.length > 12) 사진.되돌리기.shift();
+      칠하는중 = true;
+      const p = 자리(e); 모자이크(p.x, p.y, 붓);
+    }
+    function 이동(e) {
+      if (!칠하는중) return;
+      e.preventDefault();
+      const p = 자리(e); 모자이크(p.x, p.y, 붓);
+    }
+    function 끝() { 칠하는중 = false; }
+
+    c.addEventListener('mousedown', 시작);
+    c.addEventListener('mousemove', 이동);
+    window.addEventListener('mouseup', 끝);
+    c.addEventListener('touchstart', 시작, { passive: false });
+    c.addEventListener('touchmove', 이동, { passive: false });
+    c.addEventListener('touchend', 끝);
+
+    const undo = $('shotUndo');
+    if (undo) undo.addEventListener('click', function () {
+      if (사진.되돌리기.length < 2) return;
+      const 앞 = 사진.되돌리기.pop();
+      사진.ctx.putImageData(앞, 0, 0);
+    });
+
+    const clear = $('shotClear');
+    if (clear) clear.addEventListener('click', function () {
+      고르기.value = '';
+      box.hidden = true;
+      사진.있음 = false;
+      사진.되돌리기 = [];
+    });
+  }
+
+  /** 칠한 자국이 찍힌 그림을 파일로. 사진이 없으면 null. */
+  function 사진파일() {
+    return new Promise(function (res) {
+      if (!사진.있음 || !사진.canvas) { res(null); return; }
+      사진.canvas.toBlob(function (b) { res(b); }, 'image/jpeg', 0.82);
+    });
   }
 
   /** 원장 화면에만 열리는 글쓰기 칸. */
@@ -408,13 +546,35 @@
       }
 
       busy(btn, true, '올리는 중입니다');
+
+      // 사진이 있으면 먼저 올립니다. 사진이 실패하면 글도 올리지 않습니다 —
+      // 사진 없는 글이 올라가 버리면 원장님이 다시 지우고 써야 합니다.
+      let 파일이름 = null;
+      const blob = await 사진파일();
+      if (blob) {
+        파일이름 = (Date.now().toString(36) + Math.random().toString(36).slice(2, 8)) + '.jpg';
+        const up = await sb.storage.from('reviews')
+          .upload(파일이름, blob, { contentType: 'image/jpeg', cacheControl: '31536000' });
+        if (up.error) {
+          busy(btn, false);
+          say(msg, '사진을 올리지 못했습니다. ' + 말로(up.error));
+          return;
+        }
+      }
+
       const r = await sb.from('reviews').insert({
-        category: c, age: a, sex: x, who: w, body: t,
+        category: c, age: a, sex: x, who: w, body: t, photo: 파일이름,
       });
       busy(btn, false);
 
-      if (r.error) { say(msg, 말로(r.error)); return; }
+      if (r.error) {
+        // 글이 안 올라갔으면 방금 올린 사진도 거둡니다
+        if (파일이름) await sb.storage.from('reviews').remove([파일이름]);
+        say(msg, 말로(r.error));
+        return;
+      }
       age.value = ''; who.value = ''; body.value = '';
+      const 빼기 = $('shotClear'); if (빼기) 빼기.click();
       if (count) count.textContent = '0';
       미리보기();
       say(msg, '올렸습니다. 로그인한 회원에게 보입니다.', 'ok');
@@ -441,6 +601,7 @@
         const w = $('reviewWrite');
         if (w) w.hidden = false;
         후기폼();
+        사진붙이기();
       }
     }
     거르기단추();

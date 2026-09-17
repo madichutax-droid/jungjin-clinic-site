@@ -11,5 +11,7 @@ Disallow: /reviews.html
 Disallow: /reviews
 Disallow: /login.html
 Disallow: /login
+Disallow: /consent.html
+Disallow: /consent
 
 Sitemap: https://jungjinhani.com/sitemap.xml
