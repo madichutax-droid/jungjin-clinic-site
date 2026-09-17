@@ -1,38 +1,40 @@
 -- ══════════════════════════════════════════════════════════════
---  정진한의원 — 치료 후기
+--  정진한의원 — 회원과 치료 후기
 --
---  Supabase > SQL Editor 에 통째로 붙여 넣고 한 번 실행하십시오.
---  두 번 실행해도 괜찮게 적어 두었습니다.
+--  Supabase > SQL Editor 에 통째로 붙여 넣고 실행하십시오.
+--  여러 번 실행해도 괜찮게 적어 두었습니다.
 --
 --  ── 누가 무엇을 하나 ───────────────────────────────────────
---    원장  — 후기를 올리고 지웁니다
---    회원  — 로그인하면 읽습니다. 쓰지는 못합니다
+--    원장  — 후기를 올리고 지웁니다. 회원 명부를 봅니다
+--    회원  — 로그인하면 후기를 읽습니다. 쓰지는 못합니다
 --    그 밖 — 아무것도 못 봅니다. 한 줄도 나가지 않습니다
 --
 --  마지막 줄이 이 파일의 이유입니다. 의료법 제56조 제2항 제2호는
 --  환자의 치료경험담을 의료광고로 보아 금지하고, '불특정 다수에게
---  열려 있는가' 가 갈림길입니다. 화면에서 숨기는 것으로는 안 되고,
---  데이터베이스가 안 주어야 합니다. 아래 정책을 지우지 마십시오.
+--  열려 있는가' 가 갈림길입니다. 정책을 지우지 마십시오.
+--
+--  ── 아이디 로그인에 대하여 ─────────────────────────────────
+--  Supabase 는 이메일로만 로그인합니다. 아이디를 쓰기 위해
+--  `아이디@u.jungjinhani.com` 이라는 가짜 주소를 만들어 인증에 씁니다.
+--  진짜 이메일은 profiles.email 에 따로 담습니다.
+--
+--  그래서 **메일 확인(Confirm email)을 반드시 꺼야 합니다.**
+--  켜 두면 가짜 주소로 확인 메일이 가고, 아무도 가입을 끝내지 못합니다.
+--  Authentication > Sign In / Providers > Email > Confirm email = OFF
 -- ══════════════════════════════════════════════════════════════
 
 -- ── 1. 후기를 올릴 수 있는 사람 ────────────────────────────────
---    원장님 계정 하나만 들어갑니다. 등록하는 법은 아래 4번에 있습니다.
 create table if not exists public.authors (
-  user_id uuid primary key references auth.users(id) on delete cascade,
+  user_id  uuid primary key references auth.users(id) on delete cascade,
   added_at timestamptz not null default now()
 );
 
 alter table public.authors enable row level security;
 revoke all on public.authors from anon, authenticated;
 
--- 지금 로그인한 사람이 원장인지 답하는 함수.
--- security definer — 회원은 authors 표를 직접 볼 수 없지만,
--- 이 함수에게 "나 원장이야?" 하고 물어볼 수는 있습니다.
 create or replace function public.is_author()
 returns boolean
-language sql
-security definer
-stable
+language sql security definer stable
 set search_path = public
 as $$
   select exists (select 1 from public.authors where user_id = auth.uid());
@@ -41,67 +43,108 @@ $$;
 grant execute on function public.is_author() to authenticated;
 revoke execute on function public.is_author() from anon;
 
--- ── 2. 후기 ───────────────────────────────────────────────────
+-- ── 2. 회원 명부 ──────────────────────────────────────────────
+--    가입할 때 받은 것을 담습니다. 원장님이 환자명부와 대조하실 수
+--    있도록 이름과 연락처를 받습니다. 이것이 '아무나'와 '우리 환자'를
+--    가르는 자리라, 후기를 회원 전용으로 두는 근거가 됩니다.
+create table if not exists public.profiles (
+  user_id    uuid primary key references auth.users(id) on delete cascade,
+  username   text not null unique
+             check (username ~ '^[a-z0-9_]{4,20}$'),
+  full_name  text not null check (char_length(full_name) between 2 and 20),
+  phone      text not null unique
+             check (phone ~ '^01[016789][0-9]{7,8}$'),   -- 하이픈 없이 숫자만
+  birth      date not null,
+  email      text not null,
+  created_at timestamptz not null default now()
+);
+
+alter table public.profiles enable row level security;
+revoke all on public.profiles from anon;
+grant select, insert on public.profiles to authenticated;
+
+-- 본인 것만 봅니다. 원장은 전부 봅니다(환자 대조용).
+drop policy if exists "본인과 원장이 봅니다" on public.profiles;
+create policy "본인과 원장이 봅니다"
+  on public.profiles for select to authenticated
+  using (user_id = (select auth.uid()) or public.is_author());
+
+-- 가입할 때 본인 것 한 줄만 넣습니다.
+drop policy if exists "본인 것만 넣습니다" on public.profiles;
+create policy "본인 것만 넣습니다"
+  on public.profiles for insert to authenticated
+  with check (user_id = (select auth.uid()));
+
+-- ── 3. 중복확인 ───────────────────────────────────────────────
+--    가입 화면의 '중복확인' 단추가 부릅니다.
+--    있다/없다만 답합니다 — 남의 아이디나 번호를 캐낼 수 없습니다.
+--    로그인하지 않은 사람도 불러야 하므로 anon 에게도 엽니다.
+create or replace function public.username_taken(p_username text)
+returns boolean
+language sql security definer stable
+set search_path = public
+as $$
+  select exists (select 1 from public.profiles where username = lower(p_username));
+$$;
+
+create or replace function public.phone_taken(p_phone text)
+returns boolean
+language sql security definer stable
+set search_path = public
+as $$
+  select exists (
+    select 1 from public.profiles
+     where phone = regexp_replace(p_phone, '[^0-9]', '', 'g'));
+$$;
+
+grant execute on function public.username_taken(text) to anon, authenticated;
+grant execute on function public.phone_taken(text)    to anon, authenticated;
+
+-- ── 4. 후기 ───────────────────────────────────────────────────
 create table if not exists public.reviews (
   id          uuid primary key default gen_random_uuid(),
-
-  -- 화면에 나오는 이름. 원장님이 직접 적으십니다.
-  -- 실명 대신 '60대 · 여성' 이나 'ㄱ님' 처럼 적으십시오.
   author_name text not null check (char_length(author_name) between 1 and 20),
-
   body        text not null check (char_length(body) between 10 and 2000),
   created_at  timestamptz not null default now()
 );
 
-create index if not exists reviews_created_idx
-  on public.reviews (created_at desc);
+create index if not exists reviews_created_idx on public.reviews (created_at desc);
 
--- ── 3. 잠급니다 ────────────────────────────────────────────────
 alter table public.reviews enable row level security;
-
--- 로그인하지 않은 쪽(anon)에게는 권한 자체를 거둡니다.
 revoke all on public.reviews from anon;
 grant select, insert, delete on public.reviews to authenticated;
 
--- 읽기 — 로그인한 회원이면 누구나
 drop policy if exists "회원은 읽습니다" on public.reviews;
 create policy "회원은 읽습니다"
-  on public.reviews for select
-  to authenticated
-  using (true);
+  on public.reviews for select to authenticated using (true);
 
--- 쓰기 — 원장만
 drop policy if exists "원장만 올립니다" on public.reviews;
 create policy "원장만 올립니다"
-  on public.reviews for insert
-  to authenticated
+  on public.reviews for insert to authenticated
   with check (public.is_author());
 
--- 지우기 — 원장만
 drop policy if exists "원장만 지웁니다" on public.reviews;
 create policy "원장만 지웁니다"
-  on public.reviews for delete
-  to authenticated
+  on public.reviews for delete to authenticated
   using (public.is_author());
 
--- 고치기 정책은 일부러 없습니다. 고치실 일이 있으면 지우고 다시 올리십시오.
+-- 고치기 정책은 일부러 없습니다. 지우고 다시 올리십시오.
 
--- ── 4. 원장 계정 등록 ─────────────────────────────────────────
+-- ── 5. 원장 계정 등록 ─────────────────────────────────────────
 --
--- 홈페이지에서 원장님 이메일로 **먼저 회원가입**하신 뒤,
--- 아래 한 줄을 SQL Editor 에서 실행하십시오. 이메일만 바꾸시면 됩니다.
+-- 홈페이지에서 원장님 아이디로 **먼저 회원가입**하신 뒤, 아래를 실행하십시오.
+-- 아이디만 바꾸시면 됩니다.
 --
 --   insert into public.authors (user_id)
---   select id from auth.users where email = '원장님이메일@example.com'
+--   select user_id from public.profiles where username = '원장아이디'
 --   on conflict do nothing;
 --
--- 등록됐는지 보려면:
+-- 확인:
 --
---   select u.email from public.authors a join auth.users u on u.id = a.user_id;
---
--- 이걸 안 하시면 원장님 화면에도 글 쓰는 칸이 안 나옵니다.
+--   select p.username, p.full_name, (a.user_id is not null) as 글올리기권한
+--     from public.profiles p
+--     left join public.authors a on a.user_id = p.user_id;
 
--- ── 5. 확인 ────────────────────────────────────────────────────
--- 정책 셋이 나와야 합니다.
---
---   select policyname, cmd from pg_policies where tablename = 'reviews';
+-- ── 6. 확인 ───────────────────────────────────────────────────
+--   select tablename, policyname, cmd from pg_policies
+--    where schemaname = 'public' order by tablename;

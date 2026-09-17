@@ -151,6 +151,9 @@ def build_reviews():
         </div>
 
         <h2 class="review-list__title">치료 후기</h2>
+        <p class="review-list__note">아래는 <strong>작성자 개인의 경험</strong>입니다.
+          같은 치료를 받으신 다른 분에게 같은 결과가 나타난다는 뜻이 아니며,
+          치료 효과에 대한 약속으로 읽지 말아 주십시오.</p>
         <p class="review-list__state" id="reviewState">불러오는 중입니다.</p>
         <ol class="review-list" id="reviewList"></ol>
 
@@ -190,9 +193,9 @@ def build_login():
       <div class="auth-pane" id="paneLogin" role="tabpanel" aria-labelledby="tabLogin">
         <form id="loginForm" novalidate>
           <label class="field">
-            <span class="field__label">이메일</span>
-            <input type="email" id="loginEmail" class="field__input"
-                   autocomplete="email" required />
+            <span class="field__label">아이디</span>
+            <input type="text" id="loginId" class="field__input"
+                   autocomplete="username" autocapitalize="off" spellcheck="false" required />
           </label>
           <label class="field">
             <span class="field__label">비밀번호</span>
@@ -205,37 +208,93 @@ def build_login():
           </div>
         </form>
         <p class="auth-help">
-          <button type="button" class="linklike" id="resetLink">비밀번호를 잊으셨습니까?</button>
+          아이디나 비밀번호가 기억나지 않으시면 <a href="tel:{P.TEL}">{P.TEL}</a> 로
+          전화 주십시오. 확인해 드립니다.
         </p>
       </div>
 
       <!-- 회원가입 -->
       <div class="auth-pane" id="paneJoin" role="tabpanel" aria-labelledby="tabJoin" hidden>
         <form id="joinForm" novalidate>
+
           <label class="field">
-            <span class="field__label">이메일</span>
-            <input type="email" id="joinEmail" class="field__input"
-                   autocomplete="email" required />
-            <span class="field__hint">가입 확인 메일이 갑니다. 받으신 메일의 링크를 누르셔야 로그인됩니다.</span>
+            <span class="field__label">아이디 <em class="req">*</em></span>
+            <span class="field__row">
+              <input type="text" id="joinId" class="field__input" maxlength="20"
+                     autocomplete="username" autocapitalize="off" spellcheck="false" required />
+              <button type="button" class="btn btn--outline btn--check" id="checkId">중복확인</button>
+            </span>
+            <span class="field__hint">영문 소문자·숫자·밑줄(_) 4~20자. 로그인할 때 쓰십니다.</span>
+            <span class="field__note" id="idNote" hidden></span>
           </label>
+
           <label class="field">
-            <span class="field__label">비밀번호</span>
+            <span class="field__label">비밀번호 <em class="req">*</em></span>
             <input type="password" id="joinPw" class="field__input"
                    autocomplete="new-password" minlength="8" required />
             <span class="field__hint">8자 이상. 영문과 숫자를 섞어 주십시오.</span>
           </label>
 
-          <!-- 체크칸 대신 한 줄로 갈음합니다.
-               개인정보보호법 제15조 제1항 제4호(계약의 이행)와 제28조의8 제3호
-               (계약 이행에 필요한 국외 보관 + 처리방침 공개)에 기대고 있습니다.
-               그래서 처리방침 5-1 의 여섯 항목이 빠지면 안 됩니다. 그것이 근거입니다. -->
-          <p class="agree-line">
-            <strong>가입하기</strong>를 누르시면
-            <a href="terms.html" target="_blank" rel="noopener">이용약관</a>과
-            <a href="privacy.html" target="_blank" rel="noopener">개인정보처리방침</a>에
-            동의하시는 것으로 봅니다. 회원 정보는 일본 도쿄에 있는 서버에 보관되며,
-            자세한 것은 <a href="privacy.html#abroad" target="_blank" rel="noopener">국외 이전 조항</a>에 있습니다.
-          </p>
+          <label class="field">
+            <span class="field__label">비밀번호 확인 <em class="req">*</em></span>
+            <input type="password" id="joinPw2" class="field__input"
+                   autocomplete="new-password" required />
+          </label>
+
+          <label class="field">
+            <span class="field__label">이름 <em class="req">*</em></span>
+            <input type="text" id="joinName" class="field__input" maxlength="20"
+                   autocomplete="name" placeholder="홍길동" required />
+            <span class="field__hint">진료받으신 이름과 같아야 확인이 됩니다.</span>
+          </label>
+
+          <label class="field">
+            <span class="field__label">휴대폰 번호 <em class="req">*</em></span>
+            <span class="field__row">
+              <input type="tel" id="joinPhone" class="field__input" maxlength="13"
+                     autocomplete="tel" inputmode="numeric" placeholder="010-1234-5678" required />
+              <button type="button" class="btn btn--outline btn--check" id="checkPhone">중복확인</button>
+            </span>
+            <span class="field__note" id="phoneNote" hidden></span>
+          </label>
+
+          <label class="field">
+            <span class="field__label">생년월일 <em class="req">*</em></span>
+            <input type="text" id="joinBirth" class="field__input" maxlength="10"
+                   inputmode="numeric" placeholder="1988.10.25" required />
+            <span class="field__hint">같은 이름이 계실 때 구분하는 데 씁니다.</span>
+          </label>
+
+          <div class="field">
+            <span class="field__label">이메일 <em class="req">*</em></span>
+            <span class="field__row field__row--email">
+              <input type="text" id="joinEmailHead" class="field__input" maxlength="64"
+                     autocapitalize="off" spellcheck="false" required />
+              <span class="field__at">@</span>
+              <input type="text" id="joinEmailTail" class="field__input" maxlength="64"
+                     autocapitalize="off" spellcheck="false" required />
+            </span>
+            <select id="joinEmailPick" class="field__input field__select" aria-label="이메일 주소 고르기">
+              <option value="">직접 입력</option>
+              <option value="naver.com">naver.com</option>
+              <option value="gmail.com">gmail.com</option>
+              <option value="hanmail.net">hanmail.net</option>
+              <option value="daum.net">daum.net</option>
+              <option value="nate.com">nate.com</option>
+              <option value="kakao.com">kakao.com</option>
+            </select>
+            <span class="field__hint">연락이 필요할 때 씁니다. 광고는 보내지 않습니다.</span>
+          </div>
+
+          <fieldset class="agree">
+            <legend class="agree__legend">동의</legend>
+            <label class="agree__row">
+              <input type="checkbox" id="agPrivacy" required />
+              <span><em>(필수)</em> <a href="privacy.html" target="_blank" rel="noopener">개인정보 수집 및 이용</a>에 동의합니다.</span>
+              <span class="agree__note">이름·휴대폰·생년월일·이메일을 받습니다.
+                후기 열람에 필요한 회원 확인에만 쓰고, 회원 정보는 일본 도쿄에 있는 서버에 보관됩니다.</span>
+            </label>
+          </fieldset>
 
           <p class="form__msg" id="joinMsg" role="status" aria-live="polite" hidden></p>
           <div class="form__actions">
@@ -245,7 +304,7 @@ def build_login():
       </div>
 
       <p class="auth-foot">
-        회원 정보는 치료 후기를 쓰고 읽는 데에만 씁니다. 진료 예약은 회원과 관계없이
+        회원 정보는 치료 후기를 읽는 데에만 씁니다. 진료 예약은 회원과 관계없이
         <a href="tel:{P.TEL}">{P.TEL}</a> 로 받습니다.
       </p>
 

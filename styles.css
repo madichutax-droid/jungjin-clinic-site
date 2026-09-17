@@ -1745,6 +1745,12 @@ body, p, .why-text, .audience__item p,
 .review-list__title { margin-top: var(--sp-12); }
 .review-write .notice-box { margin-top: var(--sp-8); }
 .review-list__state { color: var(--muted); }
+/* 후기 목록 위 면책 — 읽기 전에 눈에 들어와야 하되 본문을 누르지 않게 */
+.review-list__note {
+  margin: calc(var(--sp-5) * -1) 0 var(--sp-6);
+  padding-left: var(--sp-4); border-left: 3px solid var(--line-2);
+  font-size: var(--fs-sm); line-height: 1.75; color: var(--muted);
+}
 
 /* 후기 한 줄 — 카드가 아니라 가로줄로 나눕니다 */
 .review-list { list-style: none; margin: 0; padding: 0; }
@@ -1763,4 +1769,64 @@ body, p, .why-text, .audience__item p,
   .topbar__right { gap: var(--sp-3); }
   .topbar__who { display: none; }      /* 좁은 화면에서는 '로그아웃' 만 남깁니다 */
   .review-gate__inner { padding: var(--sp-8) var(--sp-5); }
+}
+
+/* ── 가입 칸 늘어난 것 (2026-09-17) ───────────────────────────── */
+
+/* 필수 표시 */
+.req { font-style: normal; color: var(--accent-deep); }
+
+/* 입력칸 + 중복확인 단추가 한 줄에 */
+.field__row { display: flex; gap: var(--sp-2); align-items: stretch; }
+.field__row .field__input { flex: 1 1 auto; min-width: 0; }
+.btn--check {
+  flex: 0 0 auto; padding: 0 var(--sp-4); font-size: var(--fs-sm);
+  white-space: nowrap; border-radius: var(--btn-radius);
+}
+
+/* 이메일 — 앞 @ 뒤 */
+.field__row--email { align-items: center; }
+.field__at { flex: 0 0 auto; color: var(--muted); }
+.field__select { margin-top: var(--sp-2); }
+select.field__input {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='none' stroke='%23655c54' stroke-width='1.6' d='M1 1.5 6 6.5l5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right var(--sp-4) center;
+  padding-right: var(--sp-8);
+}
+/* 뒷자리를 고르면 잠깁니다 — 잠긴 칸은 눌러도 안 바뀐다는 것이 보여야 합니다 */
+.field__input[readonly] { background: var(--bg-alt); color: var(--muted); }
+
+/* 중복확인 결과 한 줄 */
+.field__note {
+  display: block; margin-top: var(--sp-2);
+  font-size: var(--fs-sm); line-height: 1.6;
+}
+.field__note--ok  { color: var(--accent-deep); }
+.field__note--bad { color: var(--accent); }
+
+/* 동의 한 칸 */
+.agree { border: 0; margin: var(--sp-8) 0 0; padding: var(--sp-5) 0 0; border-top: 1px solid var(--line); }
+.agree__legend { font-size: var(--fs-sm); letter-spacing: var(--ls-label); color: var(--muted); padding: 0; }
+.agree__row {
+  display: grid; grid-template-columns: 22px 1fr; gap: var(--sp-1) var(--sp-3);
+  align-items: start; margin-top: var(--sp-4);
+  font-size: var(--fs-sm); line-height: 1.7; cursor: pointer;
+}
+.agree__row input { width: 18px; height: 18px; margin-top: 4px; accent-color: var(--accent-deep); }
+.agree__row em { font-style: normal; color: var(--accent-deep); }
+.agree__note { grid-column: 2; color: var(--muted); }
+
+/* 좁은 화면 — 중복확인 단추를 아래로 내립니다.
+   320px 에서 옆에 두면 입력칸이 글자 서너 개 폭으로 찌그러집니다. */
+@media (max-width: 420px) {
+  .field__row { flex-wrap: wrap; }
+  .field__row .field__input { flex: 1 1 100%; }
+  .btn--check { width: 100%; padding: 10px var(--sp-4); }
+  /* 이메일은 앞뒤가 한 줄에 있어야 읽힙니다. 대신 글자를 줄이고 여백을
+     좁혀 'hanmail.net' 이 다 보이게 합니다. 320px 에서 잰 값입니다. */
+  .field__row--email { flex-wrap: nowrap; gap: var(--sp-1); }
+  .field__row--email .field__input {
+    flex: 1 1 0; font-size: var(--fs-sm); padding-left: var(--sp-3); padding-right: var(--sp-3);
+  }
 }

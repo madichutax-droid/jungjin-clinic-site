@@ -21,6 +21,33 @@
 
   const sb = window.supabase.createClient(CFG.url, CFG.key);
 
+  // ── 아이디 로그인 ───────────────────────────────────────────
+  // Supabase 는 이메일로만 로그인합니다. 아이디를 쓰려고
+  // `아이디@u.jungjinhani.com` 이라는 가짜 주소를 만들어 인증에 씁니다.
+  // 진짜 이메일은 profiles.email 에 따로 담습니다.
+  //
+  // 그래서 Supabase 의 '메일 확인' 은 반드시 꺼져 있어야 합니다.
+  // 켜 두면 가짜 주소로 확인 메일이 가고 아무도 가입을 끝내지 못합니다.
+  const ID_DOMAIN = '@u.jungjinhani.com';
+  const 가짜메일 = function (id) { return String(id).trim().toLowerCase() + ID_DOMAIN; };
+
+  const ID_규칙 = /^[a-z0-9_]{4,20}$/;
+  const 숫자만 = function (v) { return String(v || '').replace(/[^0-9]/g, ''); };
+  const 폰_규칙 = /^01[016789][0-9]{7,8}$/;
+
+  /** 1988.10.25 · 1988-10-25 · 19881025 을 모두 1988-10-25 로. 못 읽으면 null. */
+  function 생년월일(v) {
+    const d = 숫자만(v);
+    if (d.length !== 8) return null;
+    const y = +d.slice(0, 4), m = +d.slice(4, 6), day = +d.slice(6, 8);
+    const 올해 = new Date().getFullYear();
+    if (y < 1900 || y > 올해) return null;
+    if (m < 1 || m > 12 || day < 1 || day > 31) return null;
+    const t = new Date(y, m - 1, day);
+    if (t.getFullYear() !== y || t.getMonth() !== m - 1 || t.getDate() !== day) return null;
+    return d.slice(0, 4) + '-' + d.slice(4, 6) + '-' + d.slice(6, 8);
+  }
+
   // ── 잔손질 ──────────────────────────────────────────────────
   const $ = function (id) { return document.getElementById(id); };
 
@@ -67,7 +94,7 @@
     return m || '처리하지 못했습니다. 잠시 뒤에 다시 시도해 주십시오.';
   }
 
-  /** 상단바 인사에 쓸 이름. 가입 때 따로 받지 않으므로 이메일 앞부분을 씁니다. */
+  /** 상단바 인사에 쓸 이름. 가짜 메일의 앞부분이 곧 아이디입니다. */
   function 이름(user) {
     return (user && user.email) ? user.email.split('@')[0] : '회원';
   }
@@ -297,16 +324,93 @@
     form.addEventListener('submit', async function (e) {
       e.preventDefault();
       clear(msg);
-      const email = ($('loginEmail').value || '').trim();
+      const id = ($('loginId').value || '').trim().toLowerCase();
       const pw = $('loginPw').value || '';
-      if (!email || !pw) { say(msg, '이메일과 비밀번호를 모두 적어 주십시오.'); return; }
+      if (!id || !pw) { say(msg, '아이디와 비밀번호를 모두 적어 주십시오.'); return; }
 
       busy(btn, true, '들어가는 중입니다');
-      const r = await sb.auth.signInWithPassword({ email: email, password: pw });
+      const r = await sb.auth.signInWithPassword({ email: 가짜메일(id), password: pw });
       busy(btn, false);
 
-      if (r.error) { say(msg, 말로(r.error)); return; }
+      if (r.error) {
+        // 아이디가 없는 것인지 비밀번호가 틀린 것인지 알려 주지 않습니다 —
+        // 알려 주면 남의 아이디가 있는지 확인하는 데 쓰입니다.
+        say(msg, '아이디 또는 비밀번호가 맞지 않습니다.');
+        return;
+      }
       location.href = 'reviews.html';
+    });
+  }
+
+  // ── 중복확인 ────────────────────────────────────────────────
+  // 답은 데이터베이스가 합니다(username_taken · phone_taken).
+  // 있다/없다만 오므로 남의 아이디나 번호를 캐낼 수 없습니다.
+  const 확인됨 = { id: '', phone: '' };   // 확인을 마친 값. 고치면 다시 받아야 합니다.
+
+  function 쪽지(el, text, ok) {
+    if (!el) return;
+    el.textContent = text;
+    el.className = 'field__note field__note--' + (ok ? 'ok' : 'bad');
+    el.hidden = false;
+  }
+
+  function 중복확인() {
+    const idInput = $('joinId'), phoneInput = $('joinPhone');
+
+    const bId = $('checkId');
+    if (bId && idInput) {
+      idInput.addEventListener('input', function () {
+        확인됨.id = ''; const n = $('idNote'); if (n) n.hidden = true;
+      });
+      bId.addEventListener('click', async function () {
+        const note = $('idNote');
+        const v = (idInput.value || '').trim().toLowerCase();
+        idInput.value = v;
+        if (!ID_규칙.test(v)) {
+          쪽지(note, '영문 소문자·숫자·밑줄(_) 4~20자로 적어 주십시오.', false); return;
+        }
+        busy(bId, true, '확인 중');
+        const r = await sb.rpc('username_taken', { p_username: v });
+        busy(bId, false);
+        if (r.error) { 쪽지(note, 말로(r.error), false); return; }
+        if (r.data) { 쪽지(note, '이미 쓰고 있는 아이디입니다.', false); 확인됨.id = ''; return; }
+        쪽지(note, '쓰실 수 있는 아이디입니다.', true);
+        확인됨.id = v;
+      });
+    }
+
+    const bP = $('checkPhone');
+    if (bP && phoneInput) {
+      // 010-1234-5678 로 저절로 벌려 줍니다
+      phoneInput.addEventListener('input', function () {
+        const d = 숫자만(phoneInput.value).slice(0, 11);
+        phoneInput.value = d.length > 7 ? d.slice(0, 3) + '-' + d.slice(3, 7) + '-' + d.slice(7)
+                         : d.length > 3 ? d.slice(0, 3) + '-' + d.slice(3)
+                         : d;
+        확인됨.phone = ''; const n = $('phoneNote'); if (n) n.hidden = true;
+      });
+      bP.addEventListener('click', async function () {
+        const note = $('phoneNote');
+        const d = 숫자만(phoneInput.value);
+        if (!폰_규칙.test(d)) { 쪽지(note, '휴대폰 번호를 다시 확인해 주십시오.', false); return; }
+        busy(bP, true, '확인 중');
+        const r = await sb.rpc('phone_taken', { p_phone: d });
+        busy(bP, false);
+        if (r.error) { 쪽지(note, 말로(r.error), false); return; }
+        if (r.data) { 쪽지(note, '이미 가입된 번호입니다. 로그인해 주십시오.', false); 확인됨.phone = ''; return; }
+        쪽지(note, '쓰실 수 있는 번호입니다.', true);
+        확인됨.phone = d;
+      });
+    }
+  }
+
+  /** 이메일 뒷자리 고르기 — 고르면 칸을 채우고 잠그고, '직접 입력' 이면 풉니다. */
+  function 이메일고르기() {
+    const pick = $('joinEmailPick'), tail = $('joinEmailTail');
+    if (!pick || !tail) return;
+    pick.addEventListener('change', function () {
+      if (pick.value) { tail.value = pick.value; tail.readOnly = true; }
+      else { tail.value = ''; tail.readOnly = false; tail.focus(); }
     });
   }
 
@@ -318,80 +422,61 @@
     form.addEventListener('submit', async function (e) {
       e.preventDefault();
       clear(msg);
-      const email = ($('joinEmail').value || '').trim();
-      const pw = $('joinPw').value || '';
 
-      if (!email || !pw) { say(msg, '이메일과 비밀번호를 적어 주십시오.'); return; }
-      if (pw.length < 8) { say(msg, '비밀번호는 8자 이상이어야 합니다.'); return; }
+      const id    = ($('joinId').value || '').trim().toLowerCase();
+      const pw    = $('joinPw').value || '';
+      const pw2   = $('joinPw2').value || '';
+      const name  = ($('joinName').value || '').trim();
+      const phone = 숫자만($('joinPhone').value);
+      const birth = 생년월일($('joinBirth').value);
+      const head  = ($('joinEmailHead').value || '').trim();
+      const tail  = ($('joinEmailTail').value || '').trim();
+      const email = head + '@' + tail;
 
-      // 동의는 체크칸 대신 '가입하기를 누르면 동의한 것으로 본다' 로 갈음합니다.
-      // 화면의 안내 한 줄과 처리방침 공개가 그 근거라, 둘 중 하나라도 지우면 안 됩니다.
+      if (!ID_규칙.test(id)) { say(msg, '아이디는 영문 소문자·숫자·밑줄(_) 4~20자입니다.'); return; }
+      if (확인됨.id !== id)  { say(msg, '아이디 중복확인을 해 주십시오.'); return; }
+      if (pw.length < 8)     { say(msg, '비밀번호는 8자 이상이어야 합니다.'); return; }
+      if (pw !== pw2)        { say(msg, '비밀번호가 서로 다릅니다.'); return; }
+      if (name.length < 2)   { say(msg, '이름을 적어 주십시오.'); return; }
+      if (!폰_규칙.test(phone))    { say(msg, '휴대폰 번호를 다시 확인해 주십시오.'); return; }
+      if (확인됨.phone !== phone)  { say(msg, '휴대폰 번호 중복확인을 해 주십시오.'); return; }
+      if (!birth)            { say(msg, '생년월일을 1988.10.25 처럼 적어 주십시오.'); return; }
+      if (!head || !tail || tail.indexOf('.') < 0) { say(msg, '이메일 주소를 다시 확인해 주십시오.'); return; }
+      const ag = $('agPrivacy');
+      if (ag && !ag.checked) { say(msg, '개인정보 수집 및 이용에 동의하셔야 가입됩니다.'); return; }
+
       busy(btn, true, '가입하는 중입니다');
-      const r = await sb.auth.signUp({
-        email: email,
-        password: pw,
-        options: { emailRedirectTo: location.origin + '/reviews.html' },
+
+      // ① 인증 계정 — 가짜 메일로 만듭니다
+      const up = await sb.auth.signUp({ email: 가짜메일(id), password: pw });
+      if (up.error) { busy(btn, false); say(msg, 말로(up.error)); return; }
+      if (!up.data.session) {
+        busy(btn, false);
+        say(msg, '가입은 됐지만 로그인되지 않았습니다. Supabase 의 메일 확인이 켜져 있는지 봐 주십시오.');
+        return;
+      }
+
+      // ② 명부 — 여기서 걸리면 계정만 남으므로 되돌립니다
+      const pr = await sb.from('profiles').insert({
+        user_id: up.data.session.user.id,
+        username: id, full_name: name, phone: phone, birth: birth, email: email,
       });
       busy(btn, false);
 
-      if (r.error) { say(msg, 말로(r.error)); return; }
-      form.reset();
-      say(msg, email + ' 으로 확인 메일을 보냈습니다. ' +
-               '메일의 링크를 누르셔야 로그인됩니다. 메일이 안 보이면 스팸함도 살펴 주십시오.', 'ok');
+      if (pr.error) {
+        await sb.auth.signOut();
+        say(msg, '가입하지 못했습니다. ' + 말로(pr.error) + ' 계속 안 되시면 전화 주십시오.');
+        return;
+      }
+
+      say(msg, '가입됐습니다. 치료 후기로 갑니다.', 'ok');
+      setTimeout(function () { location.href = 'reviews.html'; }, 900);
     });
   }
 
-  function 비밀번호찾기() {
-    const link = $('resetLink');
-    if (!link) return;
-    link.addEventListener('click', async function () {
-      const msg = $('loginMsg');
-      const email = ($('loginEmail').value || '').trim();
-      if (!email) { say(msg, '이메일을 먼저 적으신 뒤 눌러 주십시오.'); return; }
-
-      const r = await sb.auth.resetPasswordForEmail(email, {
-        redirectTo: location.origin + '/login.html',
-      });
-      // 가입 여부를 알려 주면 남의 이메일을 확인하는 데 쓰입니다. 결과와 무관하게 같은 말을 합니다.
-      say(msg, email + ' 으로 비밀번호 재설정 메일을 보냈습니다. (가입된 주소인 경우)',
-          r.error ? 'bad' : 'ok');
-    });
-  }
-
-  /** 재설정 메일의 링크로 돌아왔을 때. Supabase 가 주소의 토큰을 세션으로 바꿔 줍니다. */
-  function 새비밀번호() {
-    const pane = $('paneLogin');
-    if (!pane) return;
-    if (location.hash.indexOf('type=recovery') < 0) return;
-
-    sb.auth.onAuthStateChange(function (event) {
-      if (event !== 'PASSWORD_RECOVERY') return;
-      const msg = $('loginMsg');
-      say(msg, '새 비밀번호를 정해 주십시오.', 'ok');
-
-      const pw = $('loginPw');
-      pw.setAttribute('autocomplete', 'new-password');
-      pw.previousElementSibling.textContent = '새 비밀번호 (8자 이상)';
-      const btn = $('loginSubmit');
-      btn.textContent = '비밀번호 바꾸기';
-      $('loginEmail').closest('.field').hidden = true;
-
-      const form = $('loginForm');
-      const 새것 = form.cloneNode(true);          // 기존 로그인 처리기를 떼어 냅니다
-      form.parentNode.replaceChild(새것, form);
-
-      새것.addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const v = 새것.querySelector('#loginPw').value || '';
-        const m = 새것.querySelector('#loginMsg');
-        if (v.length < 8) { say(m, '비밀번호는 8자 이상이어야 합니다.'); return; }
-        const r = await sb.auth.updateUser({ password: v });
-        if (r.error) { say(m, 말로(r.error)); return; }
-        say(m, '바꿨습니다. 잠시 뒤 치료 후기로 갑니다.', 'ok');
-        setTimeout(function () { location.href = 'reviews.html'; }, 1200);
-      });
-    });
-  }
+  // 비밀번호 재설정 메일은 쓰지 않습니다 — 인증 주소가 가짜라 받을 수 없습니다.
+  // 잊으신 분은 전화를 주시고, 원장님이 Supabase 에서 바꿔 드립니다.
+  // 회원이 많아지면 그때 제대로 만들어야 합니다.
 
   // ── 시작 ────────────────────────────────────────────────────
   sb.auth.getSession().then(function (s) { 상단바(s.data.session); });
@@ -401,6 +486,6 @@
   탭();
   로그인();
   가입();
-  비밀번호찾기();
-  새비밀번호();
+  중복확인();
+  이메일고르기();
 })();
