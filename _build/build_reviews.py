@@ -30,6 +30,12 @@ M = C.M
 
 # ── 원고 ──────────────────────────────────────────────────────
 # 후기 페이지에 쓰는 문장. 확정 전까지는 여기만 고치면 됩니다.
+# 분류 — partials 의 진료 갈래를 그대로 씁니다.
+# 여기서 새로 짓지 않습니다. 메뉴에 없는 이름이 후기에만 있으면 어긋납니다.
+def 분류들():
+    return [label for _, label, _ in P.SUBJECTS] + ["기타"]
+
+
 R_TITLE = "치료 후기"
 # 로그인 전후 양쪽에서 다 읽히는 문장이어야 합니다 — 히어로는 한 벌뿐입니다
 R_LEAD  = f"진료를 받으신 분들이 남긴 글입니다.{M}회원만 보실 수 있습니다."
@@ -96,6 +102,10 @@ def build_reviews():
         return _not_ready("reviews", R_TITLE, R_LEAD)
 
     gate_p = "\n".join(f'          <p>{P.lines(x)}</p>' for x in GATE_BODY)
+    cat_options = "\n".join(f'                  <option value="{c}">{c}</option>' for c in 분류들())
+    cat_tabs = "\n".join(
+        f'          <button type="button" class="rv-tab" data-cat="{c}" role="tab" '
+        f'aria-selected="false" hidden>{c}</button>' for c in 분류들())
 
     return (
         P.head("reviews", f"{R_TITLE} | {P.CLINIC}",
@@ -130,18 +140,34 @@ def build_reviews():
         <div class="review-write" id="reviewWrite" hidden>
           <h2 class="review-write__title">{WRITE_TITLE}</h2>
           <form id="reviewForm" novalidate>
-            <label class="field">
-              <span class="field__label">쓰신 분</span>
-              <input type="text" id="reviewWho" class="field__input" maxlength="20"
-                     required placeholder="60대 · 여성" />
-              <span class="field__hint">화면에 이대로 나옵니다. 실명은 적지 마십시오.</span>
-            </label>
+
+            <div class="field">
+              <span class="field__label">제목</span>
+              <span class="field__row field__row--title">
+                <select id="reviewCat" class="field__input field__select" required>
+                  <option value="">분류</option>
+{cat_options}
+                </select>
+                <input type="number" id="reviewAge" class="field__input field__input--age"
+                       min="1" max="120" placeholder="66" aria-label="나이" required />
+                <span class="field__at">세</span>
+                <select id="reviewSex" class="field__input field__select field__input--sex"
+                        aria-label="성별" required>
+                  <option value="여">여</option>
+                  <option value="남">남</option>
+                </select>
+                <input type="text" id="reviewWho" class="field__input" maxlength="20"
+                       placeholder="차OO님" aria-label="성함 표기" required />
+              </span>
+              <span class="field__hint">이렇게 나옵니다 — <strong id="titlePreview">척추관협착증, 66세, 여, 차OO님</strong></span>
+            </div>
+
             <label class="field">
               <span class="field__label">내용</span>
               <textarea id="reviewBody" class="field__input field__input--area"
-                        rows="8" maxlength="2000" required></textarea>
+                        rows="9" maxlength="4000" required></textarea>
             </label>
-            <p class="field__count"><span id="reviewCount">0</span> / 2000자</p>
+            <p class="field__count"><span id="reviewCount">0</span> / 4000자</p>
             <p class="form__msg" id="reviewMsg" role="status" aria-live="polite" hidden></p>
             <div class="form__actions">
               <button type="submit" class="btn btn--accent" id="reviewSubmit">올리기</button>
@@ -154,8 +180,22 @@ def build_reviews():
         <p class="review-list__note">아래는 <strong>작성자 개인의 경험</strong>입니다.
           같은 치료를 받으신 다른 분에게 같은 결과가 나타난다는 뜻이 아니며,
           치료 효과에 대한 약속으로 읽지 말아 주십시오.</p>
+
+        <!-- 분류 — 글이 없는 분류는 auth.js 가 감춥니다 -->
+        <div class="rv-tabs" id="reviewTabs" role="tablist" aria-label="분류">
+          <button type="button" class="rv-tab is-active" data-cat="" role="tab" aria-selected="true">전체</button>
+{cat_tabs}
+        </div>
+
+        <div class="rv-search">
+          <label class="sr-only" for="reviewSearch">후기 검색</label>
+          <input type="search" id="reviewSearch" class="field__input"
+                 placeholder="제목이나 내용으로 찾기" autocomplete="off" />
+        </div>
+
         <p class="review-list__state" id="reviewState">불러오는 중입니다.</p>
-        <ol class="review-list" id="reviewList"></ol>
+        <ol class="rv-list" id="reviewList"></ol>
+        <nav class="rv-pager" id="reviewPager" aria-label="페이지" hidden></nav>
 
       </div>
 

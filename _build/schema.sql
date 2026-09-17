@@ -101,14 +101,65 @@ grant execute on function public.username_taken(text) to anon, authenticated;
 grant execute on function public.phone_taken(text)    to anon, authenticated;
 
 -- ── 4. 후기 ───────────────────────────────────────────────────
+--    제목은 네 조각으로 나누어 담습니다 — 분류 · 나이 · 성별 · 성함.
+--    화면에서 '척추관협착증, 66세, 여, 차OO님' 으로 합쳐 보여 줍니다.
+--    자유 입력 한 칸으로 두지 않은 이유는, 실명이 들어가는 것을 막기 위해서입니다.
 create table if not exists public.reviews (
   id          uuid primary key default gen_random_uuid(),
-  author_name text not null check (char_length(author_name) between 1 and 20),
-  body        text not null check (char_length(body) between 10 and 2000),
+  body        text not null check (char_length(body) between 10 and 4000),
   created_at  timestamptz not null default now()
 );
 
-create index if not exists reviews_created_idx on public.reviews (created_at desc);
+-- 옛 모양에서 넘어오기 — 이미 올리신 글이 있어도 지워지지 않습니다
+alter table public.reviews add column if not exists category text;
+alter table public.reviews add column if not exists age      integer;
+alter table public.reviews add column if not exists sex      text;
+alter table public.reviews add column if not exists who      text;
+
+do $$
+begin
+  if exists (select 1 from information_schema.columns
+              where table_schema = 'public' and table_name = 'reviews'
+                and column_name = 'author_name') then
+    update public.reviews
+       set who = coalesce(who, nullif(author_name, ''), '환자분')
+     where who is null;
+    alter table public.reviews drop column author_name;
+  end if;
+end $$;
+
+update public.reviews
+   set category = coalesce(category, '기타'),
+       age      = coalesce(age, 60),
+       sex      = coalesce(sex, '여'),
+       who      = coalesce(who, '환자분')
+ where category is null or age is null or sex is null or who is null;
+
+alter table public.reviews alter column category set not null;
+alter table public.reviews alter column age      set not null;
+alter table public.reviews alter column sex      set not null;
+alter table public.reviews alter column who      set not null;
+
+do $$
+begin
+  if not exists (select 1 from pg_constraint where conname = 'reviews_sex_chk') then
+    alter table public.reviews add constraint reviews_sex_chk check (sex in ('남', '여'));
+  end if;
+  if not exists (select 1 from pg_constraint where conname = 'reviews_age_chk') then
+    alter table public.reviews add constraint reviews_age_chk check (age between 1 and 120);
+  end if;
+  if not exists (select 1 from pg_constraint where conname = 'reviews_who_chk') then
+    alter table public.reviews add constraint reviews_who_chk
+      check (char_length(who) between 1 and 20);
+  end if;
+  if not exists (select 1 from pg_constraint where conname = 'reviews_cat_chk') then
+    alter table public.reviews add constraint reviews_cat_chk
+      check (char_length(category) between 1 and 30);
+  end if;
+end $$;
+
+create index if not exists reviews_created_idx  on public.reviews (created_at desc);
+create index if not exists reviews_category_idx on public.reviews (category);
 
 alter table public.reviews enable row level security;
 revoke all on public.reviews from anon;

@@ -155,85 +155,214 @@
   const gate = $('reviewGate');
   const area = $('reviewArea');
 
-  /** 후기 한 줄. 글은 전부 textContent 로만 넣습니다 —
+  // ── 후기 목록 ───────────────────────────────────────────────
+  // 받아 온 글을 여기 담아 두고, 분류·검색·페이지는 이 배열 위에서 거릅니다.
+  // 회원은 어차피 전부 읽을 수 있으므로 매번 다시 물어볼 이유가 없습니다.
+  const 창고 = { 전부: [], 분류: '', 검색: '', 쪽: 1, 원장: false };
+  const 한쪽 = 10;
+
+  function 제목(r) {
+    return r.category + ', ' + r.age + '세, ' + r.sex + ', ' + r.who;
+  }
+
+  /** 카드 하나. 글은 전부 textContent 로만 넣습니다 —
    *  innerHTML 로 넣으면 후기 칸이 그대로 스크립트 주입 통로가 됩니다. */
-  function 후기줄(row, 원장인가) {
+  function 카드(row) {
     const li = document.createElement('li');
-    li.className = 'review';
+    li.className = 'rv';
 
-    const head = document.createElement('div');
-    head.className = 'review__head';
+    const head = document.createElement('button');
+    head.type = 'button';
+    head.className = 'rv__head';
+    head.setAttribute('aria-expanded', 'false');
 
-    const who = document.createElement('span');
-    who.className = 'review__who';
-    who.textContent = row.author_name || '회원';
-    head.appendChild(who);
+    const cat = document.createElement('span');
+    cat.className = 'rv__cat';
+    cat.textContent = row.category;
+    head.appendChild(cat);
+
+    const t = document.createElement('span');
+    t.className = 'rv__title';
+    t.textContent = 제목(row);
+    head.appendChild(t);
 
     const when = document.createElement('time');
-    when.className = 'review__when';
+    when.className = 'rv__when';
     when.dateTime = row.created_at;
     when.textContent = 날짜(row.created_at);
     head.appendChild(when);
 
     li.appendChild(head);
 
-    const body = document.createElement('p');
-    body.className = 'review__body';
-    body.textContent = row.body;
-    li.appendChild(body);
+    const body = document.createElement('div');
+    body.className = 'rv__body';
+    body.hidden = true;
+    const p = document.createElement('p');
+    p.textContent = row.body;
+    body.appendChild(p);
 
-    // 지우기는 원장에게만 보입니다. 다른 사람이 눌러도 데이터베이스가 거부합니다.
-    if (원장인가) {
+    if (창고.원장) {
       const del = document.createElement('button');
       del.type = 'button';
-      del.className = 'linklike review__del';
+      del.className = 'linklike rv__del';
       del.textContent = '지우기';
       del.addEventListener('click', async function () {
         if (!window.confirm('이 글을 지웁니다. 되돌릴 수 없습니다.')) return;
         const r = await sb.from('reviews').delete().eq('id', row.id);
         if (r.error) { window.alert(말로(r.error)); return; }
-        목록(원장인가);
+        목록();
       });
-      li.appendChild(del);
+      body.appendChild(del);
     }
+    li.appendChild(body);
+
+    head.addEventListener('click', function () {
+      const 열림 = !body.hidden;
+      body.hidden = 열림;
+      head.setAttribute('aria-expanded', String(!열림));
+      li.classList.toggle('is-open', !열림);
+    });
     return li;
   }
 
-  async function 목록(원장인가) {
-    const list = $('reviewList');
-    const state = $('reviewState');
+  /** 지금 조건에 맞는 글만. */
+  function 거른것() {
+    const q = 창고.검색.trim().toLowerCase();
+    return 창고.전부.filter(function (r) {
+      if (창고.분류 && r.category !== 창고.분류) return false;
+      if (!q) return true;
+      return (제목(r) + ' ' + r.body).toLowerCase().indexOf(q) >= 0;
+    });
+  }
+
+  function 쪽번호(총쪽) {
+    const nav = $('reviewPager');
+    if (!nav) return;
+    nav.textContent = '';
+    if (총쪽 <= 1) { nav.hidden = true; return; }
+    nav.hidden = false;
+
+    function 단추(라벨, 쪽, 지금) {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'rv-page' + (지금 ? ' is-active' : '');
+      b.textContent = 라벨;
+      if (지금) b.setAttribute('aria-current', 'page');
+      b.addEventListener('click', function () {
+        창고.쪽 = 쪽;
+        그리기();
+        const t = $('reviewList');
+        if (t) t.scrollIntoView({ block: 'start', behavior: 'smooth' });
+      });
+      return b;
+    }
+    if (창고.쪽 > 1) nav.appendChild(단추('‹', 창고.쪽 - 1, false));
+    for (let i = 1; i <= 총쪽; i++) nav.appendChild(단추(String(i), i, i === 창고.쪽));
+    if (창고.쪽 < 총쪽) nav.appendChild(단추('›', 창고.쪽 + 1, false));
+  }
+
+  function 그리기() {
+    const list = $('reviewList'), state = $('reviewState');
     if (!list) return;
 
-    // 걸러 내는 것은 아래 select 가 아니라 RLS 정책입니다.
-    // 로그인하지 않은 브라우저는 여기서 빈 목록을 받습니다.
-    const r = await sb.from('reviews')
-      .select('id, author_name, body, created_at')
-      .order('created_at', { ascending: false })
-      .limit(200);
+    const 것들 = 거른것();
+    const 총쪽 = Math.max(1, Math.ceil(것들.length / 한쪽));
+    if (창고.쪽 > 총쪽) 창고.쪽 = 총쪽;
 
     list.textContent = '';
+    if (!것들.length) {
+      if (state) {
+        state.textContent = 창고.검색 ? '찾으시는 글이 없습니다.' : '아직 올라온 글이 없습니다.';
+        state.hidden = false;
+      }
+      쪽번호(1);
+      return;
+    }
+    if (state) state.hidden = true;
+
+    const 처음 = (창고.쪽 - 1) * 한쪽;
+    것들.slice(처음, 처음 + 한쪽).forEach(function (r) { list.appendChild(카드(r)); });
+    쪽번호(총쪽);
+  }
+
+  /** 글이 하나도 없는 분류는 탭에서 감춥니다 — 눌러도 빈 화면만 나오니까요. */
+  function 탭정리() {
+    const box = $('reviewTabs');
+    if (!box) return;
+    const 있는분류 = {};
+    창고.전부.forEach(function (r) { 있는분류[r.category] = 1; });
+    const tabs = box.querySelectorAll('.rv-tab');
+    for (let i = 0; i < tabs.length; i++) {
+      const c = tabs[i].dataset.cat;
+      tabs[i].hidden = c ? !있는분류[c] : false;
+    }
+  }
+
+  async function 목록() {
+    const state = $('reviewState');
+    const r = await sb.from('reviews')
+      .select('id, category, age, sex, who, body, created_at')
+      .order('created_at', { ascending: false })
+      .limit(500);
+
     if (r.error) {
       if (state) { state.textContent = 말로(r.error); state.hidden = false; }
       return;
     }
-    const rows = r.data || [];
-    if (!rows.length) {
-      if (state) { state.textContent = '아직 올라온 글이 없습니다.'; state.hidden = false; }
-      return;
+    창고.전부 = r.data || [];
+    탭정리();
+    그리기();
+  }
+
+  /** 분류 탭과 검색칸. */
+  function 거르기단추() {
+    const box = $('reviewTabs');
+    if (box) {
+      box.addEventListener('click', function (e) {
+        const b = e.target.closest('.rv-tab');
+        if (!b) return;
+        const tabs = box.querySelectorAll('.rv-tab');
+        for (let i = 0; i < tabs.length; i++) {
+          tabs[i].classList.toggle('is-active', tabs[i] === b);
+          tabs[i].setAttribute('aria-selected', String(tabs[i] === b));
+        }
+        창고.분류 = b.dataset.cat || '';
+        창고.쪽 = 1;
+        그리기();
+      });
     }
-    if (state) state.hidden = true;
-    for (let i = 0; i < rows.length; i++) list.appendChild(후기줄(rows[i], 원장인가));
+    const q = $('reviewSearch');
+    if (q) {
+      let 시계 = null;
+      q.addEventListener('input', function () {
+        // 한 글자마다 다시 그리면 목록이 깜빡입니다. 잠깐 기다렸다 그립니다.
+        clearTimeout(시계);
+        시계 = setTimeout(function () {
+          창고.검색 = q.value || '';
+          창고.쪽 = 1;
+          그리기();
+        }, 200);
+      });
+    }
   }
 
   /** 원장 화면에만 열리는 글쓰기 칸. */
   function 후기폼() {
     const form = $('reviewForm');
     if (!form) return;
-    const who = $('reviewWho');
-    const body = $('reviewBody');
-    const msg = $('reviewMsg');
-    const btn = $('reviewSubmit');
-    const count = $('reviewCount');
+    const cat = $('reviewCat'), age = $('reviewAge'), sex = $('reviewSex'), who = $('reviewWho');
+    const body = $('reviewBody'), msg = $('reviewMsg'), btn = $('reviewSubmit');
+    const count = $('reviewCount'), prev = $('titlePreview');
+
+    function 미리보기() {
+      if (!prev) return;
+      prev.textContent = (cat.value || '분류') + ', ' + (age.value || '00') + '세, '
+                       + sex.value + ', ' + (who.value || '차OO님');
+    }
+    [cat, age, sex, who].forEach(function (el) {
+      if (el) el.addEventListener('input', 미리보기);
+      if (el) el.addEventListener('change', 미리보기);
+    });
 
     if (body && count) {
       body.addEventListener('input', function () {
@@ -244,12 +373,19 @@
     form.addEventListener('submit', async function (e) {
       e.preventDefault();
       clear(msg);
-      const 이름 = (who.value || '').trim();
-      const text = (body.value || '').trim();
-      if (!이름) { say(msg, '‘쓰신 분’ 을 적어 주십시오. 예: 60대 · 여성'); return; }
-      if (text.length < 10) { say(msg, '열 자 이상 적어 주십시오.'); return; }
 
-      const 걸림 = 걸리는말(text);
+      const c = cat.value;
+      const a = parseInt(age.value, 10);
+      const x = sex.value;
+      const w = (who.value || '').trim();
+      const t = (body.value || '').trim();
+
+      if (!c) { say(msg, '분류를 고르십시오.'); return; }
+      if (!a || a < 1 || a > 120) { say(msg, '나이를 적어 주십시오.'); return; }
+      if (!w) { say(msg, '성함 표기를 적어 주십시오. 예: 차OO님'); return; }
+      if (t.length < 10) { say(msg, '내용을 열 자 이상 적어 주십시오.'); return; }
+
+      const 걸림 = 걸리는말(t + ' ' + w);
       if (걸림) {
         say(msg, '‘' + 걸림 + '’ 이(가) 들어 있습니다. 의료법이 치료 효과를 단정하는 ' +
                  '말을 금하고 있으니, 그 말만 빼고 올리십시오.');
@@ -257,15 +393,17 @@
       }
 
       busy(btn, true, '올리는 중입니다');
-      const r = await sb.from('reviews').insert({ author_name: 이름, body: text });
+      const r = await sb.from('reviews').insert({
+        category: c, age: a, sex: x, who: w, body: t,
+      });
       busy(btn, false);
 
       if (r.error) { say(msg, 말로(r.error)); return; }
-      who.value = '';
-      body.value = '';
+      age.value = ''; who.value = ''; body.value = '';
       if (count) count.textContent = '0';
+      미리보기();
       say(msg, '올렸습니다. 로그인한 회원에게 보입니다.', 'ok');
-      목록(true);
+      목록();
     });
   }
 
@@ -281,16 +419,16 @@
 
     // 원장인지 데이터베이스에 물어봅니다. 브라우저가 스스로 정하지 않습니다.
     // 여기서 거짓말을 해도 등록 단계에서 정책이 다시 막습니다.
-    let 원장인가 = false;
     const a = await sb.rpc('is_author');
-    if (!a.error) 원장인가 = a.data === true;
+    창고.원장 = (!a.error && a.data === true);
 
-    if (원장인가) {
+    if (창고.원장) {
       const w = $('reviewWrite');
       if (w) w.hidden = false;
       후기폼();
     }
-    목록(원장인가);
+    거르기단추();
+    목록();
   }
 
   // ══════════════════════════════════════════════════════════

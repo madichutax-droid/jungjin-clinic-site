@@ -1752,18 +1752,10 @@ body, p, .why-text, .audience__item p,
   font-size: var(--fs-sm); line-height: 1.75; color: var(--muted);
 }
 
-/* 후기 한 줄 — 카드가 아니라 가로줄로 나눕니다 */
-.review-list { list-style: none; margin: 0; padding: 0; }
-.review { padding: var(--sp-6) 0; border-bottom: 1px solid var(--line); }
-.review__head {
   display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--sp-3);
   margin-bottom: var(--sp-3);
 }
-.review__who { font-weight: 700; }
-.review__when { font-size: var(--fs-sm); color: var(--muted); }
 /* 후기 본문 — 줄바꿈을 적으신 대로 살립니다 */
-.review__body { white-space: pre-wrap; }
-.review__del { margin-top: var(--sp-3); font-size: var(--fs-sm); color: var(--muted); }
 
 @media (max-width: 640px) {
   .topbar__right { gap: var(--sp-3); }
@@ -1829,4 +1821,96 @@ select.field__input {
   .field__row--email .field__input {
     flex: 1 1 0; font-size: var(--fs-sm); padding-left: var(--sp-3); padding-right: var(--sp-3);
   }
+}
+
+/* ── 후기 목록 (2026-09-17) ───────────────────────────────────
+   카드 하나에 분류 · 제목 · 날짜. 누르면 아래로 펼쳐집니다.
+   정적 사이트라 글마다 주소를 만들 수 없어, 새 쪽으로 넘기는 대신
+   제자리에서 폅니다. 기다림이 없어서 읽기에는 이쪽이 낫습니다. */
+
+/* 분류 탭 */
+.rv-tabs {
+  display: flex; flex-wrap: wrap; gap: var(--sp-2);
+  margin: var(--sp-6) 0 var(--sp-5);
+}
+.rv-tab {
+  padding: 7px var(--sp-4); font-size: var(--fs-sm);
+  color: var(--muted); background: none;
+  border: 1px solid var(--line); border-radius: 999px; cursor: pointer;
+  white-space: nowrap;
+}
+.rv-tab:hover { border-color: var(--line-2); color: var(--text); }
+.rv-tab.is-active {
+  color: #fff; background: var(--brown); border-color: var(--brown); font-weight: 700;
+}
+
+/* 검색 */
+.rv-search { margin-bottom: var(--sp-6); }
+.rv-search .field__input { font-size: var(--fs-sm); padding-top: 11px; padding-bottom: 11px; }
+
+/* 목록 */
+.rv-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.rv { border-bottom: 1px solid var(--line); }
+
+/* 제목 줄 — 통째로 누르는 단추입니다 */
+.rv__head {
+  display: grid; grid-template-columns: auto 1fr auto;
+  align-items: center; gap: var(--sp-3);
+  width: 100%; padding: var(--sp-5) 0; text-align: left;
+  background: none; border: 0; cursor: pointer; color: inherit;
+}
+.rv__head:hover .rv__title { color: var(--accent-deep); }
+.rv__cat {
+  font-size: var(--fs-xs); letter-spacing: var(--ls-label);
+  color: var(--accent-deep); border: 1px solid var(--line-2);
+  border-radius: 999px; padding: 3px var(--sp-3); white-space: nowrap;
+}
+.rv__title { font-size: var(--fs-md); font-weight: 700; letter-spacing: var(--ls-sub); }
+.rv__when { font-size: var(--fs-sm); color: var(--muted); white-space: nowrap; }
+/* 펼쳐진 카드는 제목도 함께 강조됩니다 */
+.rv.is-open .rv__title { color: var(--accent-deep); }
+
+/* 펼친 내용 — 줄바꿈을 적으신 대로 살립니다 */
+.rv__body { padding: 0 0 var(--sp-6); }
+.rv__body p { white-space: pre-wrap; }
+.rv__del { margin-top: var(--sp-4); font-size: var(--fs-sm); color: var(--muted); }
+
+/* 페이지 번호 */
+.rv-pager {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: var(--sp-2); margin-top: var(--sp-8);
+}
+.rv-page {
+  min-width: 38px; padding: 8px var(--sp-3); font-size: var(--fs-sm);
+  color: var(--muted); background: none;
+  border: 1px solid var(--line); border-radius: var(--btn-radius); cursor: pointer;
+}
+.rv-page:hover { border-color: var(--line-2); color: var(--text); }
+.rv-page.is-active {
+  color: #fff; background: var(--brown); border-color: var(--brown); font-weight: 700;
+}
+
+/* 원장 글쓰기 — 제목 네 조각을 한 줄에.
+   .field__input 은 width:100% 라서, 그대로 두면 네 조각이 저마다 한 줄씩
+   차지하고 세로로 쌓입니다. 이 줄 안에서만 width 를 풉니다. */
+.field__row--title { flex-wrap: wrap; align-items: center; }
+.field__row--title .field__input { width: auto; }
+.field__row--title .field__select { margin-top: 0; }
+.field__row--title > .field__select:first-child { flex: 1 1 150px; }
+.field__input--age { flex: 0 0 84px; text-align: center; }
+.field__input--sex { flex: 0 0 78px; }
+.field__row--title > input[type="text"] { flex: 1 1 150px; }
+.field__row--title .field__at { flex: 0 0 auto; }
+
+/* 좁은 화면 */
+@media (max-width: 640px) {
+  .rv__head { grid-template-columns: auto 1fr; row-gap: var(--sp-2); }
+  .rv__title { grid-column: 1 / -1; }      /* 제목이 길어 한 줄을 다 씁니다 */
+  .rv__when { grid-column: 2; justify-self: end; }
+}
+@media (max-width: 420px) {
+  .field__row--title { gap: var(--sp-2); }
+  .field__input--age { flex: 0 0 74px; }
+  .field__input--sex { flex: 0 0 74px; }
+  .field__row--title > input[type="text"] { flex: 1 1 100%; }
 }

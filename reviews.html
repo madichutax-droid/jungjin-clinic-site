@@ -25,7 +25,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=114" />
+  <link rel="stylesheet" href="styles.css?v=116" />
   <link rel="canonical" href="https://jungjinhani.com/reviews.html" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="정진한의원" />
@@ -132,18 +132,41 @@
         <div class="review-write" id="reviewWrite" hidden>
           <h2 class="review-write__title">후기 올리기</h2>
           <form id="reviewForm" novalidate>
-            <label class="field">
-              <span class="field__label">쓰신 분</span>
-              <input type="text" id="reviewWho" class="field__input" maxlength="20"
-                     required placeholder="60대 · 여성" />
-              <span class="field__hint">화면에 이대로 나옵니다. 실명은 적지 마십시오.</span>
-            </label>
+
+            <div class="field">
+              <span class="field__label">제목</span>
+              <span class="field__row field__row--title">
+                <select id="reviewCat" class="field__input field__select" required>
+                  <option value="">분류</option>
+                  <option value="척추관협착증">척추관협착증</option>
+                  <option value="디스크">디스크</option>
+                  <option value="어깨·무릎 관절">어깨·무릎 관절</option>
+                  <option value="어지럼증">어지럼증</option>
+                  <option value="공황장애">공황장애</option>
+                  <option value="역류성식도염">역류성식도염</option>
+                  <option value="만성기침">만성기침</option>
+                  <option value="기타">기타</option>
+                </select>
+                <input type="number" id="reviewAge" class="field__input field__input--age"
+                       min="1" max="120" placeholder="66" aria-label="나이" required />
+                <span class="field__at">세</span>
+                <select id="reviewSex" class="field__input field__select field__input--sex"
+                        aria-label="성별" required>
+                  <option value="여">여</option>
+                  <option value="남">남</option>
+                </select>
+                <input type="text" id="reviewWho" class="field__input" maxlength="20"
+                       placeholder="차OO님" aria-label="성함 표기" required />
+              </span>
+              <span class="field__hint">이렇게 나옵니다 — <strong id="titlePreview">척추관협착증, 66세, 여, 차OO님</strong></span>
+            </div>
+
             <label class="field">
               <span class="field__label">내용</span>
               <textarea id="reviewBody" class="field__input field__input--area"
-                        rows="8" maxlength="2000" required></textarea>
+                        rows="9" maxlength="4000" required></textarea>
             </label>
-            <p class="field__count"><span id="reviewCount">0</span> / 2000자</p>
+            <p class="field__count"><span id="reviewCount">0</span> / 4000자</p>
             <p class="form__msg" id="reviewMsg" role="status" aria-live="polite" hidden></p>
             <div class="form__actions">
               <button type="submit" class="btn btn--accent" id="reviewSubmit">올리기</button>
@@ -164,8 +187,29 @@
         <p class="review-list__note">아래는 <strong>작성자 개인의 경험</strong>입니다.
           같은 치료를 받으신 다른 분에게 같은 결과가 나타난다는 뜻이 아니며,
           치료 효과에 대한 약속으로 읽지 말아 주십시오.</p>
+
+        <!-- 분류 — 글이 없는 분류는 auth.js 가 감춥니다 -->
+        <div class="rv-tabs" id="reviewTabs" role="tablist" aria-label="분류">
+          <button type="button" class="rv-tab is-active" data-cat="" role="tab" aria-selected="true">전체</button>
+          <button type="button" class="rv-tab" data-cat="척추관협착증" role="tab" aria-selected="false" hidden>척추관협착증</button>
+          <button type="button" class="rv-tab" data-cat="디스크" role="tab" aria-selected="false" hidden>디스크</button>
+          <button type="button" class="rv-tab" data-cat="어깨·무릎 관절" role="tab" aria-selected="false" hidden>어깨·무릎 관절</button>
+          <button type="button" class="rv-tab" data-cat="어지럼증" role="tab" aria-selected="false" hidden>어지럼증</button>
+          <button type="button" class="rv-tab" data-cat="공황장애" role="tab" aria-selected="false" hidden>공황장애</button>
+          <button type="button" class="rv-tab" data-cat="역류성식도염" role="tab" aria-selected="false" hidden>역류성식도염</button>
+          <button type="button" class="rv-tab" data-cat="만성기침" role="tab" aria-selected="false" hidden>만성기침</button>
+          <button type="button" class="rv-tab" data-cat="기타" role="tab" aria-selected="false" hidden>기타</button>
+        </div>
+
+        <div class="rv-search">
+          <label class="sr-only" for="reviewSearch">후기 검색</label>
+          <input type="search" id="reviewSearch" class="field__input"
+                 placeholder="제목이나 내용으로 찾기" autocomplete="off" />
+        </div>
+
         <p class="review-list__state" id="reviewState">불러오는 중입니다.</p>
-        <ol class="review-list" id="reviewList"></ol>
+        <ol class="rv-list" id="reviewList"></ol>
+        <nav class="rv-pager" id="reviewPager" aria-label="페이지" hidden></nav>
 
       </div>
 
@@ -223,7 +267,7 @@
     window.JJ_SUPABASE = { url: "https://weutytwetagqfdqahvgd.supabase.co", key: "sb_publishable_qYwzPBU690Xx3IGaHz3sGw_lvQfzIMx" };
   </script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.js"></script>
-  <script src="auth.js?v=8"></script>
+  <script src="auth.js?v=9"></script>
 
   <div class="quickmenu" aria-label="바로가기">
     <a class="qm" href="https://blog.naver.com/yjj2923" target="_blank" rel="noopener" style="--qm:#262220" aria-label="블로그">
@@ -241,6 +285,6 @@
       <span class="qm__label">예약</span>
     </a>
   </div>
-  <script src="script.js?v=8"></script>
+  <script src="script.js?v=9"></script>
 </body>
 </html>
