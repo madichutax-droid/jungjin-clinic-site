@@ -145,11 +145,12 @@ def build_index():
 
 
 if __name__ == "__main__":
-    import build_pages, build_specialty
+    import build_pages, build_specialty, build_reviews
     pages = {"index": build_index()}
     pages.update(build_hubs.all_hubs())
     pages.update(build_specialty.all_subjects())
     pages.update(build_pages.all_pages())
+    pages.update(build_reviews.all_reviews())
 
     for name, html in pages.items():
         with open(os.path.join(OUT, name + ".html"), "w", encoding="utf-8") as f:
@@ -157,7 +158,9 @@ if __name__ == "__main__":
 
     # sitemap.xml — 페이지 목록에서 자동으로 만듭니다. 손으로 고치지 마십시오.
     # 404 와 아직 준비 중인 페이지는 검색에 올리지 않습니다.
-    SKIP = {"404", "accident"}
+    # 치료 후기와 로그인은 회원 전용이라 검색에 올리지 않습니다.
+    # 세 곳이 함께 걸려 있어야 합니다 — 여기(sitemap) · robots.txt · 페이지의 noindex.
+    SKIP = {"404", "accident", "reviews", "login"}
     urls = []
     for name in sorted(pages):
         if name in SKIP:

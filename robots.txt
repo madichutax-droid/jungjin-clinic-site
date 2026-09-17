@@ -1,4 +1,15 @@
 User-agent: *
 Allow: /
 
+# 치료 후기와 로그인은 회원 전용입니다.
+# 의료법 제56조 제2항 제2호 — 환자의 치료경험담은 의료광고로 보아 금지됩니다.
+# '불특정 다수에게 열려 있는가' 가 갈림길이라, 검색에 걸리면 안 됩니다.
+# 여기 말고 두 곳이 더 있습니다. 셋이 함께 걸려 있어야 합니다.
+#   · 페이지의 <meta name="robots" content="noindex, nofollow">  (partials.head)
+#   · sitemap.xml 제외                                          (build.py 의 SKIP)
+Disallow: /reviews.html
+Disallow: /reviews
+Disallow: /login.html
+Disallow: /login
+
 Sitemap: https://jungjinmedi.netlify.app/sitemap.xml

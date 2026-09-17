@@ -1643,3 +1643,129 @@ body, p, .why-text, .audience__item p,
   .popup { padding: var(--sp-3); }
   .popup__body { padding: var(--sp-6) var(--sp-5) var(--sp-5); }
 }
+
+/* ── 회원 · 치료 후기 (2026-09-17) ──────────────────────────────
+   새 색·새 크기를 만들지 않았습니다. :root 토큰만 씁니다.
+   상자 대신 얇은 선, 그림자 없음 — 나머지 페이지와 같은 규칙입니다. */
+
+/* 상단바 오른쪽 — 전화번호와 로그인이 나란히 섭니다 */
+.topbar__right { display: flex; align-items: center; gap: var(--sp-4); }
+.topbar__auth { display: flex; align-items: center; gap: var(--sp-2); opacity: .85; }
+.topbar__auth a, .topbar__auth .linklike { color: #cabbae; }
+.topbar__auth a:hover, .topbar__auth .linklike:hover { color: #fff; }
+.topbar__who { max-width: 10em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* 단추처럼 보이지 않는 단추 — 링크 자리에 들어가는 button 입니다 */
+.linklike {
+  background: none; border: 0; padding: 0; cursor: pointer;
+  color: var(--link); text-decoration: underline;
+  text-underline-offset: 3px; font-size: inherit;
+}
+.linklike:hover { color: var(--accent-deep); }
+
+/* 폼 한 칸 — 로그인·가입·후기가 같은 칸을 씁니다 */
+.container--narrow { max-width: 520px; }
+
+.field { display: block; margin-bottom: var(--sp-5); }
+.field__label {
+  display: block; margin-bottom: var(--sp-2);
+  font-size: var(--fs-sm); letter-spacing: var(--ls-label); color: var(--muted);
+}
+.field__input {
+  display: block; width: 100%; padding: 13px var(--sp-4);
+  font-size: var(--fs-md); color: var(--text); background: var(--surface);
+  border: 1px solid var(--line); border-radius: var(--radius-sm);
+  line-height: 1.6;
+}
+.field__input:focus {
+  outline: none; border-color: var(--accent-deep);
+  box-shadow: 0 0 0 3px rgba(107, 32, 25, .10);   /* 초점 표시는 그림자 금지의 예외입니다 */
+}
+.field__input--area { resize: vertical; min-height: 160px; line-height: var(--lh-body); }
+.field__hint {
+  display: block; margin-top: var(--sp-2);
+  font-size: var(--fs-sm); color: var(--muted); line-height: 1.6;
+}
+.field__count {
+  margin: calc(var(--sp-5) * -1 + var(--sp-2)) 0 var(--sp-5);
+  text-align: right; font-size: var(--fs-sm); color: var(--muted);
+}
+
+.form__actions { margin-top: var(--sp-6); }
+.btn--full { display: block; width: 100%; text-align: center; }
+
+.form__msg {
+  margin: var(--sp-4) 0 0; padding: var(--sp-3) var(--sp-4);
+  font-size: var(--fs-sm); line-height: 1.7; border-radius: var(--radius-sm);
+  border-left: 3px solid var(--line-2); background: var(--bg-alt);
+}
+.form__msg--bad { border-left-color: var(--accent); color: var(--accent-deep); }
+.form__msg--ok  { border-left-color: var(--brown); color: var(--text); }
+
+/* 동의 — 네 줄 모두 필수입니다 */
+.agree { border: 0; margin: var(--sp-8) 0 0; padding: var(--sp-5) 0 0; border-top: 1px solid var(--line); }
+.agree__legend { font-size: var(--fs-sm); letter-spacing: var(--ls-label); color: var(--muted); padding: 0; }
+.agree__row {
+  display: grid; grid-template-columns: 22px 1fr; gap: var(--sp-1) var(--sp-3);
+  align-items: start; margin-top: var(--sp-4);
+  font-size: var(--fs-sm); line-height: 1.7; cursor: pointer;
+}
+.agree__row input { width: 18px; height: 18px; margin-top: 4px; accent-color: var(--accent-deep); }
+.agree__row em { font-style: normal; color: var(--accent-deep); }
+.agree__note { grid-column: 2; color: var(--muted); font-size: var(--fs-sm); }
+
+/* 로그인·가입 탭 */
+.auth-tabs { display: flex; border-bottom: 1px solid var(--line); margin-bottom: var(--sp-8); }
+.auth-tab {
+  flex: 1 1 0; padding: var(--sp-4) var(--sp-2); background: none; border: 0;
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+  font-size: var(--fs-md); color: var(--muted); cursor: pointer;
+}
+.auth-tab.is-active { color: var(--text); font-weight: 700; border-bottom-color: var(--accent-deep); }
+
+.auth-help { margin-top: var(--sp-5); text-align: center; font-size: var(--fs-sm); }
+.auth-foot {
+  margin-top: var(--sp-12); padding-top: var(--sp-5); border-top: 1px solid var(--line);
+  font-size: var(--fs-sm); color: var(--muted); line-height: 1.8;
+}
+
+/* 로그인 벽 — 후기 대신 서는 자리 */
+.review-gate__inner {
+  padding: var(--sp-12) var(--sp-6); text-align: center;
+  border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-alt);
+}
+.review-gate__title {
+  font-size: var(--fs-xl); line-height: 1.45; letter-spacing: var(--ls-sub);
+  margin-bottom: var(--sp-4);
+}
+.review-gate__inner p { color: var(--muted); margin-bottom: var(--sp-3); }
+.review-gate__inner .location__actions { margin-top: var(--sp-8); justify-content: center; }
+
+/* 후기 쓰는 칸 */
+.review-write { padding-bottom: var(--sp-12); border-bottom: 1px solid var(--line); }
+.review-write__title, .review-list__title {
+  font-size: var(--fs-xl); line-height: 1.45; letter-spacing: var(--ls-sub);
+  margin-bottom: var(--sp-5);
+}
+.review-list__title { margin-top: var(--sp-12); }
+.review-write .notice-box { margin-top: var(--sp-8); }
+.review-list__state { color: var(--muted); }
+
+/* 후기 한 줄 — 카드가 아니라 가로줄로 나눕니다 */
+.review-list { list-style: none; margin: 0; padding: 0; }
+.review { padding: var(--sp-6) 0; border-bottom: 1px solid var(--line); }
+.review__head {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--sp-3);
+  margin-bottom: var(--sp-3);
+}
+.review__who { font-weight: 700; }
+.review__when { font-size: var(--fs-sm); color: var(--muted); }
+/* 후기 본문 — 줄바꿈을 적으신 대로 살립니다 */
+.review__body { white-space: pre-wrap; }
+.review__del { margin-top: var(--sp-3); font-size: var(--fs-sm); color: var(--muted); }
+
+@media (max-width: 640px) {
+  .topbar__right { gap: var(--sp-3); }
+  .topbar__who { display: none; }      /* 좁은 화면에서는 '로그아웃' 만 남깁니다 */
+  .review-gate__inner { padding: var(--sp-8) var(--sp-5); }
+}

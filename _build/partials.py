@@ -8,8 +8,8 @@
 """
 from datetime import date
 
-CSS_V = "109"
-JS_V  = "4"
+CSS_V = "110"
+JS_V  = "5"
 IMG_V = "4"
 
 CLINIC   = "정진한의원"
@@ -20,7 +20,8 @@ BIZNO    = "880-46-01214"
 # 진료 안내문은 각 페이지 본문 끝에 한 번만 둡니다(푸터 중복 제거, 2026-09-01).
 NOTICE_LINE = "상태와 원인에 따라 접근이 달라질 수 있으며, 정확한 진단이 우선입니다."
 SINCE = "2026"                  # 홈페이지를 연 해 — 저작권 표시의 시작점
-LEGAL_DATE = "2026년 9월 1일"   # 약관·처리방침 시행일. 실제 공개일로 맞추십시오.
+LEGAL_DATE = "2026년 9월 17일"  # 약관·처리방침 시행일. 실제 공개일로 맞추십시오.
+#                               2026-09-17 회원·치료 후기 조항이 들어가면서 갱신했습니다.
 PRICE_DATE = "2026. 09. 01."   # 비급여 고지 시행일. 금액이 바뀌면 함께 갱신하십시오.
 PRIVACY_OFFICER = "양정진"      # 개인정보 보호책임자
 
@@ -264,11 +265,16 @@ def faq_ld(pairs):
     return '  <script type="application/ld+json">\n  ' + body.replace("\n", "\n  ") + "\n  </script>\n"
 
 
-def head(page, title, desc, extra="", keywords=""):
-    """<head> 전체. canonical·og 를 페이지마다 자동으로 맞춥니다."""
+def head(page, title, desc, extra="", keywords="", noindex=False):
+    """<head> 전체. canonical·og 를 페이지마다 자동으로 맞춥니다.
+
+    noindex=True 는 검색엔진에서 내립니다. 회원 전용 페이지(치료 후기·로그인)에
+    씁니다 — robots.txt 와 sitemap 제외까지 세 곳이 함께 걸려 있어야 합니다."""
     url = DOMAIN + "/" + ("" if page == "index" else page + ".html")
     desc = SEO_DESC.get(page, desc)      # 페이지별 설명문이 있으면 그것을 씁니다
     kw_tag = f'<meta name="keywords" content="{keywords}" />\n  ' if keywords else ""
+    # noindex 는 <title> 보다 위에 둡니다 — 크롤러가 앞부분만 읽고 가더라도 잡히도록
+    nx_tag = '<meta name="robots" content="noindex, nofollow" />\n  ' if noindex else ""
     return f"""<!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -289,7 +295,7 @@ def head(page, title, desc, extra="", keywords=""):
   <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v={IMG_V}" />
   <link rel="manifest" href="site.webmanifest" />
   <meta name="description" content="{desc}" />
-  {kw_tag}<title>{title}</title>
+  {nx_tag}{kw_tag}<title>{title}</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -310,11 +316,24 @@ def head(page, title, desc, extra="", keywords=""):
 """
 
 
+def _topbar_auth():
+    """상단바 오른쪽 끝의 로그인 자리.
+
+    자바스크립트가 꺼져 있어도 로그인 페이지로는 갈 수 있도록 링크를 그대로
+    내보냅니다. auth.js 가 세션을 확인하면 이 자리를 이름·로그아웃으로 바꿉니다."""
+    if not (REVIEWS_ON and reviews_ready()):
+        return ""
+    return ('\n        <span class="topbar__auth" id="topbarAuth">'
+            '<a href="login.html">로그인</a></span>')
+
+
 def topbar():
     return f"""  <div class="topbar">
     <div class="container topbar__inner">
       <span class="topbar__hours">{HOURS_BAR}</span>
-      <a class="topbar__tel" href="tel:{TEL}">{TEL}</a>
+      <span class="topbar__right">
+        <a class="topbar__tel" href="tel:{TEL}">{TEL}</a>{_topbar_auth()}
+      </span>
     </div>
   </div>
 """
@@ -324,6 +343,16 @@ def _logo(home_prefix):
     return f"""      <a href="{home_prefix}#hero" class="logo">
         <img src="assets/logo.png?v={IMG_V}" alt="{CLINIC}" class="logo__img" width="800" height="223" />
       </a>"""
+
+
+def _reviews_nav(page, li):
+    """치료 후기 한 칸. Supabase 설정이 없으면 메뉴에 아예 나오지 않습니다.
+
+    빈 문자열을 그대로 돌려주는 이유 — 줄바꿈까지 여기서 붙여야 꺼져 있을 때
+    나머지 20페이지의 HTML 이 예전과 한 글자도 달라지지 않습니다."""
+    if not (REVIEWS_ON and reviews_ready()):
+        return ""
+    return "\n" + li("reviews", "치료 후기", "reviews.html")
 
 
 def header(page):
@@ -364,7 +393,7 @@ def header(page):
         <ul class="nav__list">
 {li('story-philosophy', '한의원 소개', 'story-philosophy.html', INTRO_CHILDREN)}
 {items}
-{li('faq', '자주 묻는 질문', 'faq.html')}
+{li('faq', '자주 묻는 질문', 'faq.html')}{_reviews_nav(page, li)}
         </ul>
       </nav>
       <button class="nav-toggle" id="navToggle" aria-label="메뉴 열기">
@@ -470,6 +499,25 @@ def footer():
 """
 
 
+def auth_scripts():
+    """Supabase SDK + auth.js. 치료 후기·로그인 두 페이지에서만 싣습니다.
+
+    나머지 페이지는 지금처럼 script.js 하나만 받습니다 — 후기 때문에
+    전체 페이지가 무거워지면 안 됩니다. 상단바의 로그인 표시도 이 두 곳
+    밖에서는 서버가 찍어 둔 링크 그대로 둡니다.
+
+    SDK 는 버전을 박아 둡니다. @2 같은 범위로 두면 어느 날 조용히 올라가
+    로그인이 깨질 수 있습니다."""
+    if not reviews_ready():
+        return ""
+    return f"""  <script>
+    window.JJ_SUPABASE = {{ url: "{SUPABASE_URL}", key: "{SUPABASE_ANON_KEY}" }};
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+  <script src="auth.js?v={JS_V}"></script>
+"""
+
+
 def quickmenu():
     ico = {
         "blog": "<path d='M12 20h9'/><path d='M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z'/>",
@@ -512,6 +560,36 @@ def quickmenu():
 # 을 거쳐야 합니다. 도메인이 확정되어야 등록이 되므로 지금은 받을 수 없습니다.
 #
 # 준비가 되면 아래 두 값을 채우십시오. 채워지면 네이버로, 비어 있으면 구글로 나갑니다.
+# ── 회원 · 치료 후기 ───────────────────────────────────────────
+#
+# 치료 후기는 **로그인한 회원만 열람**합니다. 의료법 제56조 제2항 제2호는
+# 환자의 치료경험담을 의료광고로 보고 금지합니다. 불특정 다수에게 열리면
+# 광고가 되므로, 열람을 회원 뒤로 두고 검색엔진 색인도 막습니다.
+# 막는 자리가 네 곳입니다. 하나라도 빠지면 벽이 뚫립니다.
+#
+#   ① 데이터베이스   Supabase RLS — 비로그인에게는 정책 자체가 없어 한 줄도 안 나갑니다
+#   ② 화면          로그인 전에는 후기가 DOM 에 들어오지도 않습니다
+#   ③ 검색엔진       reviews·login 에 noindex + robots.txt Disallow + sitemap 제외
+#   ④ 원장 승인      approved=false 가 기본값입니다. 원장이 넘겨야 남에게 보입니다
+#
+# 아래 두 값을 채우면 기능이 켜집니다. 비어 있으면 '준비 중' 으로 나갑니다
+# (플레이스·인스타 주소와 같은 방식입니다).
+#
+# anon key 는 공개되는 값이 맞습니다 — 브라우저가 쓰는 열쇠라 숨길 수 없습니다.
+# 지키는 것은 열쇠가 아니라 RLS 정책입니다. service_role 키는 절대 여기 넣지 마십시오.
+# 넣는 법은 `_build/회원시스템-설치.md` 에 적어 두었습니다.
+SUPABASE_URL      = ""   # TODO: https://xxxxxxxx.supabase.co
+SUPABASE_ANON_KEY = ""   # TODO: eyJhbGciOi... (anon public key)
+
+# 후기를 열어 둘지. Supabase 설정이 없으면 이 값과 무관하게 '준비 중' 입니다.
+REVIEWS_ON = True
+
+
+def reviews_ready():
+    """설정이 다 채워졌는지. 화면과 메뉴가 이 값으로 갈립니다."""
+    return bool(SUPABASE_URL and SUPABASE_ANON_KEY)
+
+
 NAVER_MAP_KEY = ""      # TODO: 네이버 클라우드 플랫폼 Client ID
 NAVER_LATLNG = ""       # TODO: "37.5943,127.1296" 형식의 위도,경도
 
@@ -698,7 +776,7 @@ def opening_popup():
 """
 
 
-def tail(with_cta=True, cta_title=None, cta_desc=None):
+def tail(with_cta=True, cta_title=None, cta_desc=None, extra_scripts=""):
     """페이지 마무리 한 벌 — CTA + 푸터 + 퀵메뉴."""
     parts = []
     if with_cta:
@@ -712,5 +790,7 @@ def tail(with_cta=True, cta_title=None, cta_desc=None):
     # quickmenu() 가 </body></html> 까지 함께 내보냅니다.
     # 팝업은 반드시 그 앞에 와야 합니다 — 뒤에 두면 body 밖으로 나갑니다.
     parts.append(opening_popup())
+    if extra_scripts:
+        parts.append(extra_scripts)
     parts.append(quickmenu())
     return "".join(parts)
