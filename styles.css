@@ -2009,3 +2009,12 @@ select.field__input {
 @media (max-width: 420px) {
   .shot__thumb { width: 100%; height: auto; aspect-ratio: 3 / 2; }
 }
+
+/* 상단바 로그인 · 회원가입 사이의 가운뎃점 */
+.topbar__bar { opacity: .45; }
+/* 320px 에서 '진료시간' 은 이미 숨겨져 있고, 남는 것은 전화번호와 이 둘입니다.
+   붙지 않도록 간격만 조금 좁힙니다. */
+@media (max-width: 400px) {
+  .topbar__auth { gap: var(--sp-1); }
+  .topbar__right { gap: var(--sp-3); }
+}

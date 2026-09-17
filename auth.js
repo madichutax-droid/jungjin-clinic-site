@@ -146,6 +146,17 @@
       a.href = 'login.html';
       a.textContent = '로그인';
       box.appendChild(a);
+
+      const bar = document.createElement('span');
+      bar.className = 'topbar__bar';
+      bar.setAttribute('aria-hidden', 'true');
+      bar.textContent = '·';
+      box.appendChild(bar);
+
+      const j = document.createElement('a');
+      j.href = 'login.html#join';
+      j.textContent = '회원가입';
+      box.appendChild(j);
     }
   }
 

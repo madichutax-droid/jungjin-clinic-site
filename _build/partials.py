@@ -8,8 +8,8 @@
 """
 from datetime import date
 
-CSS_V = "122"
-JS_V  = "13"
+CSS_V = "123"
+JS_V  = "14"
 IMG_V = "4"
 
 CLINIC   = "정진한의원"
@@ -325,7 +325,9 @@ def _topbar_auth():
     if not (REVIEWS_ON and reviews_ready()):
         return ""
     return ('\n        <span class="topbar__auth" id="topbarAuth">'
-            '<a href="login.html">로그인</a></span>')
+            '<a href="login.html">로그인</a>'
+            '<span class="topbar__bar" aria-hidden="true">·</span>'
+            '<a href="login.html#join">회원가입</a></span>')
 
 
 def topbar():
