@@ -105,12 +105,15 @@ def build_reviews():
         + P.page_hero(R_TITLE, R_LEAD)
         + P.crumb(R_TITLE)
         + f"""
-  <section class="section">
+  <!-- 원장 계정일 때만 열립니다. 구획째로 감춥니다 —
+       안쪽 칸만 감추면 빈 구획의 위아래 여백(104px + 104px)이 그대로 남아
+       목록이 한참 아래로 밀립니다(2026-09-17에 잡았습니다). -->
+  <section class="section" id="writeSection" hidden>
     <div class="container container--read">
 
-      <!-- 원장 계정일 때만 열립니다.
+      <!-- 글 쓰는 칸.
            다른 계정이 열어 보려 해도 등록 단계에서 데이터베이스가 거부합니다. -->
-      <div class="review-write" id="reviewWrite" hidden>
+      <div class="review-write" id="reviewWrite">
         <h2 class="review-write__title" id="writeTitle">{WRITE_TITLE}</h2>
         <form id="reviewForm" novalidate>
 
@@ -198,12 +201,6 @@ def build_reviews():
       <div class="rv-tabs" id="reviewTabs" role="tablist" aria-label="분류">
         <button type="button" class="rv-tab is-active" data-cat="" role="tab" aria-selected="true">전체</button>
 {cat_tabs}
-      </div>
-
-      <div class="rv-search">
-        <label class="sr-only" for="reviewSearch">후기 검색</label>
-        <input type="search" id="reviewSearch" class="field__input"
-               placeholder="제목으로 찾기" autocomplete="off" />
       </div>
 
       <p class="review-list__state" id="reviewState">불러오는 중입니다.</p>

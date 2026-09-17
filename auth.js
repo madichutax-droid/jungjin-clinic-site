@@ -167,7 +167,7 @@
   // ── 후기 목록 ───────────────────────────────────────────────
   // 받아 온 글을 여기 담아 두고, 분류·검색·페이지는 이 배열 위에서 거릅니다.
   // 회원은 어차피 전부 읽을 수 있으므로 매번 다시 물어볼 이유가 없습니다.
-  const 창고 = { 전부: [], 분류: '', 검색: '', 쪽: 1, 원장: false, 회원: false };
+  const 창고 = { 전부: [], 분류: '', 쪽: 1, 원장: false, 회원: false };
   const 한쪽 = 10;
 
   /** 사진 주소. 공개 창고라 로그인 없이도 열립니다. */
@@ -281,13 +281,8 @@
 
   /** 지금 조건에 맞는 글만. */
   function 거른것() {
-    const q = 창고.검색.trim().toLowerCase();
-    return 창고.전부.filter(function (r) {
-      if (창고.분류 && r.category !== 창고.분류) return false;
-      if (!q) return true;
-      const 밭 = 제목(r) + (창고.회원 && r.body ? ' ' + r.body : '');
-      return 밭.toLowerCase().indexOf(q) >= 0;
-    });
+    if (!창고.분류) return 창고.전부;
+    return 창고.전부.filter(function (r) { return r.category === 창고.분류; });
   }
 
   function 쪽번호(총쪽) {
@@ -327,7 +322,7 @@
     list.textContent = '';
     if (!것들.length) {
       if (state) {
-        state.textContent = 창고.검색 ? '찾으시는 글이 없습니다.' : '아직 올라온 글이 없습니다.';
+        state.textContent = '아직 올라온 글이 없습니다.';
         state.hidden = false;
       }
       쪽번호(1);
@@ -374,7 +369,7 @@
     그리기();
   }
 
-  /** 분류 탭과 검색칸. */
+  /** 분류 탭. */
   function 거르기단추() {
     const box = $('reviewTabs');
     if (box) {
@@ -389,19 +384,6 @@
         창고.분류 = b.dataset.cat || '';
         창고.쪽 = 1;
         그리기();
-      });
-    }
-    const q = $('reviewSearch');
-    if (q) {
-      let 시계 = null;
-      q.addEventListener('input', function () {
-        // 한 글자마다 다시 그리면 목록이 깜빡입니다. 잠깐 기다렸다 그립니다.
-        clearTimeout(시계);
-        시계 = setTimeout(function () {
-          창고.검색 = q.value || '';
-          창고.쪽 = 1;
-          그리기();
-        }, 200);
       });
     }
   }
@@ -716,8 +698,8 @@
       const a = await sb.rpc('is_author');
       창고.원장 = (!a.error && a.data === true);
       if (창고.원장) {
-        const w = $('reviewWrite');
-        if (w) w.hidden = false;
+        const sec = $('writeSection');
+        if (sec) sec.hidden = false;     // 구획째로 폅니다 (안쪽만 열면 여백이 남습니다)
         후기폼();
         사진붙이기();
       }

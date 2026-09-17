@@ -1835,13 +1835,16 @@ select.field__input {
   color: #fff; background: var(--brown); border-color: var(--brown); font-weight: 700;
 }
 
-/* 검색 */
-.rv-search { margin-bottom: var(--sp-6); }
-.rv-search .field__input { font-size: var(--fs-sm); padding-top: 11px; padding-bottom: 11px; }
 
 /* 목록 — 격자로 깝니다(2026-09-17).
    칸 하나가 300px 아래로 내려가지 않게 두면 폭에 따라 단 수가
    저절로 정해집니다 — 1160px 에서 셋, 태블릿에서 둘, 휴대폰에서 하나. */
+/* 목록 구획은 위 여백을 줄입니다. 로그인 안 하신 분께는 이것이
+   경로(crumb) 바로 다음에 오는 첫 내용이라, 104px 을 그대로 두면
+   화면 한참 아래에서 시작합니다. */
+.section--list { padding-top: var(--sp-12); }
+@media (max-width: 640px) { .section--list { padding-top: var(--sp-8); } }
+
 .rv-list {
   list-style: none; margin: 0; padding: 0;
   display: grid; gap: var(--sp-12) var(--sp-6);
