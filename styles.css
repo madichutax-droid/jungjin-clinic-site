@@ -1839,19 +1839,30 @@ select.field__input {
 .rv-search { margin-bottom: var(--sp-6); }
 .rv-search .field__input { font-size: var(--fs-sm); padding-top: 11px; padding-bottom: 11px; }
 
-/* 목록 */
-.rv-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
-.rv { border-bottom: 1px solid var(--line); }
+/* 목록 — 격자로 깝니다(2026-09-17).
+   칸 하나가 300px 아래로 내려가지 않게 두면 폭에 따라 단 수가
+   저절로 정해집니다 — 1160px 에서 셋, 태블릿에서 둘, 휴대폰에서 하나. */
+.rv-list {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: var(--sp-12) var(--sp-6);
+  /* min(280px, 100%) — 화면이 280px 보다 좁으면 칸이 화면을 따라 줄어듭니다.
+     그냥 280px 로 두면 320px 화면에서 칸이 밖으로 삐져나갑니다. */
+  grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+}
+.rv { min-width: 0; }
+/* 글이 한둘일 때 한 칸이 화면을 다 먹지 않게 */
+.rv-list:has(.rv:nth-child(-n+2):last-child) {
+  grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 400px));
+}
 
 /* 제목 줄 — 통째로 누르는 단추입니다.
    사진 옆에 분류·제목·날짜를 쌓습니다(2026-09-17). 사진을 키우면서
    한 줄 배치로는 제목이 눌려 접혔습니다. */
 .rv__head {
-  display: flex; align-items: center; gap: var(--sp-5);
-  width: 100%; padding: var(--sp-5) 0; text-align: left;
+  display: block; width: 100%; padding: 0; text-align: left;
   background: none; border: 0; cursor: pointer; color: inherit;
 }
-.rv__meta { flex: 1 1 auto; min-width: 0; }
+.rv__meta { min-width: 0; padding-top: var(--sp-4); }
 .rv__head:hover .rv__title { color: var(--accent-deep); }
 .rv__cat {
   display: inline-block; margin-bottom: var(--sp-2);
@@ -1871,7 +1882,7 @@ select.field__input {
 .rv.is-open .rv__title { color: var(--accent-deep); }
 
 /* 펼친 내용 — 줄바꿈을 적으신 대로 살립니다 */
-.rv__body { padding: 0 0 var(--sp-6); }
+.rv__body { padding: var(--sp-4) 0 0; margin-top: var(--sp-4); border-top: 1px solid var(--line); }
 .rv__body p { white-space: pre-wrap; }
 .rv__del { margin-top: var(--sp-4); font-size: var(--fs-sm); color: var(--muted); }
 
@@ -1904,7 +1915,7 @@ select.field__input {
 
 /* 좁은 화면 */
 @media (max-width: 640px) {
-  .rv__head { gap: var(--sp-4); }
+  .rv-list { gap: var(--sp-8) var(--sp-5); }
 }
 @media (max-width: 420px) {
   .field__row--title { gap: var(--sp-2); }
@@ -1933,15 +1944,15 @@ select.field__input {
    환자 얼굴이 담기는 자리입니다. 서면 동의를 받은 사진만 올립니다. */
 
 /* 목록 썸네일 */
+/* 사진이 칸 폭을 다 씁니다. 높이는 3:2 로 저절로 따라옵니다 —
+   숫자를 박아 두면 단 수가 바뀔 때마다 비율이 어긋납니다. */
 .rv__shot {
-  flex: 0 0 auto; width: 190px; height: 127px; object-fit: cover;   /* 3:2 */
-  border-radius: var(--radius-sm); border: 1px solid var(--line);
+  display: block; width: 100%; height: auto; aspect-ratio: 3 / 2;
+  object-fit: cover; max-width: 100%;
+  border-radius: var(--radius); border: 1px solid var(--line);
   background: var(--bg-alt);
 }
-/* 좁은 화면 크기는 반드시 이 바로 아래에 둡니다.
-   위쪽 미디어쿼리에 적으면 이 규칙이 나중에 나와서 덮어 버립니다. */
-@media (max-width: 640px) { .rv__shot { width: 116px; height: 78px; } }
-@media (max-width: 380px) { .rv__shot { width: 92px;  height: 62px; } }
+.rv__head:hover .rv__shot { border-color: var(--line-2); }
 
 /* 사진 고르는 칸 */
 .field__file {

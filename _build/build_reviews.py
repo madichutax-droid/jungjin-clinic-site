@@ -183,6 +183,13 @@ def build_reviews():
 {_write_note()}
       </div>
 
+    </div>
+  </section>
+
+  <!-- 목록은 전체 폭을 씁니다. 읽기 폭(container--read) 안에 두면
+       단이 둘밖에 안 나와 격자로 깐 뜻이 없습니다. -->
+  <section class="section section--list">
+    <div class="container">
       <h2 class="review-list__title">{R_TITLE}</h2>
       <p class="review-list__note">아래는 <strong>작성자 개인의 경험</strong>입니다.
         같은 치료를 받으신 다른 분에게 같은 결과가 나타난다는 뜻이 아니며,
