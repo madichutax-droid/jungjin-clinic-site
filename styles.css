@@ -1734,12 +1734,6 @@ body, p, .why-text, .audience__item p,
 .review-list__title { margin-top: var(--sp-12); }
 .review-write .notice-box { margin-top: var(--sp-8); }
 .review-list__state { color: var(--muted); }
-/* 후기 목록 위 면책 — 읽기 전에 눈에 들어와야 하되 본문을 누르지 않게 */
-.review-list__note {
-  margin: calc(var(--sp-5) * -1) 0 var(--sp-6);
-  padding-left: var(--sp-4); border-left: 3px solid var(--line-2);
-  font-size: var(--fs-sm); line-height: 1.75; color: var(--muted);
-}
 
   display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--sp-3);
   margin-bottom: var(--sp-3);
