@@ -1986,3 +1986,26 @@ select.field__input {
   .legal h2 { break-after: avoid; }
   .consent-sign > div { break-inside: avoid; }
 }
+
+/* ── 후기 고치기 (2026-09-17) ─────────────────────────────────── */
+.form__actions--row { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
+.rv__fix { margin-top: var(--sp-4); margin-right: var(--sp-5); font-size: var(--fs-sm); }
+/* 지우기와 고치기가 한 줄에 섭니다 — 위 여백을 두 번 주지 않습니다 */
+.rv__fix + .rv__del { margin-top: var(--sp-4); }
+
+/* 고칠 때 보이는 '지금 붙어 있는 사진' */
+.shot__current {
+  display: flex; flex-wrap: wrap; gap: var(--sp-4); align-items: flex-start;
+  margin-top: var(--sp-4); padding: var(--sp-4);
+  border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--bg-alt);
+}
+.shot__thumb {
+  flex: 0 0 auto; width: 140px; height: 94px; object-fit: cover;
+  border-radius: var(--radius-sm); border: 1px solid var(--line); background: var(--surface);
+}
+.shot__current-side { flex: 1 1 220px; min-width: 0; }
+.shot__current-side .shot__help { margin-top: 0; margin-bottom: var(--sp-3); }
+
+@media (max-width: 420px) {
+  .shot__thumb { width: 100%; height: auto; aspect-ratio: 3 / 2; }
+}

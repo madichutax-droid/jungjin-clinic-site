@@ -228,6 +228,13 @@
     body.appendChild(p);
 
     if (창고.원장) {
+      const fix = document.createElement('button');
+      fix.type = 'button';
+      fix.className = 'linklike rv__fix';
+      fix.textContent = '고치기';
+      fix.addEventListener('click', function () { 고치기시작(row); });
+      body.appendChild(fix);
+
       const del = document.createElement('button');
       del.type = 'button';
       del.className = 'linklike rv__del';
@@ -387,7 +394,9 @@
   // 올리기 전에 얼굴을 가릴 수 있게 해 두었습니다. 가린 자국은 그림 자체에
   // 찍혀 나갑니다 — 화면에서 덮는 것이 아니라 원본을 바꿔서 올립니다.
   // 그래서 나중에 벗겨낼 수 없습니다. 그게 맞습니다.
-  const 사진 = { canvas: null, ctx: null, 되돌리기: [], 있음: false };
+  const 사진 = { canvas: null, ctx: null, 되돌리기: [], 있음: false, 뺌: false };
+  // 고치는 중이면 { id, photo }. 아니면 null.
+  let 편집 = null;
   const 최대폭 = 1400;
   const 붓 = 34;          // 문지르는 붓의 굵기
   const 알갱이 = 14;      // 모자이크 알갱이 크기
@@ -489,6 +498,83 @@
       사진.있음 = false;
       사진.되돌리기 = [];
     });
+
+    // 고치는 중에 '이미 붙어 있는 사진' 을 떼는 단추
+    const drop = $('shotDrop');
+    if (drop) drop.addEventListener('click', function () {
+      사진.뺌 = true;
+      const cur = $('shotCurrent');
+      if (cur) cur.hidden = true;
+    });
+  }
+
+  /** 글쓰기 칸을 비우고 '올리기' 상태로 되돌립니다. */
+  function 폼비우기() {
+    편집 = null;
+    사진.뺌 = false;
+    사진.있음 = false;
+    사진.되돌리기 = [];
+
+    const cat = $('reviewCat'), age = $('reviewAge'), sex = $('reviewSex');
+    const who = $('reviewWho'), body = $('reviewBody');
+    if (cat) cat.value = '';
+    if (age) age.value = '';
+    if (sex) sex.value = '여';
+    if (who) who.value = '';
+    if (body) body.value = '';
+    const count = $('reviewCount'); if (count) count.textContent = '0';
+
+    const 고르기 = $('reviewPhoto'); if (고르기) 고르기.value = '';
+    const box = $('shotBox'); if (box) box.hidden = true;
+    const cur = $('shotCurrent'); if (cur) cur.hidden = true;
+
+    const title = $('writeTitle'); if (title) title.textContent = '후기 올리기';
+    const btn = $('reviewSubmit'); if (btn) btn.textContent = '올리기';
+    const cancel = $('reviewCancel'); if (cancel) cancel.hidden = true;
+    clear($('reviewMsg'));
+
+    const prev = $('titlePreview');
+    if (prev) prev.textContent = '척추관협착증, 66세, 여, 차OO님';
+  }
+
+  /** 카드의 '고치기' 를 누르면 글쓰기 칸으로 끌어올립니다. */
+  function 고치기시작(row) {
+    const write = $('reviewWrite');
+    if (!write || write.hidden) return;
+
+    편집 = { id: row.id, photo: row.photo || null };
+    사진.뺌 = false;
+    사진.있음 = false;
+    사진.되돌리기 = [];
+
+    $('reviewCat').value = row.category;
+    $('reviewAge').value = row.age;
+    $('reviewSex').value = row.sex;
+    $('reviewWho').value = row.who;
+    $('reviewBody').value = row.body;
+    const count = $('reviewCount');
+    if (count) count.textContent = String((row.body || '').length);
+
+    // 붙어 있던 사진은 그림판에 올리지 않고 그대로 보여 주기만 합니다.
+    // 남의 서버에서 온 그림을 그림판에 올리면 내보내기가 막힙니다.
+    // 얼굴을 더 가리셔야 하면 새 파일로 다시 올리시는 편이 확실합니다.
+    const 고르기 = $('reviewPhoto'); if (고르기) 고르기.value = '';
+    const box = $('shotBox'); if (box) box.hidden = true;
+    const cur = $('shotCurrent'), curImg = $('shotCurrentImg');
+    if (cur && curImg) {
+      if (row.photo) { curImg.src = 사진주소(row.photo); cur.hidden = false; }
+      else cur.hidden = true;
+    }
+
+    $('writeTitle').textContent = '후기 고치기';
+    $('reviewSubmit').textContent = '고쳐서 올리기';
+    const cancel = $('reviewCancel'); if (cancel) cancel.hidden = false;
+    clear($('reviewMsg'));
+
+    const prev = $('titlePreview');
+    if (prev) prev.textContent = 제목(row);
+
+    write.scrollIntoView({ block: 'start', behavior: 'smooth' });
   }
 
   /** 칠한 자국이 찍힌 그림을 파일로. 사진이 없으면 null. */
@@ -523,6 +609,13 @@
       });
     }
 
+    const cancel = $('reviewCancel');
+    if (cancel) cancel.addEventListener('click', function () {
+      폼비우기();
+      const list = $('reviewList');
+      if (list) list.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    });
+
     form.addEventListener('submit', async function (e) {
       e.preventDefault();
       clear(msg);
@@ -545,11 +638,14 @@
         return;
       }
 
-      busy(btn, true, '올리는 중입니다');
+      const 고치는중 = !!편집;
+      busy(btn, true, 고치는중 ? '고치는 중입니다' : '올리는 중입니다');
 
-      // 사진이 있으면 먼저 올립니다. 사진이 실패하면 글도 올리지 않습니다 —
-      // 사진 없는 글이 올라가 버리면 원장님이 다시 지우고 써야 합니다.
-      let 파일이름 = null;
+      // 사진부터 정리합니다. 새 파일을 고르셨으면 그것을 올리고,
+      // '사진 빼기' 를 누르셨으면 떼고, 아무것도 안 하셨으면 그대로 둡니다.
+      let 파일이름 = 고치는중 ? 편집.photo : null;
+      const 옛사진 = 고치는중 ? 편집.photo : null;
+
       const blob = await 사진파일();
       if (blob) {
         파일이름 = (Date.now().toString(36) + Math.random().toString(36).slice(2, 8)) + '.jpg';
@@ -560,24 +656,31 @@
           say(msg, '사진을 올리지 못했습니다. ' + 말로(up.error));
           return;
         }
+      } else if (사진.뺌) {
+        파일이름 = null;
       }
 
-      const r = await sb.from('reviews').insert({
-        category: c, age: a, sex: x, who: w, body: t, photo: 파일이름,
-      });
+      const 값 = { category: c, age: a, sex: x, who: w, body: t, photo: 파일이름 };
+      const r = 고치는중
+        ? await sb.from('reviews').update(값).eq('id', 편집.id)
+        : await sb.from('reviews').insert(값);
       busy(btn, false);
 
       if (r.error) {
-        // 글이 안 올라갔으면 방금 올린 사진도 거둡니다
-        if (파일이름) await sb.storage.from('reviews').remove([파일이름]);
+        // 저장이 안 됐으면 방금 올린 사진은 거둡니다
+        if (blob && 파일이름) await sb.storage.from('reviews').remove([파일이름]);
         say(msg, 말로(r.error));
         return;
       }
-      age.value = ''; who.value = ''; body.value = '';
-      const 빼기 = $('shotClear'); if (빼기) 빼기.click();
-      if (count) count.textContent = '0';
-      미리보기();
-      say(msg, '올렸습니다. 로그인한 회원에게 보입니다.', 'ok');
+
+      // 저장이 끝났으니 더 이상 쓰지 않는 옛 사진을 지웁니다.
+      // 남겨 두면 주소를 아는 사람에게 계속 보입니다.
+      if (옛사진 && 옛사진 !== 파일이름) {
+        await sb.storage.from('reviews').remove([옛사진]);
+      }
+
+      폼비우기();
+      say(msg, 고치는중 ? '고쳤습니다.' : '올렸습니다. 로그인한 회원에게 보입니다.', 'ok');
       목록();
     });
   }

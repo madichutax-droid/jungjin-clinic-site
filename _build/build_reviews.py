@@ -111,7 +111,7 @@ def build_reviews():
       <!-- 원장 계정일 때만 열립니다.
            다른 계정이 열어 보려 해도 등록 단계에서 데이터베이스가 거부합니다. -->
       <div class="review-write" id="reviewWrite" hidden>
-        <h2 class="review-write__title">{WRITE_TITLE}</h2>
+        <h2 class="review-write__title" id="writeTitle">{WRITE_TITLE}</h2>
         <form id="reviewForm" novalidate>
 
           <div class="field">
@@ -144,6 +144,16 @@ def build_reviews():
               로그인하지 않은 분께도 보입니다. 한 번 공개되면 거두기 어렵습니다.
             </span>
 
+            <!-- 고칠 때, 이미 붙어 있는 사진 -->
+            <div class="shot__current" id="shotCurrent" hidden>
+              <img id="shotCurrentImg" class="shot__thumb" alt="지금 붙어 있는 사진" />
+              <div class="shot__current-side">
+                <p class="shot__help">지금 붙어 있는 사진입니다.<br />
+                  바꾸시려면 위에서 새 파일을 고르십시오.</p>
+                <button type="button" class="btn btn--outline btn--check" id="shotDrop">사진 빼기</button>
+              </div>
+            </div>
+
             <!-- 얼굴 가리기 — 사진을 고르면 열립니다 -->
             <div class="shot" id="shotBox" hidden>
               <canvas id="shotCanvas" class="shot__canvas"></canvas>
@@ -165,8 +175,9 @@ def build_reviews():
           </label>
           <p class="field__count"><span id="reviewCount">0</span> / 4000자</p>
           <p class="form__msg" id="reviewMsg" role="status" aria-live="polite" hidden></p>
-          <div class="form__actions">
+          <div class="form__actions form__actions--row">
             <button type="submit" class="btn btn--accent" id="reviewSubmit">올리기</button>
+            <button type="button" class="btn btn--outline" id="reviewCancel" hidden>취소</button>
           </div>
         </form>
 {_write_note()}

@@ -164,7 +164,7 @@ create index if not exists reviews_category_idx on public.reviews (category);
 
 alter table public.reviews enable row level security;
 revoke all on public.reviews from anon;
-grant select, insert, delete on public.reviews to authenticated;
+grant select, insert, update, delete on public.reviews to authenticated;
 
 drop policy if exists "회원은 읽습니다" on public.reviews;
 create policy "회원은 읽습니다"
@@ -180,7 +180,15 @@ create policy "원장만 지웁니다"
   on public.reviews for delete to authenticated
   using (public.is_author());
 
--- 고치기 정책은 일부러 없습니다. 지우고 다시 올리십시오.
+drop policy if exists "원장만 고칩니다" on public.reviews;
+create policy "원장만 고칩니다"
+  on public.reviews for update to authenticated
+  using (public.is_author())
+  with check (public.is_author());
+
+-- 고치기는 원장만 합니다(2026-09-17 추가). using 과 with check 을 모두
+-- 둔 이유 — using 은 '어느 줄을 고칠 수 있나', with check 은 '고친 결과가
+-- 남아도 되나' 를 봅니다. 하나만 두면 한쪽이 열립니다.
 
 -- ── 4-2. 목록만 내보내는 통로 ─────────────────────────────────
 --
