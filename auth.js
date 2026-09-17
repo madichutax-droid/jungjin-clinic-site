@@ -152,13 +152,11 @@
   // ══════════════════════════════════════════════════════════
   //  치료 후기
   // ══════════════════════════════════════════════════════════
-  const gate = $('reviewGate');
-  const area = $('reviewArea');
 
   // ── 후기 목록 ───────────────────────────────────────────────
   // 받아 온 글을 여기 담아 두고, 분류·검색·페이지는 이 배열 위에서 거릅니다.
   // 회원은 어차피 전부 읽을 수 있으므로 매번 다시 물어볼 이유가 없습니다.
-  const 창고 = { 전부: [], 분류: '', 검색: '', 쪽: 1, 원장: false };
+  const 창고 = { 전부: [], 분류: '', 검색: '', 쪽: 1, 원장: false, 회원: false };
   const 한쪽 = 10;
 
   function 제목(r) {
@@ -166,15 +164,24 @@
   }
 
   /** 카드 하나. 글은 전부 textContent 로만 넣습니다 —
-   *  innerHTML 로 넣으면 후기 칸이 그대로 스크립트 주입 통로가 됩니다. */
+   *  innerHTML 로 넣으면 후기 칸이 그대로 스크립트 주입 통로가 됩니다.
+   *
+   *  로그인하지 않은 분께는 제목만 보이고, 누르면 로그인 화면으로 갑니다.
+   *  본문은 화면에서 숨기는 것이 아니라 **아예 받아 오지 않습니다** —
+   *  reviews_public 통로에 body 칸이 없습니다. */
   function 카드(row) {
     const li = document.createElement('li');
     li.className = 'rv';
 
-    const head = document.createElement('button');
-    head.type = 'button';
+    const head = document.createElement(창고.회원 ? 'button' : 'a');
     head.className = 'rv__head';
-    head.setAttribute('aria-expanded', 'false');
+    if (창고.회원) {
+      head.type = 'button';
+      head.setAttribute('aria-expanded', 'false');
+    } else {
+      head.href = 'login.html';
+      li.classList.add('rv--locked');
+    }
 
     const cat = document.createElement('span');
     cat.className = 'rv__cat';
@@ -193,6 +200,8 @@
     head.appendChild(when);
 
     li.appendChild(head);
+
+    if (!창고.회원) return li;      // 본문도 지우기도 없습니다
 
     const body = document.createElement('div');
     body.className = 'rv__body';
@@ -231,7 +240,8 @@
     return 창고.전부.filter(function (r) {
       if (창고.분류 && r.category !== 창고.분류) return false;
       if (!q) return true;
-      return (제목(r) + ' ' + r.body).toLowerCase().indexOf(q) >= 0;
+      const 밭 = 제목(r) + (창고.회원 && r.body ? ' ' + r.body : '');
+      return 밭.toLowerCase().indexOf(q) >= 0;
     });
   }
 
@@ -300,10 +310,15 @@
 
   async function 목록() {
     const state = $('reviewState');
-    const r = await sb.from('reviews')
-      .select('id, category, age, sex, who, body, created_at')
-      .order('created_at', { ascending: false })
-      .limit(500);
+    // 회원은 본문까지, 그 밖은 목록만. 통로 자체가 다릅니다 —
+    // reviews_public 에는 body 칸이 없어서 새어 나갈 수가 없습니다.
+    const r = 창고.회원
+      ? await sb.from('reviews')
+          .select('id, category, age, sex, who, body, created_at')
+          .order('created_at', { ascending: false }).limit(500)
+      : await sb.from('reviews_public')
+          .select('id, category, age, sex, who, created_at')
+          .order('created_at', { ascending: false }).limit(500);
 
     if (r.error) {
       if (state) { state.textContent = 말로(r.error); state.hidden = false; }
@@ -408,24 +423,25 @@
   }
 
   async function 후기페이지() {
-    if (!gate || !area) return;
+    if (!$('reviewList')) return;      // 후기 페이지가 아니면 아무것도 하지 않습니다
+
     const s = await sb.auth.getSession();
     const session = s.data.session;
+    창고.회원 = !!session;
 
-    if (!session) { gate.hidden = false; area.hidden = true; return; }
+    const notice = $('rvNotice');
+    if (notice) notice.hidden = 창고.회원;
 
-    gate.hidden = true;
-    area.hidden = false;
-
-    // 원장인지 데이터베이스에 물어봅니다. 브라우저가 스스로 정하지 않습니다.
-    // 여기서 거짓말을 해도 등록 단계에서 정책이 다시 막습니다.
-    const a = await sb.rpc('is_author');
-    창고.원장 = (!a.error && a.data === true);
-
-    if (창고.원장) {
-      const w = $('reviewWrite');
-      if (w) w.hidden = false;
-      후기폼();
+    if (창고.회원) {
+      // 원장인지 데이터베이스에 물어봅니다. 브라우저가 스스로 정하지 않습니다.
+      // 여기서 거짓말을 해도 등록 단계에서 정책이 다시 막습니다.
+      const a = await sb.rpc('is_author');
+      창고.원장 = (!a.error && a.data === true);
+      if (창고.원장) {
+        const w = $('reviewWrite');
+        if (w) w.hidden = false;
+        후기폼();
+      }
     }
     거르기단추();
     목록();

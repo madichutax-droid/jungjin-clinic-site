@@ -40,12 +40,13 @@ R_TITLE = "치료 후기"
 # 로그인 전후 양쪽에서 다 읽히는 문장이어야 합니다 — 히어로는 한 벌뿐입니다
 R_LEAD  = f"진료를 받으신 분들이 남긴 글입니다.{M}회원만 보실 수 있습니다."
 
-# 로그인 벽 앞에 서는 분께 — 왜 막혀 있는지 밝힙니다.
-GATE_TITLE = "회원만 볼 수 있습니다"
+# 로그인하지 않은 분께 목록 위에 뜨는 줄.
+# 목록은 보여 드리고 내용만 막습니다(원장님 지시, 2026-09-17).
+GATE_TITLE = "내용은 회원만 볼 수 있습니다"
 GATE_BODY = [
-    "치료 후기는 로그인하신 회원에게만 보입니다.",
+    "제목과 분류는 누구나 보실 수 있고, <strong>글 내용은 로그인하셔야</strong> 보입니다.",
     "의료법은 환자의 치료경험담을 광고로 보고, 누구에게나 열린 곳에 두는 것을 "
-    "금하고 있습니다. 그래서 회원으로 들어오신 분에게만 엽니다.",
+    "금하고 있습니다. 그래서 내용은 회원으로 들어오신 분에게만 엽니다.",
 ]
 
 # 원장 화면에만 나오는 안내. 옮겨 적으실 때 걸리는 것들입니다.
@@ -117,87 +118,80 @@ def build_reviews():
   <section class="section">
     <div class="container container--read">
 
-      <!-- 로그인 전 — 서버가 찍어내는 기본 상태입니다.
-           auth.js 가 세션을 확인하면 이 칸을 닫고 아래 회원 칸을 엽니다.
-           자바스크립트가 꺼져 있으면 여기서 멈춥니다. 그래도 괜찮습니다. -->
-      <div class="review-gate" id="reviewGate">
-        <div class="review-gate__inner">
-          <h2 class="review-gate__title">{GATE_TITLE}</h2>
-{gate_p}
-          <div class="location__actions">
-            <a href="login.html" class="btn btn--accent">로그인</a>
-            <a href="login.html#join" class="btn btn--outline">회원가입</a>
-          </div>
-        </div>
-      </div>
+      <!-- 원장 계정일 때만 열립니다.
+           다른 계정이 열어 보려 해도 등록 단계에서 데이터베이스가 거부합니다. -->
+      <div class="review-write" id="reviewWrite" hidden>
+        <h2 class="review-write__title">{WRITE_TITLE}</h2>
+        <form id="reviewForm" novalidate>
 
-      <!-- 로그인 후 — hidden 으로 나갑니다. 내용은 비어 있고,
-           후기 본문은 로그인한 브라우저만 Supabase 에서 받아 옵니다. -->
-      <div class="review-area" id="reviewArea" hidden>
-
-        <!-- 글 쓰는 칸 — 원장 계정일 때만 열립니다.
-             다른 계정이 열어 보려 해도 등록 단계에서 데이터베이스가 거부합니다. -->
-        <div class="review-write" id="reviewWrite" hidden>
-          <h2 class="review-write__title">{WRITE_TITLE}</h2>
-          <form id="reviewForm" novalidate>
-
-            <div class="field">
-              <span class="field__label">제목</span>
-              <span class="field__row field__row--title">
-                <select id="reviewCat" class="field__input field__select" required>
-                  <option value="">분류</option>
+          <div class="field">
+            <span class="field__label">제목</span>
+            <span class="field__row field__row--title">
+              <select id="reviewCat" class="field__input field__select" required>
+                <option value="">분류</option>
 {cat_options}
-                </select>
-                <input type="number" id="reviewAge" class="field__input field__input--age"
-                       min="1" max="120" placeholder="66" aria-label="나이" required />
-                <span class="field__at">세</span>
-                <select id="reviewSex" class="field__input field__select field__input--sex"
-                        aria-label="성별" required>
-                  <option value="여">여</option>
-                  <option value="남">남</option>
-                </select>
-                <input type="text" id="reviewWho" class="field__input" maxlength="20"
-                       placeholder="차OO님" aria-label="성함 표기" required />
-              </span>
-              <span class="field__hint">이렇게 나옵니다 — <strong id="titlePreview">척추관협착증, 66세, 여, 차OO님</strong></span>
-            </div>
+              </select>
+              <input type="number" id="reviewAge" class="field__input field__input--age"
+                     min="1" max="120" placeholder="66" aria-label="나이" required />
+              <span class="field__at">세</span>
+              <select id="reviewSex" class="field__input field__select field__input--sex"
+                      aria-label="성별" required>
+                <option value="여">여</option>
+                <option value="남">남</option>
+              </select>
+              <input type="text" id="reviewWho" class="field__input" maxlength="20"
+                     placeholder="차OO님" aria-label="성함 표기" required />
+            </span>
+            <span class="field__hint">이렇게 나옵니다 — <strong id="titlePreview">척추관협착증, 66세, 여, 차OO님</strong></span>
+          </div>
 
-            <label class="field">
-              <span class="field__label">내용</span>
-              <textarea id="reviewBody" class="field__input field__input--area"
-                        rows="9" maxlength="4000" required></textarea>
-            </label>
-            <p class="field__count"><span id="reviewCount">0</span> / 4000자</p>
-            <p class="form__msg" id="reviewMsg" role="status" aria-live="polite" hidden></p>
-            <div class="form__actions">
-              <button type="submit" class="btn btn--accent" id="reviewSubmit">올리기</button>
-            </div>
-          </form>
+          <label class="field">
+            <span class="field__label">내용</span>
+            <textarea id="reviewBody" class="field__input field__input--area"
+                      rows="9" maxlength="4000" required></textarea>
+          </label>
+          <p class="field__count"><span id="reviewCount">0</span> / 4000자</p>
+          <p class="form__msg" id="reviewMsg" role="status" aria-live="polite" hidden></p>
+          <div class="form__actions">
+            <button type="submit" class="btn btn--accent" id="reviewSubmit">올리기</button>
+          </div>
+        </form>
 {_write_note()}
-        </div>
-
-        <h2 class="review-list__title">치료 후기</h2>
-        <p class="review-list__note">아래는 <strong>작성자 개인의 경험</strong>입니다.
-          같은 치료를 받으신 다른 분에게 같은 결과가 나타난다는 뜻이 아니며,
-          치료 효과에 대한 약속으로 읽지 말아 주십시오.</p>
-
-        <!-- 분류 — 글이 없는 분류는 auth.js 가 감춥니다 -->
-        <div class="rv-tabs" id="reviewTabs" role="tablist" aria-label="분류">
-          <button type="button" class="rv-tab is-active" data-cat="" role="tab" aria-selected="true">전체</button>
-{cat_tabs}
-        </div>
-
-        <div class="rv-search">
-          <label class="sr-only" for="reviewSearch">후기 검색</label>
-          <input type="search" id="reviewSearch" class="field__input"
-                 placeholder="제목이나 내용으로 찾기" autocomplete="off" />
-        </div>
-
-        <p class="review-list__state" id="reviewState">불러오는 중입니다.</p>
-        <ol class="rv-list" id="reviewList"></ol>
-        <nav class="rv-pager" id="reviewPager" aria-label="페이지" hidden></nav>
-
       </div>
+
+      <h2 class="review-list__title">{R_TITLE}</h2>
+      <p class="review-list__note">아래는 <strong>작성자 개인의 경험</strong>입니다.
+        같은 치료를 받으신 다른 분에게 같은 결과가 나타난다는 뜻이 아니며,
+        치료 효과에 대한 약속으로 읽지 말아 주십시오.</p>
+
+      <!-- 로그인하지 않은 분께만 — auth.js 가 세션을 보고 폅니다.
+           기본을 hidden 으로 두는 이유는, 로그인하고 오신 분께 잠깐이라도
+           '로그인하십시오' 가 번쩍이지 않게 하려는 것입니다. -->
+      <div class="rv-notice" id="rvNotice" hidden>
+        <div class="rv-notice__body">
+          <h3 class="rv-notice__title">{GATE_TITLE}</h3>
+{gate_p}
+        </div>
+        <div class="rv-notice__act">
+          <a href="login.html" class="btn btn--accent">로그인</a>
+          <a href="login.html#join" class="btn btn--outline">회원가입</a>
+        </div>
+      </div>
+
+      <div class="rv-tabs" id="reviewTabs" role="tablist" aria-label="분류">
+        <button type="button" class="rv-tab is-active" data-cat="" role="tab" aria-selected="true">전체</button>
+{cat_tabs}
+      </div>
+
+      <div class="rv-search">
+        <label class="sr-only" for="reviewSearch">후기 검색</label>
+        <input type="search" id="reviewSearch" class="field__input"
+               placeholder="제목으로 찾기" autocomplete="off" />
+      </div>
+
+      <p class="review-list__state" id="reviewState">불러오는 중입니다.</p>
+      <ol class="rv-list" id="reviewList"></ol>
+      <nav class="rv-pager" id="reviewPager" aria-label="페이지" hidden></nav>
 
       <p class="programs__note">{P.NOTICE_LINE}</p>
     </div>

@@ -1724,17 +1724,6 @@ body, p, .why-text, .audience__item p,
   font-size: var(--fs-sm); color: var(--muted); line-height: 1.8;
 }
 
-/* 로그인 벽 — 후기 대신 서는 자리 */
-.review-gate__inner {
-  padding: var(--sp-12) var(--sp-6); text-align: center;
-  border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-alt);
-}
-.review-gate__title {
-  font-size: var(--fs-xl); line-height: 1.45; letter-spacing: var(--ls-sub);
-  margin-bottom: var(--sp-4);
-}
-.review-gate__inner p { color: var(--muted); margin-bottom: var(--sp-3); }
-.review-gate__inner .location__actions { margin-top: var(--sp-8); justify-content: center; }
 
 /* 후기 쓰는 칸 */
 .review-write { padding-bottom: var(--sp-12); border-bottom: 1px solid var(--line); }
@@ -1760,8 +1749,7 @@ body, p, .why-text, .audience__item p,
 @media (max-width: 640px) {
   .topbar__right { gap: var(--sp-3); }
   .topbar__who { display: none; }      /* 좁은 화면에서는 '로그아웃' 만 남깁니다 */
-  .review-gate__inner { padding: var(--sp-8) var(--sp-5); }
-}
+  }
 
 /* ── 가입 칸 늘어난 것 (2026-09-17) ───────────────────────────── */
 
@@ -1913,4 +1901,39 @@ select.field__input {
   .field__input--age { flex: 0 0 74px; }
   .field__input--sex { flex: 0 0 74px; }
   .field__row--title > input[type="text"] { flex: 1 1 100%; }
+}
+
+/* ── 로그인 안내줄 (2026-09-17) ───────────────────────────────
+   목록은 누구나 보고, 내용만 회원이 봅니다. 목록 위에 한 번만 섭니다. */
+.rv-notice {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: var(--sp-5); margin-bottom: var(--sp-6);
+  padding: var(--sp-6); background: var(--bg-alt);
+  border: 1px solid var(--line); border-radius: var(--radius);
+}
+.rv-notice__body { flex: 1 1 320px; min-width: 0; }
+.rv-notice__title {
+  font-size: var(--fs-lg); line-height: 1.45; letter-spacing: var(--ls-sub);
+  margin-bottom: var(--sp-2);
+}
+.rv-notice__body p { font-size: var(--fs-sm); line-height: 1.75; color: var(--muted); }
+.rv-notice__body p + p { margin-top: var(--sp-2); }
+.rv-notice__act { display: flex; flex-wrap: wrap; gap: var(--sp-3); flex: 0 0 auto; }
+
+/* 잠긴 카드 — 누르면 로그인으로 갑니다. 자물쇠로 그것을 미리 알립니다. */
+.rv--locked .rv__head { text-decoration: none; color: inherit; }
+/* 자물쇠는 이모지가 아니라 선으로 그립니다 — 이 사이트의 아이콘은 전부 선입니다.
+   이모지를 쓰면 글꼴이 하나 더 끼어들어 규칙(Pretendard·나눔명조 둘)이 깨집니다. */
+.rv--locked .rv__title::after {
+  content: ""; display: inline-block; width: 11px; height: 13px;
+  margin-left: var(--sp-2); vertical-align: -1px; opacity: .55;
+  background: no-repeat center/contain
+    url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 11 13'%3E%3Cpath fill='none' stroke='%23655c54' stroke-width='1.3' d='M2.4 5.6V3.7a3.1 3.1 0 0 1 6.2 0v1.9M1.4 5.6h8.2v6.1H1.4z'/%3E%3C/svg%3E");
+}
+.rv--locked .rv__head:hover .rv__title { color: var(--accent-deep); }
+
+@media (max-width: 640px) {
+  .rv-notice { padding: var(--sp-5); }
+  .rv-notice__act { width: 100%; }
+  .rv-notice__act .btn { flex: 1 1 0; text-align: center; }
 }

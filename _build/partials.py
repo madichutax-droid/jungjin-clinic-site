@@ -8,8 +8,8 @@
 """
 from datetime import date
 
-CSS_V = "116"
-JS_V  = "9"
+CSS_V = "118"
+JS_V  = "10"
 IMG_V = "4"
 
 CLINIC   = "정진한의원"
