@@ -1908,20 +1908,6 @@ select.field__input {
 
 /* ── 로그인 안내줄 (2026-09-17) ───────────────────────────────
    목록은 누구나 보고, 내용만 회원이 봅니다. 목록 위에 한 번만 섭니다. */
-.rv-notice {
-  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
-  gap: var(--sp-5); margin-bottom: var(--sp-6);
-  padding: var(--sp-6); background: var(--bg-alt);
-  border: 1px solid var(--line); border-radius: var(--radius);
-}
-.rv-notice__body { flex: 1 1 320px; min-width: 0; }
-.rv-notice__title {
-  font-size: var(--fs-lg); line-height: 1.45; letter-spacing: var(--ls-sub);
-  margin-bottom: var(--sp-2);
-}
-.rv-notice__body p { font-size: var(--fs-sm); line-height: 1.75; color: var(--muted); }
-.rv-notice__body p + p { margin-top: var(--sp-2); }
-.rv-notice__act { display: flex; flex-wrap: wrap; gap: var(--sp-3); flex: 0 0 auto; }
 
 /* 잠긴 카드 — 누르면 로그인으로 갑니다. 자물쇠로 그것을 미리 알립니다. */
 .rv--locked .rv__head { text-decoration: none; color: inherit; }
@@ -1935,11 +1921,6 @@ select.field__input {
 }
 .rv--locked .rv__head:hover .rv__title { color: var(--accent-deep); }
 
-@media (max-width: 640px) {
-  .rv-notice { padding: var(--sp-5); }
-  .rv-notice__act { width: 100%; }
-  .rv-notice__act .btn { flex: 1 1 0; text-align: center; }
-}
 
 /* ── 후기 사진 (2026-09-17) ───────────────────────────────────
    환자 얼굴이 담기는 자리입니다. 서면 동의를 받은 사진만 올립니다. */

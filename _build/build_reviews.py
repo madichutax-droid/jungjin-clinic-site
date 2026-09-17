@@ -40,15 +40,6 @@ R_TITLE = "치료 후기"
 # 로그인 전후 양쪽에서 다 읽히는 문장이어야 합니다 — 히어로는 한 벌뿐입니다
 R_LEAD  = f"진료를 받으신 분들이 남긴 글입니다.{M}회원만 보실 수 있습니다."
 
-# 로그인하지 않은 분께 목록 위에 뜨는 줄.
-# 목록은 보여 드리고 내용만 막습니다(원장님 지시, 2026-09-17).
-GATE_TITLE = "내용은 회원만 볼 수 있습니다"
-GATE_BODY = [
-    "제목과 분류는 누구나 보실 수 있고, <strong>글 내용은 로그인하셔야</strong> 보입니다.",
-    "의료법은 환자의 치료경험담을 광고로 보고, 누구에게나 열린 곳에 두는 것을 "
-    "금하고 있습니다. 그래서 내용은 회원으로 들어오신 분에게만 엽니다.",
-]
-
 # 원장 화면에만 나오는 안내. 옮겨 적으실 때 걸리는 것들입니다.
 WRITE_TITLE = "후기 올리기"
 WRITE_NOTE = [
@@ -102,7 +93,6 @@ def build_reviews():
     if not P.reviews_ready():
         return _not_ready("reviews", R_TITLE, R_LEAD)
 
-    gate_p = "\n".join(f'          <p>{P.lines(x)}</p>' for x in GATE_BODY)
     cat_options = "\n".join(f'                  <option value="{c}">{c}</option>' for c in 분류들())
     cat_tabs = "\n".join(
         f'          <button type="button" class="rv-tab" data-cat="{c}" role="tab" '
@@ -186,20 +176,6 @@ def build_reviews():
       <p class="review-list__note">아래는 <strong>작성자 개인의 경험</strong>입니다.
         같은 치료를 받으신 다른 분에게 같은 결과가 나타난다는 뜻이 아니며,
         치료 효과에 대한 약속으로 읽지 말아 주십시오.</p>
-
-      <!-- 로그인하지 않은 분께만 — auth.js 가 세션을 보고 폅니다.
-           기본을 hidden 으로 두는 이유는, 로그인하고 오신 분께 잠깐이라도
-           '로그인하십시오' 가 번쩍이지 않게 하려는 것입니다. -->
-      <div class="rv-notice" id="rvNotice" hidden>
-        <div class="rv-notice__body">
-          <h3 class="rv-notice__title">{GATE_TITLE}</h3>
-{gate_p}
-        </div>
-        <div class="rv-notice__act">
-          <a href="login.html" class="btn btn--accent">로그인</a>
-          <a href="login.html#join" class="btn btn--outline">회원가입</a>
-        </div>
-      </div>
 
       <div class="rv-tabs" id="reviewTabs" role="tablist" aria-label="분류">
         <button type="button" class="rv-tab is-active" data-cat="" role="tab" aria-selected="true">전체</button>

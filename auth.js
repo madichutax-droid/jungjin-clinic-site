@@ -589,9 +589,6 @@
     const session = s.data.session;
     창고.회원 = !!session;
 
-    const notice = $('rvNotice');
-    if (notice) notice.hidden = 창고.회원;
-
     if (창고.회원) {
       // 원장인지 데이터베이스에 물어봅니다. 브라우저가 스스로 정하지 않습니다.
       // 여기서 거짓말을 해도 등록 단계에서 정책이 다시 막습니다.
