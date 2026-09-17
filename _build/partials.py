@@ -513,7 +513,7 @@ def auth_scripts():
     return f"""  <script>
     window.JJ_SUPABASE = {{ url: "{SUPABASE_URL}", key: "{SUPABASE_ANON_KEY}" }};
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.js"></script>
   <script src="auth.js?v={JS_V}"></script>
 """
 
@@ -578,8 +578,8 @@ def quickmenu():
 # anon key 는 공개되는 값이 맞습니다 — 브라우저가 쓰는 열쇠라 숨길 수 없습니다.
 # 지키는 것은 열쇠가 아니라 RLS 정책입니다. service_role 키는 절대 여기 넣지 마십시오.
 # 넣는 법은 `_build/회원시스템-설치.md` 에 적어 두었습니다.
-SUPABASE_URL      = ""   # TODO: https://xxxxxxxx.supabase.co
-SUPABASE_ANON_KEY = ""   # TODO: eyJhbGciOi... (anon public key)
+SUPABASE_URL      = "https://weutytwetagqfdqahvgd.supabase.co"
+SUPABASE_ANON_KEY = "sb_publishable_qYwzPBU690Xx3IGaHz3sGw_lvQfzIMx"
 
 # 후기를 열어 둘지. Supabase 설정이 없으면 이 값과 무관하게 '준비 중' 입니다.
 REVIEWS_ON = True

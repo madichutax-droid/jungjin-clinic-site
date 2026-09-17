@@ -17,7 +17,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v=4" />
   <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v=4" />
   <link rel="manifest" href="site.webmanifest" />
-  <meta name="description" content="회원 로그인 | 정진한의원" />
+  <meta name="description" content="회원 로그인 페이지입니다." />
   <meta name="robots" content="noindex, nofollow" />
   <title>회원 로그인 | 정진한의원</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
@@ -30,7 +30,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="정진한의원" />
   <meta property="og:title" content="회원 로그인 | 정진한의원" />
-  <meta property="og:description" content="회원 로그인 | 정진한의원" />
+  <meta property="og:description" content="회원 로그인 페이지입니다." />
   <meta property="og:url" content="https://jungjinmedi.netlify.app/login.html" />
   <meta property="og:image" content="https://jungjinmedi.netlify.app/assets/logo.png?v=4" />
   <meta property="og:locale" content="ko_KR" />
@@ -42,6 +42,7 @@
       <span class="topbar__hours">진료시간 평일 09:00–20:00 (점심 13:00–14:00) · 토·공휴일 09:00–15:00 · 일요일 휴진</span>
       <span class="topbar__right">
         <a class="topbar__tel" href="tel:031-522-5923">031-522-5923</a>
+        <span class="topbar__auth" id="topbarAuth"><a href="login.html">로그인</a></span>
       </span>
     </div>
   </div>
@@ -82,6 +83,9 @@
           <li data-nav="faq">
             <a href="faq.html">자주 묻는 질문</a>
           </li>
+          <li data-nav="reviews">
+            <a href="reviews.html">치료 후기</a>
+          </li>
         </ul>
       </nav>
       <button class="nav-toggle" id="navToggle" aria-label="메뉴 열기">
@@ -102,13 +106,81 @@
   </div>
 
   <section class="section">
-    <div class="container container--read">
-      <p class="section__lead">준비 중입니다.</p>
-      <p>진료 문의는 <a href="tel:031-522-5923">031-522-5923</a> 로 받습니다.</p>
-      <div class="location__actions">
-        <a href="index.html#hero" class="btn btn--accent">홈으로</a>
-        <a href="faq.html" class="btn btn--outline">자주 묻는 질문</a>
+    <div class="container container--narrow">
+
+      <!-- id="join" — 후기 페이지의 '회원가입' 단추가 #join 으로 옵니다.
+           auth.js 도 같은 조각을 보고 가입 칸을 폅니다. 둘 중 하나만 있으면
+           자바스크립트가 꺼진 브라우저에서 아무 데도 가지 않습니다. -->
+      <div class="auth-tabs" id="join" role="tablist">
+        <button type="button" class="auth-tab is-active" id="tabLogin"
+                role="tab" aria-selected="true" aria-controls="paneLogin">로그인</button>
+        <button type="button" class="auth-tab" id="tabJoin"
+                role="tab" aria-selected="false" aria-controls="paneJoin">회원가입</button>
       </div>
+
+      <!-- 로그인 -->
+      <div class="auth-pane" id="paneLogin" role="tabpanel" aria-labelledby="tabLogin">
+        <form id="loginForm" novalidate>
+          <label class="field">
+            <span class="field__label">이메일</span>
+            <input type="email" id="loginEmail" class="field__input"
+                   autocomplete="email" required />
+          </label>
+          <label class="field">
+            <span class="field__label">비밀번호</span>
+            <input type="password" id="loginPw" class="field__input"
+                   autocomplete="current-password" required />
+          </label>
+          <p class="form__msg" id="loginMsg" role="status" aria-live="polite" hidden></p>
+          <div class="form__actions">
+            <button type="submit" class="btn btn--accent btn--full" id="loginSubmit">로그인</button>
+          </div>
+        </form>
+        <p class="auth-help">
+          <button type="button" class="linklike" id="resetLink">비밀번호를 잊으셨습니까?</button>
+        </p>
+      </div>
+
+      <!-- 회원가입 -->
+      <div class="auth-pane" id="paneJoin" role="tabpanel" aria-labelledby="tabJoin" hidden>
+        <form id="joinForm" novalidate>
+          <label class="field">
+            <span class="field__label">이메일</span>
+            <input type="email" id="joinEmail" class="field__input"
+                   autocomplete="email" required />
+            <span class="field__hint">가입 확인 메일이 갑니다. 받으신 메일의 링크를 누르셔야 로그인됩니다.</span>
+          </label>
+          <label class="field">
+            <span class="field__label">비밀번호</span>
+            <input type="password" id="joinPw" class="field__input"
+                   autocomplete="new-password" minlength="8" required />
+            <span class="field__hint">8자 이상. 영문과 숫자를 섞어 주십시오.</span>
+          </label>
+
+          <!-- 체크칸 대신 한 줄로 갈음합니다.
+               개인정보보호법 제15조 제1항 제4호(계약의 이행)와 제28조의8 제3호
+               (계약 이행에 필요한 국외 보관 + 처리방침 공개)에 기대고 있습니다.
+               그래서 처리방침 5-1 의 여섯 항목이 빠지면 안 됩니다. 그것이 근거입니다. -->
+          <p class="agree-line">
+            <strong>가입하기</strong>를 누르시면
+            <a href="terms.html" target="_blank" rel="noopener">이용약관</a>과
+            <a href="privacy.html" target="_blank" rel="noopener">개인정보처리방침</a>에
+            동의하시는 것으로 봅니다. 회원 정보는 일본 도쿄에 있는 서버에 보관되며,
+            자세한 것은 <a href="privacy.html#abroad" target="_blank" rel="noopener">국외 이전 조항</a>에 있습니다.
+          </p>
+
+          <p class="form__msg" id="joinMsg" role="status" aria-live="polite" hidden></p>
+          <div class="form__actions">
+            <button type="submit" class="btn btn--accent btn--full" id="joinSubmit">가입하기</button>
+          </div>
+        </form>
+      </div>
+
+      <p class="auth-foot">
+        회원 정보는 치료 후기를 쓰고 읽는 데에만 씁니다. 진료 예약은 회원과 관계없이
+        <a href="tel:031-522-5923">031-522-5923</a> 로 받습니다.
+      </p>
+
     </div>
   </section>
 
@@ -158,6 +230,11 @@
       </div>
     </div>
   </div>
+  <script>
+    window.JJ_SUPABASE = { url: "https://weutytwetagqfdqahvgd.supabase.co", key: "sb_publishable_qYwzPBU690Xx3IGaHz3sGw_lvQfzIMx" };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.js"></script>
+  <script src="auth.js?v=6"></script>
 
   <div class="quickmenu" aria-label="바로가기">
     <a class="qm" href="https://blog.naver.com/yjj2923" target="_blank" rel="noopener" style="--qm:#262220" aria-label="블로그">
