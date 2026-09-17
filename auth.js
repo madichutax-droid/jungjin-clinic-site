@@ -211,21 +211,28 @@
       li.classList.add('rv--shot');
     }
 
+    // 사진 옆에 분류·제목·날짜를 쌓습니다. 한 줄로 늘어놓으면
+    // 사진을 키운 만큼 제목이 눌려 두 줄 세 줄로 접힙니다.
+    const meta = document.createElement('div');
+    meta.className = 'rv__meta';
+
     const cat = document.createElement('span');
     cat.className = 'rv__cat';
     cat.textContent = row.category;
-    head.appendChild(cat);
+    meta.appendChild(cat);
 
     const t = document.createElement('span');
     t.className = 'rv__title';
     t.textContent = 제목(row);
-    head.appendChild(t);
+    meta.appendChild(t);
 
     const when = document.createElement('time');
     when.className = 'rv__when';
     when.dateTime = row.created_at;
     when.textContent = 날짜(row.created_at);
-    head.appendChild(when);
+    meta.appendChild(when);
+
+    head.appendChild(meta);
 
     li.appendChild(head);
 
