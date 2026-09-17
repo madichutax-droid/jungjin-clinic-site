@@ -196,7 +196,11 @@ create policy "원장만 지웁니다"
 --
 --  뷰는 만든 사람(postgres) 권한으로 돌아 reviews 의 잠금을 지나갑니다.
 --  그래서 칸 목록이 곧 벽입니다. 한 칸도 더하지 마십시오.
-create or replace view public.reviews_public as
+-- 지우고 다시 만듭니다. create or replace 는 칸을 중간에 끼우지 못합니다 —
+-- '기존 칸 이름을 바꾸려 한다'며 막습니다(2026-09-17에 겪었습니다).
+drop view if exists public.reviews_public;
+
+create view public.reviews_public as
   select id, category, age, sex, who, photo, created_at
     from public.reviews;
 
