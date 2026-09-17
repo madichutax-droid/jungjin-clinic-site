@@ -87,8 +87,7 @@ def _detail(slug, label, title, desc, meta, blocks, extra="", with_subjects=Fals
 {extra}{sub}
   <section class="section">
     <div class="container container--read">
-      <p class="programs__note">{C.PROGRAMS_NOTE}</p>
-    </div>
+{P.note(C.PROGRAMS_NOTE)}    </div>
   </section>
 """ + P.tail())
 
@@ -334,8 +333,7 @@ def all_pages():
 
 {philo}
 
-      <p class="programs__note">{H.NOTICE}</p>
-    </div>
+{P.note(H.NOTICE)}    </div>
   </section>
 
   <section class="section" id="cv">
@@ -374,8 +372,7 @@ def all_pages():
       <div class="faq-list">
 {faq_items}
       </div>
-      <p class="programs__note">{P.NOTICE_LINE}</p>
-    </div>
+{P.notice()}    </div>
   </section>
 """ + P.tail())
 

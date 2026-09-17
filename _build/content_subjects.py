@@ -6,6 +6,8 @@
 여기 남은 자리표시(FILL)는 아직 원고를 받지 못한 공통 문구들입니다.
 """
 
+import partials as P
+
 M = '<br class="only-mobile" /> '   # 모바일에서만 줄바꿈
 B = '<br />'                        # 항상 줄바꿈
 FILL = '<span class="fill">%s</span>'
@@ -30,7 +32,7 @@ METHODS_BAND_ANS = (
     '처음 오시는 분을 위해 <a href="care.html">치료 전 알아두실 점</a>에 진료 순서를 정리해 두었습니다.'
 )
 
-PROGRAMS_NOTE = "상태와 원인에 따라 접근이 달라질 수 있으며, 정확한 진단이 우선입니다."
+PROGRAMS_NOTE = P.NOTICE_LINE   # 2026-09-17 비웠습니다. partials.NOTICE_LINE 하나로 되살립니다
 
 FAQ_COMMON = [
     ("침이 무서운데 괜찮을까요?",

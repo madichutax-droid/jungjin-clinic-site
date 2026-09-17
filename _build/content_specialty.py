@@ -18,6 +18,8 @@
    원장님 확인이 필요합니다.
 """
 
+import partials as P
+
 M = '<br class="only-mobile" /> '
 FILL = '<span class="fill">%s</span>'
 
@@ -26,7 +28,7 @@ def f(t):
     return FILL % t
 
 
-NOTICE = "상태와 원인에 따라 접근이 달라질 수 있으며, 정확한 진단이 우선입니다."
+NOTICE = P.NOTICE_LINE   # 2026-09-17 비웠습니다. partials.NOTICE_LINE 하나로 되살립니다
 
 
 # ── 멈추지 않는 기침 ──────────────────────────────────────────

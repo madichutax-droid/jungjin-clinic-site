@@ -207,8 +207,7 @@ def build_reviews():
       <ol class="rv-list" id="reviewList"></ol>
       <nav class="rv-pager" id="reviewPager" aria-label="페이지" hidden></nav>
 
-      <p class="programs__note">{P.NOTICE_LINE}</p>
-    </div>
+{P.notice()}    </div>
   </section>
 """ + P.tail(with_cta=False, extra_scripts=P.auth_scripts()))
 

@@ -107,7 +107,7 @@ def build_index():
         + f'      <ol class="venn__legend">\n{legend}\n      </ol>\n'
           f'      <p class="venn__key">{H.METHOD_KEY}</p>\n'
           f'      <p class="venn__note">{P.lines(H.METHOD_NOTE)}</p>\n'
-          f'      <p class="programs__note">{P.NOTICE_LINE}</p>',
+        + P.notice().rstrip("\n"),
         cls="section section--cream", sid="method")
 
     # 07-B 원장 이야기 (짧은 버전)

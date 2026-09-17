@@ -117,8 +117,7 @@ def build_hub(slug):
       <div class="svc__grid{_grid_mod(h)}">
 {_cards(h)}
       </div>
-      <p class="programs__note">{P.NOTICE_LINE}</p>
-    </div>
+{P.notice()}    </div>
   </section>
 """ + _blocks(h) + P.tail())
 

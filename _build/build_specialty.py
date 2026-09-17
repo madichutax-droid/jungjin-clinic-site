@@ -269,8 +269,7 @@ def block_faq(d):  # noqa: D401
 
   <section class="section">
     <div class="container container--read">
-      <p class="programs__note">{d.get("notice", S.NOTICE)}</p>
-    </div>
+{P.note(d.get("notice") or None)}    </div>
   </section>
 """
 
