@@ -67,9 +67,9 @@
     return m || '처리하지 못했습니다. 잠시 뒤에 다시 시도해 주십시오.';
   }
 
+  /** 상단바 인사에 쓸 이름. 가입 때 따로 받지 않으므로 이메일 앞부분을 씁니다. */
   function 이름(user) {
-    const m = (user && user.user_metadata) || {};
-    return m.display_name || m.name || (user && user.email ? user.email.split('@')[0] : '회원');
+    return (user && user.email) ? user.email.split('@')[0] : '회원';
   }
 
   function 날짜(iso) {
@@ -319,29 +319,18 @@
       e.preventDefault();
       clear(msg);
       const email = ($('joinEmail').value || '').trim();
-      const name = ($('joinName').value || '').trim();
       const pw = $('joinPw').value || '';
-      const pw2 = $('joinPw2').value || '';
 
-      if (!email || !name || !pw) { say(msg, '빈 칸을 모두 채워 주십시오.'); return; }
+      if (!email || !pw) { say(msg, '이메일과 비밀번호를 적어 주십시오.'); return; }
       if (pw.length < 8) { say(msg, '비밀번호는 8자 이상이어야 합니다.'); return; }
-      if (pw !== pw2) { say(msg, '비밀번호가 서로 다릅니다.'); return; }
 
-      const 필수 = ['agTerms', 'agPrivacy', 'agAbroad'];
-      for (let i = 0; i < 필수.length; i++) {
-        const c = $(필수[i]);
-        if (c && !c.checked) { say(msg, '필수 항목에 모두 동의하셔야 가입됩니다.'); return; }
-      }
-
+      // 동의는 체크칸 대신 '가입하기를 누르면 동의한 것으로 본다' 로 갈음합니다.
+      // 화면의 안내 한 줄과 처리방침 공개가 그 근거라, 둘 중 하나라도 지우면 안 됩니다.
       busy(btn, true, '가입하는 중입니다');
       const r = await sb.auth.signUp({
         email: email,
         password: pw,
-        options: {
-          data: { display_name: name },
-          // 확인 메일의 링크가 돌아올 자리
-          emailRedirectTo: location.origin + '/reviews.html',
-        },
+        options: { emailRedirectTo: location.origin + '/reviews.html' },
       });
       busy(btn, false);
 

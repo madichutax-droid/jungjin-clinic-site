@@ -217,13 +217,6 @@ def build_login():
             <input type="email" id="joinEmail" class="field__input"
                    autocomplete="email" required />
             <span class="field__hint">가입 확인 메일이 갑니다. 받으신 메일의 링크를 누르셔야 로그인됩니다.</span>
-            <span class="field__hint">회원은 치료 후기를 <strong>읽으실 수 있습니다.</strong> 글은 본원이 올립니다.</span>
-          </label>
-          <label class="field">
-            <span class="field__label">표시 이름</span>
-            <input type="text" id="joinName" class="field__input" maxlength="20"
-                   autocomplete="nickname" required />
-            <span class="field__hint">화면 위쪽에 이 이름으로 인사드립니다. 실명을 적지 않으셔도 됩니다.</span>
           </label>
           <label class="field">
             <span class="field__label">비밀번호</span>
@@ -231,28 +224,18 @@ def build_login():
                    autocomplete="new-password" minlength="8" required />
             <span class="field__hint">8자 이상. 영문과 숫자를 섞어 주십시오.</span>
           </label>
-          <label class="field">
-            <span class="field__label">비밀번호 확인</span>
-            <input type="password" id="joinPw2" class="field__input"
-                   autocomplete="new-password" required />
-          </label>
 
-          <fieldset class="agree">
-            <legend class="agree__legend">동의</legend>
-            <label class="agree__row">
-              <input type="checkbox" id="agTerms" required />
-              <span><a href="terms.html" target="_blank" rel="noopener">이용약관</a>에 동의합니다. <em>(필수)</em></span>
-            </label>
-            <label class="agree__row">
-              <input type="checkbox" id="agPrivacy" required />
-              <span><a href="privacy.html" target="_blank" rel="noopener">개인정보 수집·이용</a>에 동의합니다. <em>(필수)</em></span>
-            </label>
-            <label class="agree__row">
-              <input type="checkbox" id="agAbroad" required />
-              <span><a href="privacy.html#abroad" target="_blank" rel="noopener">개인정보 국외 이전</a>에 동의합니다. <em>(필수)</em></span>
-              <span class="agree__note">회원 정보와 후기는 일본 도쿄에 있는 서버에 보관됩니다.</span>
-            </label>
-          </fieldset>
+          <!-- 체크칸 대신 한 줄로 갈음합니다.
+               개인정보보호법 제15조 제1항 제4호(계약의 이행)와 제28조의8 제3호
+               (계약 이행에 필요한 국외 보관 + 처리방침 공개)에 기대고 있습니다.
+               그래서 처리방침 5-1 의 여섯 항목이 빠지면 안 됩니다. 그것이 근거입니다. -->
+          <p class="agree-line">
+            <strong>가입하기</strong>를 누르시면
+            <a href="terms.html" target="_blank" rel="noopener">이용약관</a>과
+            <a href="privacy.html" target="_blank" rel="noopener">개인정보처리방침</a>에
+            동의하시는 것으로 봅니다. 회원 정보는 일본 도쿄에 있는 서버에 보관되며,
+            자세한 것은 <a href="privacy.html#abroad" target="_blank" rel="noopener">국외 이전 조항</a>에 있습니다.
+          </p>
 
           <p class="form__msg" id="joinMsg" role="status" aria-live="polite" hidden></p>
           <div class="form__actions">

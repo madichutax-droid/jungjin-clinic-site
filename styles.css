@@ -1702,17 +1702,12 @@ body, p, .why-text, .audience__item p,
 .form__msg--bad { border-left-color: var(--accent); color: var(--accent-deep); }
 .form__msg--ok  { border-left-color: var(--brown); color: var(--text); }
 
-/* 동의 — 네 줄 모두 필수입니다 */
-.agree { border: 0; margin: var(--sp-8) 0 0; padding: var(--sp-5) 0 0; border-top: 1px solid var(--line); }
-.agree__legend { font-size: var(--fs-sm); letter-spacing: var(--ls-label); color: var(--muted); padding: 0; }
-.agree__row {
-  display: grid; grid-template-columns: 22px 1fr; gap: var(--sp-1) var(--sp-3);
-  align-items: start; margin-top: var(--sp-4);
-  font-size: var(--fs-sm); line-height: 1.7; cursor: pointer;
+/* 동의 — 체크칸 대신 한 줄로 갈음합니다 */
+.agree-line {
+  margin: var(--sp-6) 0 0; padding: var(--sp-4) 0 0;
+  border-top: 1px solid var(--line);
+  font-size: var(--fs-sm); line-height: 1.8; color: var(--muted);
 }
-.agree__row input { width: 18px; height: 18px; margin-top: 4px; accent-color: var(--accent-deep); }
-.agree__row em { font-style: normal; color: var(--accent-deep); }
-.agree__note { grid-column: 2; color: var(--muted); font-size: var(--fs-sm); }
 
 /* 로그인·가입 탭 */
 .auth-tabs { display: flex; border-bottom: 1px solid var(--line); margin-bottom: var(--sp-8); }
