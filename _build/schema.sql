@@ -301,3 +301,23 @@ revoke all on public.recovery_log from anon, authenticated;
 -- 수상한 시도 보기
 --   select at, kind, ok, hint, ip from public.recovery_log
 --    order by at desc limit 50;
+
+
+-- ── 8. 서버 함수가 볼 수 있게 ─────────────────────────────────
+--
+--  2026-09-19 에 빠뜨린 것을 채웁니다.
+--
+--  service_role 은 RLS **정책**은 지나가지만, 표를 볼 **권한**은 따로
+--  받아야 합니다. 둘은 다른 것입니다 — 정책은 "어느 줄을 보여 줄까",
+--  권한은 "이 표를 열어도 되나" 입니다. 정책만 지나가고 권한이 없으면
+--  permission denied 가 납니다.
+--
+--  여기까지 오는 길은 Netlify 함수 하나뿐이고, 그 열쇠(sb_secret)는
+--  Netlify 환경변수에만 있습니다. 홈페이지가 쓰는 공개 열쇠로는
+--  이 권한에 닿지 못합니다.
+--
+--  필요한 만큼만 줍니다. 후기(reviews)에는 주지 않습니다 — 아이디 찾기와
+--  비밀번호 재설정은 후기를 볼 일이 없습니다.
+grant select          on public.profiles      to service_role;
+grant select          on public.authors       to service_role;
+grant select, insert  on public.recovery_log  to service_role;
