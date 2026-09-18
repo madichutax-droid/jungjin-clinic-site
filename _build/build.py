@@ -73,13 +73,14 @@ def build_index():
         f'<meta property="og:title" content="자리가 맞아야, 몸이 반응합니다 — {P.CLINIC}({P.STATION})" />')
 
     # 01 히어로
+    # 배경 영상은 2026-09-18 에 내렸습니다 (원장 지시 — 새 영상 촬영 예정).
+    # 지금은 갈색 단색 바탕입니다. 새 영상이 오면 아래 두 줄을 <section> 바로 밑에 되돌리고,
+    # styles.css 의 "히어로 배경 영상" 항과 content_home.py 의 VIDEO 를 함께 살립니다.
+    #   <video class="hero__video" muted loop playsinline preload="none"
+    #          poster="..." data-src="..." aria-hidden="true" tabindex="-1"></video>
+    #   <div class="hero__overlay"></div>
     hero = f"""
   <section class="hero" id="hero">
-    <video class="hero__video" muted loop playsinline preload="none"
-           poster="{H.VIDEO['poster']}?v={P.IMG_V}"
-           data-src="{H.VIDEO['src']}?v={P.IMG_V}"
-           aria-hidden="true" tabindex="-1"></video>
-    <div class="hero__overlay"></div>
     <div class="container hero__inner">
       <h1 class="hero__title">{H.HERO_TITLE}</h1>
       <p class="hero__desc">{"<br />".join(H.HERO_DESC)}</p>
