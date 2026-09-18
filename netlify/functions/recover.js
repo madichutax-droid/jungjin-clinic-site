@@ -155,12 +155,20 @@ exports.handler = async function (event) {
   const q = event.queryStringParameters || {};
   if (event.httpMethod === 'GET' && q.check === '1') {
     if (!KEY) return 답(200, { ok: false, 상태: '열쇠가 없습니다 (SUPABASE_SERVICE_ROLE)' });
-    const r = await 표('/rest/v1/profiles?select=user_id&limit=0');
-    const w = await 표('/rest/v1/recovery_log?select=id&limit=0');
+    // 열쇠의 '종류' 만 봅니다. 값 자체는 어떤 경우에도 내보내지 않습니다.
+    const 종류 = KEY.indexOf('sb_secret_') === 0 ? 'sb_secret (맞습니다)'
+               : KEY.indexOf('sb_publishable_') === 0 ? 'sb_publishable (공개 열쇠입니다 — 이게 아닙니다)'
+               : KEY.indexOf('eyJ') === 0 ? '옛 JWT (service_role 또는 anon)'
+               : '알 수 없는 모양';
+    const 앞뒤공백 = KEY !== KEY.trim() ? '있습니다 — 붙여넣을 때 섞였습니다' : '없습니다';
+    const r = await 표('/rest/v1/profiles?select=user_id&limit=1');
+    const w = await 표('/rest/v1/recovery_log?select=id&limit=1');
     return 답(200, {
       ok: r.ok && w.ok,
-      명부: r.ok ? '열립니다' : '거절됨 ' + r.status,
-      기록표: w.ok ? '열립니다' : '거절됨 ' + w.status,
+      열쇠종류: 종류,
+      앞뒤공백: 앞뒤공백,
+      명부: r.ok ? '열립니다' : '거절됨 ' + r.status + ' ' + String(r.raw || '').slice(0, 200),
+      기록표: w.ok ? '열립니다' : '거절됨 ' + w.status + ' ' + String(w.raw || '').slice(0, 200),
     });
   }
 
