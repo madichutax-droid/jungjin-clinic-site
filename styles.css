@@ -479,9 +479,21 @@ h1, h2, h3, .section__title { font-weight: 700; color: var(--text); }
 .location__grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: var(--sp-12); align-items: start; }
 .location__map { border: 1px solid var(--line); border-radius: var(--radius);
   overflow: hidden; box-shadow: var(--shadow); background: #fff; }
-/* 인터넷 지도 — 컨테이너 폭에 맞춰 3:2 로 표시합니다 */
-.location__map iframe { display: block; width: 100%; aspect-ratio: 3 / 2; border: 0; }
-@media (max-width: 640px) { .location__map iframe { aspect-ratio: 4 / 3; } }
+/* 인터넷 지도 — 컨테이너 폭에 맞춰 3:2 로 표시합니다.
+   구글은 iframe, 카카오는 div 안에 그려지므로 둘을 같이 잡아 둡니다. */
+.location__map iframe,
+.location__map .kakao-map { display: block; width: 100%; aspect-ratio: 3 / 2; border: 0; }
+@media (max-width: 640px) {
+  .location__map iframe,
+  .location__map .kakao-map { aspect-ratio: 4 / 3; }
+}
+/* 지도를 못 불러왔을 때(자바스크립트를 끄셨거나 카카오가 막혔을 때) 대신 보이는 자리.
+   지도가 뜨면 이 글은 지워집니다.
+   p 를 34em 로 묶는 아래 규칙을 풀어야 글이 가운데에 옵니다. */
+.map-fallback { display: flex; align-items: center; justify-content: center;
+  height: 100%; width: 100%; max-width: none; margin: 0; padding: var(--sp-5);
+  text-align: center; font-size: var(--fs-sm); color: var(--muted); }
+.map-fallback a { margin-left: 6px; }
 /* 약도와 인터넷 지도를 위아래로 둡니다 — 약도가 먼저입니다.
    약도는 주변 가게로 자리를 잡는 그림이고, 아래 지도는 확대·길찾기용입니다. */
 .location__maps { display: grid; gap: var(--sp-5); }

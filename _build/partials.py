@@ -8,7 +8,7 @@
 """
 from datetime import date
 
-CSS_V = "130"
+CSS_V = "131"
 JS_V  = "16"
 IMG_V = "4"
 
@@ -620,28 +620,91 @@ def reviews_ready():
     return bool(SUPABASE_URL and SUPABASE_ANON_KEY)
 
 
-NAVER_MAP_KEY = ""      # TODO: 네이버 클라우드 플랫폼 Client ID
-NAVER_LATLNG = ""       # TODO: "37.5943,127.1296" 형식의 위도,경도
+# 카카오맵을 씁니다 (2026-09-18 원장 지시).
+#
+# 네이버는 쓸 수 없었습니다. map.naver.com 이 x-frame-options: DENY 로 iframe 을 막고,
+# JS API 를 쓰려면 네이버 클라우드 콘솔에 결제수단까지 등록해야 합니다 (2026-09-18 재확인).
+# 카카오는 카카오 계정으로 앱 하나 만들면 JavaScript 키가 바로 나오고 카드가 필요 없습니다.
+# 무료 한도는 하루 30만 건 — 계정에서 처음 활성화한 앱 하나에만 줍니다.
+#
+# 키 받는 곳: developers.kakao.com > 내 애플리케이션 > 애플리케이션 추가하기
+#   ① 앱 이름 '정진한의원'
+#   ② 앱 설정 > 플랫폼 > Web 에 주소 등록 — 등록한 주소에서만 지도가 뜹니다
+#        https://jungjinhani.com
+#        http://localhost:8765   ← 미리보기 서버. 빠뜨리면 로컬에서만 안 뜹니다
+#   ③ 앱 키 > JavaScript 키를 아래에 붙여 넣습니다
+#
+# 채워지면 카카오맵으로, 비어 있으면 구글로 나갑니다.
+KAKAO_MAP_KEY = ""      # TODO: 카카오 JavaScript 키
+
+# 지오코딩에 넣는 주소. 건물명과 층을 빼야 검색이 정확합니다.
+KAKAO_MAP_ADDR = "경기 구리시 경춘로 223"
+# 주소 검색이 실패했을 때만 쓰는 대략 좌표입니다 (도로 기준이라 건물과 어긋납니다).
+# 지도가 엉뚱한 곳을 비추면 주소 검색이 실패한 것입니다.
+KAKAO_MAP_FALLBACK = "37.6006, 127.1402"
+
+KAKAO_PLACE = "https://map.kakao.com/?q=%EA%B2%BD%EA%B8%B0%20%EA%B5%AC%EB%A6%AC%EC%8B%9C%20%EA%B2%BD%EC%B6%98%EB%A1%9C%20223"
 
 NAVER_PLACE = ("https://map.naver.com/p/search/"
                "경기도%20구리시%20경춘로%20223%20명동빌딩")
 
 
 def map_embed():
-    if NAVER_MAP_KEY and NAVER_LATLNG:
-        lat, lng = NAVER_LATLNG.split(",")
-        return (f'<div id="naverMap" style="width:100%;aspect-ratio:3/2;"></div>\n'
-                f'          <script src="https://oapi.map.naver.com/openapi/v3/maps.js'
-                f'?ncpKeyId={NAVER_MAP_KEY}"></script>\n'
-                f'          <script>\n'
-                f'            (function () {{\n'
-                f'              var at = new naver.maps.LatLng({lat}, {lng});\n'
-                f'              var map = new naver.maps.Map("naverMap", '
-                f'{{ center: at, zoom: 17 }});\n'
-                f'              new naver.maps.Marker({{ position: at, map: map, '
-                f'title: "{CLINIC}" }});\n'
-                f'            }})();\n'
-                f'          </script>')
+    """오시는 길의 인터넷 지도. 키가 있으면 카카오맵, 없으면 구글."""
+    if KAKAO_MAP_KEY:
+        lat, lng = [x.strip() for x in KAKAO_MAP_FALLBACK.split(",")]
+        return f"""<div class="kakao-map" id="kakaoMap">
+              <p class="map-fallback">지도를 불러오지 못했습니다.
+                <a href="{KAKAO_PLACE}" target="_blank" rel="noopener">카카오맵에서 보기</a></p>
+            </div>
+            <script>
+            (function () {{
+              var box = document.getElementById("kakaoMap");
+              if (!box) return;
+              var started = false;
+
+              function load() {{
+                if (started) return;
+                started = true;
+                var s = document.createElement("script");
+                s.src = "https://dapi.kakao.com/v2/maps/sdk.js?appkey={KAKAO_MAP_KEY}"
+                      + "&libraries=services&autoload=false";
+                s.onload = function () {{ kakao.maps.load(draw); }};
+                document.head.appendChild(s);
+              }}
+
+              function draw() {{
+                // 못 불러왔을 때 보이던 안내를 지우고 그 자리에 지도를 올립니다.
+                box.innerHTML = "";
+                var at = new kakao.maps.LatLng({lat}, {lng});
+                var map = new kakao.maps.Map(box, {{ center: at, level: 3 }});
+                map.addControl(new kakao.maps.ZoomControl(),
+                               kakao.maps.ControlPosition.RIGHT);
+                var mark = new kakao.maps.Marker({{ position: at, map: map,
+                                                   title: "{CLINIC}" }});
+                // 좌표를 박아 두지 않고 주소로 찾습니다 — 주소가 바뀌면 지도도 따라옵니다.
+                new kakao.maps.services.Geocoder().addressSearch(
+                  "{KAKAO_MAP_ADDR}", function (r, status) {{
+                    if (status !== kakao.maps.services.Status.OK || !r.length) return;
+                    var here = new kakao.maps.LatLng(r[0].y, r[0].x);
+                    map.setCenter(here);
+                    mark.setPosition(here);
+                  }});
+              }}
+
+              // 지도가 화면에 다가올 때 부릅니다. 첫 화면에서 지도를 받지 않습니다.
+              if ("IntersectionObserver" in window) {{
+                new IntersectionObserver(function (es, ob) {{
+                  if (es.some(function (e) {{ return e.isIntersecting; }})) {{
+                    ob.disconnect();
+                    load();
+                  }}
+                }}, {{ rootMargin: "300px" }}).observe(box);
+              }} else {{
+                load();
+              }}
+            }})();
+            </script>"""
     g = ("https://www.google.com/maps?q=%EA%B2%BD%EA%B8%B0%EB%8F%84+%EA%B5%AC%EB%A6%AC%EC%8B%9C"
          "+%EA%B2%BD%EC%B6%98%EB%A1%9C+223&amp;hl=ko&amp;z=17&amp;output=embed")
     return (f'<iframe src="{g}"\n'
