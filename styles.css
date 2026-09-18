@@ -21,12 +21,15 @@
   /* 글자와 바탕 */
   --text:    #262220;      /* 본문 (18.2) */
   --muted:   #655c54;      /* 보조 설명 (6.0) */
-  --bg:      #ffffff;
-  --bg-alt:  #f7f5f1;      /* 메뉴 hover 등 아주 작은 자리 */
+  /* 바탕은 순백이 아니라 따뜻한 종이입니다 (2026-09-19).
+     흰 카드가 이 위에 얹히면서 종이 두 겹처럼 층이 생깁니다 —
+     그림자 없이 깊이를 내는 방법입니다. 그래서 --surface 는 흰색 그대로 둡니다. */
+  --bg:      #faf8f4;      /* 종이 (먹색 글자 17.0) */
+  --bg-alt:  #f1ece2;      /* 메뉴 hover 등 아주 작은 자리 */
   --surface: #ffffff;      /* 카드·표처럼 바탕 위에 얹히는 면 */
 
   /* 선 — 얇게. 구조는 선으로 드러내고 상자는 쓰지 않습니다 */
-  --line:   #e6e1d7;       /* 기본 헤어라인 */
+  --line:   #e3ded2;       /* 기본 헤어라인 (종이 바탕에서 묻히지 않게 한 톤 내렸습니다) */
   --line-2: #cdc4b3;       /* hover·강조 */
   --rule:   #d8d1c4;       /* 표의 가로줄 */
 
@@ -54,10 +57,12 @@
   --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
   --sp-5: 20px; --sp-6: 24px; --sp-8: 32px; --sp-12: 48px;
 
-  /* 모서리 — 둥글기는 최소로. 그림자는 쓰지 않습니다 */
-  --radius:     10px;
-  --radius-sm:   6px;
-  --btn-radius:  6px;
+  /* 모서리 — 둥글기는 최소로. 그림자는 쓰지 않습니다.
+     2026-09-19 에 10 → 4 로 조였습니다. 둥글수록 앱처럼 보이고
+     각질수록 인쇄물처럼 보입니다. 우리는 뒤쪽입니다. */
+  --radius:      4px;
+  --radius-sm:   3px;
+  --btn-radius:  3px;
   --shadow: none;
 
   --container: 1160px;
@@ -2063,4 +2068,109 @@ select.field__input {
 @media (max-width: 400px) {
   .topbar__auth { gap: var(--sp-1); }
   .topbar__right { gap: var(--sp-3); }
+}
+
+
+/* ════════════════════════════════════════════════════════════
+   종이 질감 정제 (2026-09-19) — 원장님 지시 "세련되고 고급스럽게"
+
+   손댄 곳은 넷입니다. 원고는 한 글자도 건드리지 않았습니다.
+
+     ① 바탕을 종이색으로      :root 의 --bg. 흰 카드가 그 위에 뜹니다
+     ② 히어로에 깊이          단색 면 → 빛이 한쪽에서 드는 갈색 + 가는 선
+     ③ 구획에 리듬            전부 흰 면이던 것을 종이/흰 면 교차로
+     ④ 활자 디테일            눈썹선을 가늘게, 숫자를 명조로, 자간 정리
+
+   사진이 들어오면 이 위에 얹으면 됩니다. 지금 "고급" 을 만드는 재료가
+   활자와 여백뿐이라 거기까지 밀어 둔 상태입니다.
+   ════════════════════════════════════════════════════════════ */
+
+/* ── ① 종이 위의 흰 면 ──────────────────────────────────────
+   헤더도 종이색을 따라갑니다. 흰색으로 두면 스크롤할 때 헤더만
+   허옇게 떠서 바탕과 경계가 생깁니다. */
+.header { background: rgba(250, 248, 244, .92); }
+
+/* 구획을 나누는 흰 면 — 종이 위에 한 장 더 얹힌 것처럼 보입니다.
+   전에는 배경 없이 위쪽 선 하나로만 나눴습니다. */
+.section--cream {
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+/* ── ② 히어로 · 페이지 상단 ─────────────────────────────────
+   같은 갈색이지만 빛이 왼쪽 위에서 듭니다. 단색 면일 때 생기던
+   '칠해 놓은 벽' 느낌이 사라집니다. */
+.hero {
+  background:
+    radial-gradient(115% 85% at 20% 12%, rgba(255, 252, 248, .085), transparent 62%),
+    linear-gradient(142deg, #33241b 0%, var(--brown) 45%, var(--brown-2) 100%);
+}
+.page-hero {
+  background:
+    radial-gradient(120% 140% at 18% 0%, rgba(255, 252, 248, .075), transparent 60%),
+    var(--brown);
+}
+
+/* 제목과 설명 사이의 가는 선. 조판에서 오래 쓰던 방식이라
+   글이 한 번 쉬어 가고, 아래 문장이 제목에 딸린 것으로 읽힙니다. */
+.hero__title::after {
+  content: ""; display: block;
+  width: 54px; height: 1px; margin-top: 30px;
+  background: rgba(250, 248, 244, .34);
+}
+.hero__desc { margin-top: var(--sp-5); }
+
+/* 히어로 단추 — 종이색으로 채우고, 손을 얹으면 테두리만 남습니다. */
+.hero .btn--primary {
+  background: var(--bg); color: var(--brown);
+  border: 1px solid rgba(250, 248, 244, .92);
+  letter-spacing: .01em;
+}
+.hero .btn--primary:hover {
+  background: transparent; color: var(--bg);
+}
+
+/* ── ③ 구획의 숨 ────────────────────────────────────────────
+   좁은 화면은 건드리지 않습니다. 거기서 여백을 더 주면 스크롤만 깁니다. */
+@media (min-width: 900px)  { .section { padding: 112px 0; } }
+@media (min-width: 1400px) { .section { padding: 124px 0; } }
+
+/* ── ④ 활자 디테일 ─────────────────────────────────────────
+   제목 위 눈썹선 — 2px 빨간 막대는 눈에 먼저 들어와 제목과 다툽니다.
+   1px 로 얇게, 조금 짧게. 색은 그대로 두되 힘을 뺍니다. */
+.section__head::before {
+  width: 26px; height: 1px; opacity: .6;
+}
+
+/* 다섯 가지 약속의 번호 — 명조로 바꾸면 본문 고딕과 대비가 생겨
+   번호가 장식이 아니라 차례로 읽힙니다. */
+.principle__num {
+  font-family: "Nanum Myeongjo", serif;
+  font-size: 26px; opacity: .5; letter-spacing: .01em;
+}
+
+/* 링크 밑줄이 글자에 붙어 있으면 답답합니다. 한 칸 떨어뜨립니다. */
+a { text-underline-offset: 3px; }
+
+/* 작은 라벨은 자간을 벌려야 또렷합니다. 이미 --ls-label 이 있는데
+   표의 항목 이름에는 걸려 있지 않았습니다. */
+.location__row dt { letter-spacing: var(--ls-label); }
+
+/* ── ⑤ 활자의 크기 차이 (2026-09-19) ────────────────────────
+   여기까지 해 놓고 보니 달라진 티가 잘 안 났습니다. 색과 선만 만져서는
+   '정돈됐다' 까지고 '격이 있다' 로는 안 넘어갑니다.
+
+   넘어가게 하는 것은 **크기 차이**입니다. 제목을 키우고 그 둘레를 비우면
+   눈이 한 번 멈췄다 갑니다. 잡지가 늘 쓰는 방법이고, 사진 없이 쓸 수 있는
+   마지막 재료이기도 합니다.
+
+   넓은 화면에서만 키웁니다. 좁은 화면은 지금이 이미 꽉 찹니다. */
+@media (min-width: 900px) {
+  .section__title     { font-size: clamp(32px, 3.9vw, 44px); }
+  .page-hero__title   { font-size: clamp(32px, 3.6vw, 42px); }
+  /* 제목 아래 첫 문장은 본문보다 한 치수 큽니다 — 들어가는 말이라 */
+  .section__lead      { font-size: var(--fs-lg); line-height: 1.7; }
+  /* 제목 덩어리와 내용 사이를 벌립니다 */
+  .section__head      { margin-bottom: 56px; }
 }
