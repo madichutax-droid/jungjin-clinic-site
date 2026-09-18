@@ -250,10 +250,6 @@ def build_login():
             <button type="submit" class="btn btn--accent btn--full" id="loginSubmit">로그인</button>
           </div>
         </form>
-        <p class="auth-help">
-          아이디나 비밀번호가 기억나지 않으시면 <a href="tel:{P.TEL}">{P.TEL}</a> 로
-          전화 주십시오. 확인해 드립니다.
-        </p>
       </div>
 
       <!-- 회원가입 -->
