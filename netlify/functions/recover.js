@@ -10,8 +10,12 @@
 //
 //  **이 열쇠는 Netlify 환경변수에만 둡니다.** 홈페이지 코드에 넣으면
 //  후기가 전부 공개됩니다 — RLS 정책을 그냥 지나가는 마스터키입니다.
-//    Netlify > Site configuration > Environment variables
-//      SUPABASE_SERVICE_ROLE = (Supabase > Project Settings > API > service_role)
+//    Netlify > Project configuration > Environment variables
+//      SUPABASE_SERVICE_ROLE = Supabase > Settings > API Keys 의
+//        Secret key (sb_secret_...) 또는 옛 service_role (eyJ...)
+//
+//  상태 보기 — /.netlify/functions/recover?check=1
+//  열쇠가 창고를 여는지만 답합니다. 명부는 한 줄도 내보내지 않습니다.
 //
 //  ── 무엇으로 본인을 확인하나 ──────────────────────────────────
 //  아이디 찾기      이름 · 휴대폰 · 생년월일        (셋)
@@ -91,15 +95,20 @@ async function 표(path, opts) {
   return { ok: r.ok, status: r.status, data: j, raw: t };
 }
 
-/** 시도를 남깁니다. 실패해도 본래 흐름을 막지 않습니다. */
+/** 시도를 남깁니다. 실패해도 본래 흐름을 막지 않습니다 —
+ *  기록 때문에 비밀번호를 못 바꾸면 곤란하니까요.
+ *  다만 조용히 넘기지는 않습니다. 안 쌓이면 한도 세기가 같이 죽습니다. */
 async function 기록(kind, ok, ip, phone) {
   try {
-    await 표('/rest/v1/recovery_log', {
+    const r = await 표('/rest/v1/recovery_log', {
       method: 'POST',
       headers: Object.assign(열쇠(), { Prefer: 'return=minimal' }),
       body: JSON.stringify({ kind, ok, ip: ip || null, hint: phone ? phone.slice(-4) : null }),
     });
-  } catch (e) { /* 기록은 부수적인 일입니다 */ }
+    if (!r.ok) console.error('recovery_log 기록 실패', r.status, r.raw);
+  } catch (e) {
+    console.error('recovery_log 기록 실패(예외)', e && e.message);
+  }
 }
 
 /** 한 시간 안에 틀린 횟수가 한도를 넘었는지. */
@@ -115,12 +124,21 @@ async function 너무많이틀렸나(ip, phone) {
   return false;
 }
 
-/** 휴대폰 번호로 명부 한 줄. 번호는 unique 라 0 또는 1 줄입니다. */
+/** 휴대폰 번호로 명부 한 줄. 번호는 unique 라 0 또는 1 줄입니다.
+ *
+ *  **'없다' 와 '못 봤다' 를 반드시 구분합니다.** 열쇠가 거절당한 것을
+ *  '맞는 회원이 없다' 로 답하면, 바르게 적은 회원이 자기가 틀린 줄 압니다.
+ *  밖에서 보면 두 경우가 똑같아 고장을 알아챌 수도 없습니다(2026-09-19에 겪었습니다).
+ *
+ *  돌려주는 것 — { 볼수있음: true, 줄: 명부한줄|null } */
 async function 명부(phone) {
   const r = await 표('/rest/v1/profiles?select=user_id,username,full_name,phone,birth,email' +
                      '&phone=eq.' + encodeURIComponent(phone) + '&limit=1');
-  if (!r.ok || !Array.isArray(r.data) || !r.data.length) return null;
-  return r.data[0];
+  if (!r.ok || !Array.isArray(r.data)) {
+    console.error('명부를 읽지 못했습니다', r.status, r.raw);
+    return { 볼수있음: false, 줄: null };
+  }
+  return { 볼수있음: true, 줄: r.data.length ? r.data[0] : null };
 }
 
 async function 원장인가(user_id) {
@@ -131,6 +149,21 @@ async function 원장인가(user_id) {
 
 // ── 본체 ──────────────────────────────────────────────────────
 exports.handler = async function (event) {
+  // 상태 보기 — /.netlify/functions/recover?check=1
+  // 열쇠가 창고를 여는지만 답합니다. 명부는 한 줄도 내보내지 않습니다
+  // (limit=0 으로 물어 문이 열리는지만 봅니다).
+  const q = event.queryStringParameters || {};
+  if (event.httpMethod === 'GET' && q.check === '1') {
+    if (!KEY) return 답(200, { ok: false, 상태: '열쇠가 없습니다 (SUPABASE_SERVICE_ROLE)' });
+    const r = await 표('/rest/v1/profiles?select=user_id&limit=0');
+    const w = await 표('/rest/v1/recovery_log?select=id&limit=0');
+    return 답(200, {
+      ok: r.ok && w.ok,
+      명부: r.ok ? '열립니다' : '거절됨 ' + r.status,
+      기록표: w.ok ? '열립니다' : '거절됨 ' + w.status,
+    });
+  }
+
   if (event.httpMethod !== 'POST') return 답(405, { ok: false, message: '잘못된 요청입니다.' });
   if (!KEY) {
     console.error('SUPABASE_SERVICE_ROLE 이 없습니다 — Netlify 환경변수를 확인하십시오.');
@@ -162,7 +195,12 @@ exports.handler = async function (event) {
     });
   }
 
-  const 줄 = await 명부(phone);
+  const 조회 = await 명부(phone);
+  if (!조회.볼수있음) {
+    // 열쇠가 거절당했거나 창고가 답하지 않는 경우입니다. 회원 탓으로 돌리지 않습니다.
+    return 답(503, { ok: false, message: '지금은 확인할 수 없습니다. 잠시 뒤 다시 해 주시거나 전화로 문의해 주십시오.' });
+  }
+  const 줄 = 조회.줄;
   const 맞나 = !!줄 && 다듬기(줄.full_name) === name && String(줄.birth) === birth;
 
   // ── 아이디 찾기 ─────────────────────────────────────────────
