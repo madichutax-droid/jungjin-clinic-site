@@ -4,6 +4,11 @@
 [build]
   publish = "."
 
+# 아이디 찾기 · 비밀번호 재설정을 처리하는 서버 함수가 여기 있습니다.
+# 여기에만 service_role 열쇠가 닿습니다 (Netlify 환경변수 SUPABASE_SERVICE_ROLE).
+[functions]
+  directory = "netlify/functions"
+
 # 보안 헤더
 [[headers]]
   for = "/*"
@@ -30,6 +35,14 @@
 # 작업 규칙 문서도 공개하지 않습니다 — 내부 메모와 미해결 과제가 적혀 있습니다
 [[redirects]]
   from = "/CLAUDE.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# 함수 원본도 공개하지 않습니다. 부르는 주소는 /.netlify/functions/... 라
+# 이 규칙에 걸리지 않습니다 — 막는 것은 소스 파일뿐입니다.
+[[redirects]]
+  from = "/netlify/*"
   to = "/404.html"
   status = 404
   force = true

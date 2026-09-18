@@ -250,6 +250,11 @@ def build_login():
             <button type="submit" class="btn btn--accent btn--full" id="loginSubmit">로그인</button>
           </div>
         </form>
+        <p class="auth-help">
+          <button type="button" class="linkish" id="toFindId">아이디 찾기</button>
+          <span class="auth-help__dot" aria-hidden="true">·</span>
+          <button type="button" class="linkish" id="toFindPw">비밀번호 재설정</button>
+        </p>
       </div>
 
       <!-- 회원가입 -->
@@ -340,6 +345,95 @@ def build_login():
             <button type="submit" class="btn btn--accent btn--full" id="joinSubmit">가입하기</button>
           </div>
         </form>
+      </div>
+
+      <!-- 아이디 찾기 — 이름·휴대폰·생년월일 셋이 명부와 맞아야 합니다.
+           맞아도 아이디를 통째로 보여 주지 않습니다(앞 세 글자만).
+           대조는 브라우저가 못 합니다. 명부는 로그인한 본인과 원장만 볼 수
+           있어서, 잊은 사람은 볼 수 없습니다. netlify/functions/recover.js 가
+           서버에서 대조합니다. -->
+      <div class="auth-pane" id="paneFindId" role="region" aria-label="아이디 찾기" hidden>
+        <h2 class="auth-pane__title">아이디 찾기</h2>
+        <p class="auth-pane__lead">가입하실 때 적으신 것과 같게 적어 주십시오.</p>
+        <form id="findIdForm" novalidate>
+          <label class="field">
+            <span class="field__label">이름</span>
+            <input type="text" id="fiName" class="field__input" maxlength="20"
+                   autocomplete="name" placeholder="홍길동" required />
+          </label>
+          <label class="field">
+            <span class="field__label">휴대폰 번호</span>
+            <input type="tel" id="fiPhone" class="field__input" maxlength="13"
+                   autocomplete="tel" inputmode="numeric" placeholder="010-1234-5678" required />
+          </label>
+          <label class="field">
+            <span class="field__label">생년월일</span>
+            <input type="text" id="fiBirth" class="field__input" maxlength="10"
+                   inputmode="numeric" placeholder="1988.10.25" required />
+          </label>
+          <p class="form__msg" id="findIdMsg" role="status" aria-live="polite" hidden></p>
+          <div class="form__actions">
+            <button type="submit" class="btn btn--accent btn--full" id="findIdSubmit">아이디 찾기</button>
+          </div>
+        </form>
+        <p class="auth-help">
+          <button type="button" class="linkish" id="backFromId">로그인으로 돌아가기</button>
+        </p>
+      </div>
+
+      <!-- 비밀번호 재설정 — 위 셋에 아이디와 이메일까지 다섯이 맞아야 합니다.
+           맞으면 그 자리에서 새 비밀번호로 바꿉니다.
+           원장 계정은 이 길로 바꿀 수 없습니다(함수가 거절합니다). -->
+      <div class="auth-pane" id="paneFindPw" role="region" aria-label="비밀번호 재설정" hidden>
+        <h2 class="auth-pane__title">비밀번호 재설정</h2>
+        <p class="auth-pane__lead">가입하실 때 적으신 것과 모두 맞아야 바꿀 수 있습니다.</p>
+        <form id="findPwForm" novalidate>
+          <label class="field">
+            <span class="field__label">아이디</span>
+            <input type="text" id="fpId" class="field__input" maxlength="20"
+                   autocomplete="username" autocapitalize="off" spellcheck="false" required />
+            <span class="field__hint">모르시면 먼저 아이디 찾기를 해 주십시오.</span>
+          </label>
+          <label class="field">
+            <span class="field__label">이름</span>
+            <input type="text" id="fpName" class="field__input" maxlength="20"
+                   autocomplete="name" placeholder="홍길동" required />
+          </label>
+          <label class="field">
+            <span class="field__label">휴대폰 번호</span>
+            <input type="tel" id="fpPhone" class="field__input" maxlength="13"
+                   autocomplete="tel" inputmode="numeric" placeholder="010-1234-5678" required />
+          </label>
+          <label class="field">
+            <span class="field__label">생년월일</span>
+            <input type="text" id="fpBirth" class="field__input" maxlength="10"
+                   inputmode="numeric" placeholder="1988.10.25" required />
+          </label>
+          <label class="field">
+            <span class="field__label">이메일</span>
+            <input type="email" id="fpEmail" class="field__input" maxlength="129"
+                   autocapitalize="off" spellcheck="false" placeholder="hong@naver.com" required />
+            <span class="field__hint">가입하실 때 적으신 주소 그대로 적어 주십시오.</span>
+          </label>
+          <label class="field">
+            <span class="field__label">새 비밀번호</span>
+            <input type="password" id="fpPw" class="field__input"
+                   autocomplete="new-password" minlength="8" required />
+            <span class="field__hint">8자 이상. 영문과 숫자를 섞어 주십시오.</span>
+          </label>
+          <label class="field">
+            <span class="field__label">새 비밀번호 확인</span>
+            <input type="password" id="fpPw2" class="field__input"
+                   autocomplete="new-password" required />
+          </label>
+          <p class="form__msg" id="findPwMsg" role="status" aria-live="polite" hidden></p>
+          <div class="form__actions">
+            <button type="submit" class="btn btn--accent btn--full" id="findPwSubmit">비밀번호 바꾸기</button>
+          </div>
+        </form>
+        <p class="auth-help">
+          <button type="button" class="linkish" id="backFromPw">로그인으로 돌아가기</button>
+        </p>
       </div>
 
       <p class="auth-foot">

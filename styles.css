@@ -1718,12 +1718,40 @@ body, p, .why-text, .audience__item p,
 
 /* 로그인·가입 탭 */
 .auth-tabs { display: flex; border-bottom: 1px solid var(--line); margin-bottom: var(--sp-8); }
+/* display 를 준 요소는 hidden 이 먹지 않습니다 — 작성자 규칙이 브라우저 기본을
+   이깁니다. 찾기 화면에서 탭줄을 감추려면 이 한 줄이 있어야 합니다. */
+.auth-tabs[hidden] { display: none; }
 .auth-tab {
   flex: 1 1 0; padding: var(--sp-4) var(--sp-2); background: none; border: 0;
   border-bottom: 2px solid transparent; margin-bottom: -1px;
   font-size: var(--fs-md); color: var(--muted); cursor: pointer;
 }
 .auth-tab.is-active { color: var(--text); font-weight: 700; border-bottom-color: var(--accent-deep); }
+
+/* 아이디 찾기 · 비밀번호 재설정 (2026-09-18)
+   탭을 넷으로 늘리지 않았습니다 — 320px 에서 탭 글자가 줄바꿈되어 깨집니다.
+   대신 탭줄을 감추고 그 자리에 제목을 세웁니다. */
+.auth-pane__title {
+  font-size: var(--fs-xl); line-height: 1.35; letter-spacing: var(--ls-display);
+  margin-bottom: var(--sp-3);
+}
+.auth-pane__lead { font-size: var(--fs-sm); color: var(--muted); margin-bottom: var(--sp-8); }
+
+/* 로그인 아래 · 찾기 화면 아래의 안내 줄 */
+.auth-help {
+  margin-top: var(--sp-6); max-width: none;
+  text-align: center; font-size: var(--fs-sm); color: var(--muted);
+}
+.auth-help__dot { margin: 0 var(--sp-2); color: var(--line-2); }
+
+/* 링크처럼 보이지만 단추입니다 — 가는 곳이 없고 화면만 바꾸기 때문입니다.
+   <a href="#"> 로 두면 자바스크립트가 꺼졌을 때 맨 위로 튑니다. */
+.linkish {
+  padding: 4px 2px; background: none; border: 0;
+  font-size: inherit; color: var(--accent-deep); text-decoration: underline;
+  text-underline-offset: 3px; cursor: pointer;
+}
+.linkish:hover { color: var(--brown); }
 
 .auth-foot {
   margin-top: var(--sp-12); padding-top: var(--sp-5); border-top: 1px solid var(--line);

@@ -261,3 +261,43 @@ create policy "원장만 사진을 지웁니다"
 -- ── 6. 확인 ───────────────────────────────────────────────────
 --   select tablename, policyname, cmd from pg_policies
 --    where schemaname = 'public' order by tablename;
+
+
+-- ── 7. 아이디·비밀번호 찾기 기록 ──────────────────────────────
+--
+--  2026-09-18 에 더했습니다. 회원이 스스로 아이디를 찾고 비밀번호를
+--  다시 정할 수 있게 하면서, 그 시도를 여기에 남깁니다.
+--
+--  확인은 홈페이지가 하지 않습니다. Netlify 함수(netlify/functions/recover.js)가
+--  service_role 열쇠로 명부와 대조합니다. 브라우저에는 그 열쇠가 없습니다.
+--
+--  이 표가 있는 이유는 둘입니다.
+--    ① 같은 곳에서 계속 틀리면 막습니다 (한 시간에 IP 10번 · 번호 5번)
+--    ② 수상한 시도가 있었는지 원장이 나중에 볼 수 있습니다
+--
+--  아무에게도 열지 않습니다. service_role 만 읽고 씁니다.
+--  남기는 것은 휴대폰 뒤 4자리까지입니다 — 기록 자체가 명부가 되면 안 됩니다.
+create table if not exists public.recovery_log (
+  id   bigint generated always as identity primary key,
+  at   timestamptz not null default now(),
+  ip   text,
+  kind text not null check (kind in ('id', 'password')),
+  ok   boolean not null,
+  hint text                      -- 휴대폰 뒤 4자리. 그 이상 적지 마십시오
+);
+
+create index if not exists recovery_log_at_idx on public.recovery_log (at desc);
+
+alter table public.recovery_log enable row level security;
+revoke all on public.recovery_log from anon, authenticated;
+
+-- 정책을 하나도 만들지 않습니다. RLS 가 켜진 표에 정책이 없으면
+-- anon 과 로그인한 회원 모두 한 줄도 읽지 못합니다. service_role 은
+-- RLS 를 지나가므로 함수만 읽고 씁니다.
+
+-- 지난 기록 지우기 — 가끔 손으로 돌리십시오 (30일 넘은 것)
+--   delete from public.recovery_log where at < now() - interval '30 days';
+
+-- 수상한 시도 보기
+--   select at, kind, ok, hint, ip from public.recovery_log
+--    order by at desc limit 50;

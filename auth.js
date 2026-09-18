@@ -711,24 +711,45 @@
   // ══════════════════════════════════════════════════════════
   //  로그인 · 회원가입 · 비밀번호
   // ══════════════════════════════════════════════════════════
-  function 탭() {
-    const tL = $('tabLogin'), tJ = $('tabJoin');
-    const pL = $('paneLogin'), pJ = $('paneJoin');
-    if (!tL || !tJ || !pL || !pJ) return;
+  // 화면은 넷입니다 — 로그인 · 회원가입 · 아이디 찾기 · 비밀번호 재설정.
+  // 앞의 둘만 탭입니다. 찾기 둘은 탭줄을 감추고 그 자리를 대신 씁니다 —
+  // 탭을 넷으로 늘리면 320px 화면에서 글자가 줄바꿈되어 깨집니다.
+  let 화면가기 = function () {};
 
-    function 가자(join) {
-      tL.classList.toggle('is-active', !join);
-      tJ.classList.toggle('is-active', join);
-      tL.setAttribute('aria-selected', String(!join));
-      tJ.setAttribute('aria-selected', String(join));
-      pL.hidden = join;
-      pJ.hidden = !join;
-    }
-    tL.addEventListener('click', function () { 가자(false); });
-    tJ.addEventListener('click', function () { 가자(true); });
+  function 탭() {
+    const tL = $('tabLogin'), tJ = $('tabJoin'), 탭줄 = $('join');
+    const 판 = {
+      login: $('paneLogin'), join: $('paneJoin'),
+      findId: $('paneFindId'), findPw: $('paneFindPw'),
+    };
+    if (!tL || !tJ || !판.login || !판.join) return;
+
+    화면가기 = function (어디) {
+      Object.keys(판).forEach(function (k) { if (판[k]) 판[k].hidden = (k !== 어디); });
+      const 탭화면 = (어디 === 'login' || 어디 === 'join');
+      if (탭줄) 탭줄.hidden = !탭화면;
+      tL.classList.toggle('is-active', 어디 === 'login');
+      tJ.classList.toggle('is-active', 어디 === 'join');
+      tL.setAttribute('aria-selected', String(어디 === 'login'));
+      tJ.setAttribute('aria-selected', String(어디 === 'join'));
+      // 화면을 바꾸면 앞 화면에 남아 있던 안내가 따라오지 않게 지웁니다.
+      ['loginMsg', 'joinMsg', 'findIdMsg', 'findPwMsg'].forEach(function (id) { clear($(id)); });
+    };
+
+    tL.addEventListener('click', function () { 화면가기('login'); });
+    tJ.addEventListener('click', function () { 화면가기('join'); });
+
+    const 잇기 = function (단추, 어디) {
+      const b = $(단추);
+      if (b) b.addEventListener('click', function () { 화면가기(어디); });
+    };
+    잇기('toFindId', 'findId');
+    잇기('toFindPw', 'findPw');
+    잇기('backFromId', 'login');
+    잇기('backFromPw', 'login');
 
     // 후기 페이지의 '회원가입' 단추가 #join 으로 옵니다
-    if (location.hash === '#join') 가자(true);
+    if (location.hash === '#join') 화면가기('join');
   }
 
   function 로그인() {
@@ -889,9 +910,117 @@
     });
   }
 
-  // 비밀번호 재설정 메일은 쓰지 않습니다 — 인증 주소가 가짜라 받을 수 없습니다.
-  // 잊으신 분은 전화를 주시고, 원장님이 Supabase 에서 바꿔 드립니다.
-  // 회원이 많아지면 그때 제대로 만들어야 합니다.
+  // ── 아이디 찾기 · 비밀번호 재설정 ───────────────────────────
+  //
+  // 대조는 여기서 못 합니다. 명부(profiles)는 로그인한 본인과 원장만
+  // 볼 수 있고, 잊으신 분은 로그인을 못 하기 때문입니다.
+  // 서버 함수(netlify/functions/recover.js)가 service_role 열쇠로 대조합니다.
+  //
+  // 메일 링크 방식이 더 안전합니다. 지금은 인증 주소가 가짜라 못 씁니다 —
+  // 메일 보내는 곳이 붙으면 그때 인증번호를 이 위에 얹습니다.
+  const 창구 = '/.netlify/functions/recover';
+
+  /** 서버 함수를 부릅니다. 무엇이 잘못됐든 우리말 한 줄로 돌려줍니다. */
+  async function 물어보기(몸) {
+    let r;
+    try {
+      r = await fetch(창구, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(몸),
+      });
+    } catch (e) {
+      return { ok: false, message: '연결하지 못했습니다. 잠시 뒤 다시 해 주십시오.' };
+    }
+    // 우리 함수는 무슨 일이 있어도 JSON 으로 답합니다(400·429·500 까지).
+    // 그러니 JSON 이 아니면 함수에 닿지 못한 것입니다 — 미리보기 서버가
+    // 그렇습니다. python 의 http.server 는 POST 에 501 로 답하고,
+    // 함수가 안 올라간 Netlify 는 404 로 답합니다. 둘 다 여기로 옵니다.
+    let j = null;
+    try { j = await r.json(); } catch (e) { j = null; }
+    if (!j) {
+      return {
+        ok: false,
+        message: (r.status === 404 || r.status === 501)
+          ? '이 기능은 실제 홈페이지에서만 됩니다.'
+          : '연결이 고르지 않습니다. 잠시 뒤 다시 해 주십시오.',
+      };
+    }
+    return j;
+  }
+
+  function 아이디찾기() {
+    const form = $('findIdForm');
+    if (!form) return;
+    const msg = $('findIdMsg'), btn = $('findIdSubmit');
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      clear(msg);
+      const name  = ($('fiName').value || '').trim();
+      const phone = 숫자만($('fiPhone').value);
+      const birth = 생년월일($('fiBirth').value);
+
+      if (name.length < 2)      { say(msg, '이름을 적어 주십시오.'); return; }
+      if (!폰_규칙.test(phone)) { say(msg, '휴대폰 번호를 다시 확인해 주십시오.'); return; }
+      if (!birth)               { say(msg, '생년월일을 1988.10.25 처럼 적어 주십시오.'); return; }
+
+      busy(btn, true, '찾는 중입니다');
+      const r = await 물어보기({ action: 'id', name: name, phone: phone, birth: birth });
+      busy(btn, false);
+
+      if (!r.ok) { say(msg, r.message || '적어 주신 내용과 맞는 회원이 없습니다.'); return; }
+      // 아이디를 통째로 보여 주지 않습니다 — 이름과 번호로 남의 아이디를
+      // 알아내는 데 쓰이지 않게, 앞 세 글자만 서버가 보내 줍니다.
+      say(msg, '아이디는 ' + r.username + ' 입니다. 뒷자리는 가렸습니다.', 'ok');
+    });
+  }
+
+  function 비밀번호재설정() {
+    const form = $('findPwForm');
+    if (!form) return;
+    const msg = $('findPwMsg'), btn = $('findPwSubmit');
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      clear(msg);
+      const id    = ($('fpId').value || '').trim().toLowerCase();
+      const name  = ($('fpName').value || '').trim();
+      const phone = 숫자만($('fpPhone').value);
+      const birth = 생년월일($('fpBirth').value);
+      const email = ($('fpEmail').value || '').trim();
+      const pw    = $('fpPw').value || '';
+      const pw2   = $('fpPw2').value || '';
+
+      if (!ID_규칙.test(id))    { say(msg, '아이디는 영문 소문자·숫자·밑줄(_) 4~20자입니다.'); return; }
+      if (name.length < 2)      { say(msg, '이름을 적어 주십시오.'); return; }
+      if (!폰_규칙.test(phone)) { say(msg, '휴대폰 번호를 다시 확인해 주십시오.'); return; }
+      if (!birth)               { say(msg, '생년월일을 1988.10.25 처럼 적어 주십시오.'); return; }
+      if (email.indexOf('@') < 1 || email.indexOf('.') < 0) {
+        say(msg, '이메일 주소를 다시 확인해 주십시오.'); return;
+      }
+      if (pw.length < 8)        { say(msg, '새 비밀번호는 8자 이상이어야 합니다.'); return; }
+      if (pw !== pw2)           { say(msg, '새 비밀번호가 서로 다릅니다.'); return; }
+
+      busy(btn, true, '바꾸는 중입니다');
+      const r = await 물어보기({
+        action: 'password',
+        username: id, name: name, phone: phone, birth: birth, email: email, password: pw,
+      });
+      busy(btn, false);
+
+      if (!r.ok) { say(msg, r.message || '적어 주신 내용과 맞는 회원이 없습니다.'); return; }
+
+      form.reset();
+      say(msg, '바뀌었습니다. 새 비밀번호로 로그인해 주십시오.', 'ok');
+      // 바로 넘기지 않고 잠깐 둡니다 — 바뀌었다는 말을 읽으실 시간입니다.
+      setTimeout(function () {
+        화면가기('login');
+        const el = $('loginId');
+        if (el) { el.value = id; el.focus(); }
+      }, 1600);
+    });
+  }
 
   // ── 시작 ────────────────────────────────────────────────────
   sb.auth.getSession().then(function (s) { 상단바(s.data.session); });
@@ -901,6 +1030,8 @@
   탭();
   로그인();
   가입();
+  아이디찾기();
+  비밀번호재설정();
   중복확인();
   이메일고르기();
 })();
