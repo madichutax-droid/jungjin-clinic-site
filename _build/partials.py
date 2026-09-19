@@ -8,7 +8,7 @@
 """
 from datetime import date
 
-CSS_V = "135"
+CSS_V = "136"
 JS_V  = "17"
 IMG_V = "4"
 

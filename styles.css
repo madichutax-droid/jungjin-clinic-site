@@ -2174,3 +2174,17 @@ a { text-underline-offset: 3px; }
   /* 제목 덩어리와 내용 사이를 벌립니다 */
   .section__head      { margin-bottom: 56px; }
 }
+
+/* ── 안내 영상 (2026-09-19) ─────────────────────────────────
+   대기실 화면으로 쓰는 영상을 눌러서 보는 자리입니다.
+   16:9 를 유지하고, 테두리는 다른 카드와 같은 헤어라인 하나로 둡니다. */
+.guide { margin: 0; }
+.guide__player {
+  display: block; width: 100%; height: auto; aspect-ratio: 16 / 9;
+  background: var(--brown); border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.guide__note {
+  margin-top: var(--sp-4); color: var(--muted);
+  font-size: var(--fs-sm); letter-spacing: var(--ls-label);
+}

@@ -111,6 +111,26 @@ def build_index():
         + P.notice().rstrip("\n"),
         cls="section section--cream", sid="method")
 
+    # 04-C 안내 영상 — 대기실 화면으로 쓰는 그 영상입니다 (사이니지/영상/가로.mp4).
+    #
+    # 히어로 배경으로 넣지 않았습니다. 글자로 된 안내 슬라이드라, 큰 제목
+    # 뒤에 깔면 두 글이 겹쳐 둘 다 안 읽힙니다. 눌러서 보는 자리로 두었습니다.
+    #
+    # preload="none" 이라 누르기 전에는 한 바이트도 받지 않습니다. 첫 장면을
+    # 포스터(60KB)로 깔아 두어, 안 누르는 분께는 그림 한 장 값만 듭니다.
+    # 원본 1920x1080 · 23.7MB 를 960x540 · 12MB 로 줄였습니다 — 글자가
+    # 720p 와 구별되지 않아 작은 쪽을 골랐습니다.
+    video = _sec(
+        f'      <figure class="guide">\n'
+        f'        <video class="guide__player" controls preload="none" playsinline\n'
+        f'               poster="assets/guide-poster.jpg?v={P.IMG_V}"\n'
+        f'               width="960" height="540">\n'
+        f'          <source src="assets/guide.mp4?v={P.IMG_V}" type="video/mp4" />\n'
+        f'        </video>\n'
+        f'        <figcaption class="guide__note">{H.GUIDE_NOTE}</figcaption>\n'
+        f'      </figure>',
+        sid="guide")
+
     # 07-B 원장 이야기 (짧은 버전)
     story = _sec(
         f'      <div class="section__head section__head--center">\n'
@@ -141,7 +161,7 @@ def build_index():
     #    코드와 styles.css 규칙은 커밋 6c84922 에 그대로 있습니다.
 
     return (head_html + P.topbar() + P.header("index")
-            + hero + method + promise + story
+            + hero + method + video + promise + story
             + P.location_section() + P.tail(cta_title=H.CTA_TITLE, cta_desc=H.CTA_DESC))
 
 
