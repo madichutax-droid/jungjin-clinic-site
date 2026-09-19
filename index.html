@@ -25,7 +25,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=137" />
+  <link rel="stylesheet" href="styles.css?v=138" />
   <link rel="canonical" href="https://jungjinhani.com/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="정진한의원" />
@@ -195,19 +195,6 @@
     </div>
   </section>
 
-  <section class="section" id="guide">
-    <div class="container container--read">
-      <figure class="guide">
-        <video class="guide__player" controls preload="none" playsinline
-               poster="assets/guide-poster.jpg?v=4"
-               width="960" height="540">
-          <source src="assets/guide.mp4?v=4" type="video/mp4" />
-        </video>
-        <figcaption class="guide__note">대기실 화면으로 보여 드리는 안내입니다. 2분 45초 · 소리 없음</figcaption>
-      </figure>
-    </div>
-  </section>
-
   <section class="section" id="promise">
     <div class="container container--read">
       <div class="section__head section__head--center">
@@ -357,12 +344,20 @@
 
   <section class="cta-banner">
     <div class="container">
-      <div class="cta-banner__inner">
+      <div class="cta-banner__inner cta-banner__inner--media">
         <div class="cta-banner__text">
           <h2 class="cta-banner__title">지금 가장 불편한 것부터<br />말씀해 주세요</h2>
           <p class="cta-banner__desc">진찰과 설명이 먼저입니다. 치료 여부는 그다음입니다.</p>
+          <a href="tel:031-522-5923" class="btn btn--primary btn--lg">진료 예약하기</a>
         </div>
-        <a href="tel:031-522-5923" class="btn btn--primary btn--lg">진료 예약하기</a>
+        <figure class="cta-banner__media">
+          <video class="guide__player" controls preload="none" playsinline
+                 poster="assets/guide-poster.jpg?v=4"
+                 width="960" height="540">
+            <source src="assets/guide.mp4?v=4" type="video/mp4" />
+          </video>
+          <figcaption class="guide__note">대기실 화면으로 보여 드리는 안내입니다. 2분 45초 · 소리 없음</figcaption>
+        </figure>
       </div>
     </div>
   </section>

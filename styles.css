@@ -2189,15 +2189,21 @@ a { text-underline-offset: 3px; }
   font-size: var(--fs-sm); letter-spacing: var(--ls-label);
 }
 
-/* ── 마무리 배너를 한 줄로 (2026-09-19) ──────────────────────
-   글은 왼쪽, 단추는 오른쪽. 전에는 단추가 글 아래에 있어 오른쪽
-   절반(800px 남짓)이 통째로 비어 있었습니다. 넓은 화면에서만 나눕니다 —
-   좁은 화면에서 옆으로 붙이면 단추가 눌리기 어려워집니다. */
+/* ── 마무리 배너 오른쪽에 안내 영상 (2026-09-19) ──────────────
+   전에는 단추가 글 아래에 있어 오른쪽 절반(800px 남짓)이 통째로
+   비어 있었습니다. 그 자리에 영상을 넣었습니다(원장님 지시).
+   글과 단추는 왼쪽에 묶여 있고, 영상이 오른쪽 절반을 씁니다.
+
+   영상이 없는 19페이지는 이 규칙이 걸리지 않아 전과 같습니다 —
+   --media 가 붙은 배너에만 나뉩니다. */
 @media (min-width: 900px) {
-  .cta-banner__inner {
-    display: flex; align-items: center; justify-content: space-between;
-    gap: var(--sp-12);
+  .cta-banner__inner--media {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    gap: var(--sp-12); align-items: center;
   }
-  .cta-banner__desc { margin-bottom: 0; }
-  .cta-banner__inner .btn { flex: none; }
 }
+.cta-banner__media { margin: var(--sp-8) 0 0; min-width: 0; }
+@media (min-width: 900px) { .cta-banner__media { margin-top: 0; } }
+/* 어두운 면 위에 놓이므로 테두리를 밝은 쪽으로 바꿉니다 */
+.cta-banner__media .guide__player { border-color: rgba(250, 248, 244, .22); }
+.cta-banner__media .guide__note { color: #cac2b7; }

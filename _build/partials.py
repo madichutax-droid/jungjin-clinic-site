@@ -8,7 +8,7 @@
 """
 from datetime import date
 
-CSS_V = "137"
+CSS_V = "138"
 JS_V  = "17"
 IMG_V = "4"
 
@@ -463,18 +463,22 @@ def crumb(label, parent=None):
 
 
 def cta(title='지금,<br class="only-mobile" /> 원인부터 확인해 보세요',
-        desc="무엇이 원인인지 판단해 설명드립니다."):
-    """모든 콘텐츠 페이지의 마무리. 읽고 나서 갈 곳을 만들어 줍니다."""
+        desc="무엇이 원인인지 판단해 설명드립니다.", media=""):
+    """모든 콘텐츠 페이지의 마무리. 읽고 나서 갈 곳을 만들어 줍니다.
+
+    media 는 메인만 씁니다 — 안내 영상이 이 배너 오른쪽에 들어갑니다
+    (원장님 지시, 2026-09-19). 나머지 19페이지는 비어 있어 전과 같습니다."""
+    옆 = ' cta-banner__inner--media' if media else ''
     return f"""
   <section class="cta-banner">
     <div class="container">
-      <div class="cta-banner__inner">
+      <div class="cta-banner__inner{옆}">
         <div class="cta-banner__text">
           <h2 class="cta-banner__title">{title}</h2>
           <p class="cta-banner__desc">{desc}</p>
+          <a href="tel:{TEL}" class="btn btn--primary btn--lg">진료 예약하기</a>
         </div>
-        <a href="tel:{TEL}" class="btn btn--primary btn--lg">진료 예약하기</a>
-      </div>
+{media}      </div>
     </div>
   </section>
 """
@@ -887,7 +891,7 @@ def opening_popup():
 """
 
 
-def tail(with_cta=True, cta_title=None, cta_desc=None, extra_scripts=""):
+def tail(with_cta=True, cta_title=None, cta_desc=None, cta_media="", extra_scripts=""):
     """페이지 마무리 한 벌 — CTA + 푸터 + 퀵메뉴."""
     parts = []
     if with_cta:
@@ -896,6 +900,8 @@ def tail(with_cta=True, cta_title=None, cta_desc=None, extra_scripts=""):
             kw["title"] = cta_title
         if cta_desc:
             kw["desc"] = cta_desc
+        if cta_media:
+            kw["media"] = cta_media
         parts.append(cta(**kw))
     parts.append(footer())
     # quickmenu() 가 </body></html> 까지 함께 내보냅니다.
