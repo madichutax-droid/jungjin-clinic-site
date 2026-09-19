@@ -73,7 +73,7 @@ def bus_nos(s):
 # 외부 채널 — 하단 퀵메뉴에 붙습니다. 주소가 없으면 그 아이콘은 나오지 않습니다.
 BLOG     = "https://blog.naver.com/yjj2923"
 PLACE    = ""   # TODO: 네이버 플레이스 주소
-INSTA    = ""   # TODO: 인스타그램 주소 (https://www.instagram.com/아이디)
+INSTA    = "https://www.instagram.com/jungjin.hani"
 YOUTUBE  = ""   # TODO: 유튜브 주소 (https://www.youtube.com/@아이디)
 
 # 위 셋은 비워 두면 화면에 아예 나오지 않습니다. 주소를 넣는 순간
