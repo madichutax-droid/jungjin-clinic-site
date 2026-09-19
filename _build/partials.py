@@ -8,7 +8,7 @@
 """
 from datetime import date
 
-CSS_V = "136"
+CSS_V = "137"
 JS_V  = "17"
 IMG_V = "4"
 
@@ -469,8 +469,10 @@ def cta(title='지금,<br class="only-mobile" /> 원인부터 확인해 보세�
   <section class="cta-banner">
     <div class="container">
       <div class="cta-banner__inner">
-        <h2 class="cta-banner__title">{title}</h2>
-        <p class="cta-banner__desc">{desc}</p>
+        <div class="cta-banner__text">
+          <h2 class="cta-banner__title">{title}</h2>
+          <p class="cta-banner__desc">{desc}</p>
+        </div>
         <a href="tel:{TEL}" class="btn btn--primary btn--lg">진료 예약하기</a>
       </div>
     </div>
