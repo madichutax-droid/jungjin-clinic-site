@@ -73,7 +73,11 @@ def bus_nos(s):
 # 외부 채널 — 하단 퀵메뉴에 붙습니다. 주소가 없으면 그 아이콘은 나오지 않습니다.
 BLOG     = "https://blog.naver.com/yjj2923"
 PLACE    = ""   # TODO: 네이버 플레이스 주소
-INSTA    = ""   # TODO: 인스타그램 주소
+INSTA    = ""   # TODO: 인스타그램 주소 (https://www.instagram.com/아이디)
+YOUTUBE  = ""   # TODO: 유튜브 주소 (https://www.youtube.com/@아이디)
+
+# 위 셋은 비워 두면 화면에 아예 나오지 않습니다. 주소를 넣는 순간
+# 퀵메뉴와 푸터 양쪽에 함께 생깁니다 — 두 군데를 따로 고치지 않습니다.
 DOMAIN   = "https://jungjinhani.com"   # 2026-09-17, 산 도메인으로 옮겼습니다.
 #                                  canonical · og:url · sitemap 이 모두 이 값을 따릅니다.
 HOURS_BAR  = "진료시간 평일 09:00–20:00 (점심 13:00–14:00) · 토·공휴일 09:00–15:00 · 일요일 휴진"
@@ -478,7 +482,9 @@ def _channel_links():
     """네이버 채널 — 주소가 있는 것만 내보냅니다."""
     # 블로그는 아래 퀵메뉴에 있어서 푸터에서는 뺐습니다(원장님 지시, 2026-09-01).
     out = []
-    if PLACE: out.append(f'        <a href="{PLACE}" target="_blank" rel="noopener">네이버 플레이스</a>')
+    if PLACE:   out.append(f'        <a href="{PLACE}" target="_blank" rel="noopener">네이버 플레이스</a>')
+    if INSTA:   out.append(f'        <a href="{INSTA}" target="_blank" rel="noopener">인스타그램</a>')
+    if YOUTUBE: out.append(f'        <a href="{YOUTUBE}" target="_blank" rel="noopener">유튜브</a>')
     return "\n".join(out)
 
 
@@ -554,15 +560,22 @@ def quickmenu():
         "place": "<path d='M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z'/><circle cx='12' cy='10' r='3'/>",
         "insta": ("<rect x='2' y='2' width='20' height='20' rx='5.5'/><circle cx='12' cy='12' r='4.2'/>"
                   "<circle cx='17.4' cy='6.6' r='1.15' fill='currentColor' stroke='none'/>"),
+        "youtube": ("<rect x='2' y='4.5' width='20' height='15' rx='4.2'/>"
+                    "<path d='M10.2 8.9l5.6 3.1-5.6 3.1z'/>"),
         "book": "<rect x='3' y='4' width='18' height='18' rx='2.5'/><path d='M16 2v4M8 2v4M3 10h18'/>",
         "tel": ("<path d='M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 "
                 "19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1"
                 "L8 9.7a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.7 2z'/>"),
     }
 
-    def item(href, key, label, cls="", target=True):
+    def item(href, key, label, cls="", target=True, aria=None):
+        """label 은 화면에 보이는 이름, aria 는 읽어 주는 이름입니다.
+
+        320px 에서 칸 하나가 64px 뿐이라 보이는 이름은 세 글자를 넘기지
+        않습니다('인스타그램'은 들어가지 않습니다). 화면낭독기에는 온전한
+        이름을 들려줘야 하므로 둘을 나눠 둡니다."""
         t = ' target="_blank" rel="noopener"' if target else ''
-        return (f'    <a class="qm{cls}" href="{href}"{t} style="--qm:{INK}" aria-label="{label}">\n'
+        return (f'    <a class="qm{cls}" href="{href}"{t} style="--qm:{INK}" aria-label="{aria or label}">\n'
                 f'      <span class="qm__ico"><svg viewBox="0 0 24 24">{ico[key]}</svg></span>\n'
                 f'      <span class="qm__label">{label}</span>\n    </a>')
 
@@ -570,7 +583,8 @@ def quickmenu():
   <div class="quickmenu" aria-label="바로가기">
 {item(BLOG, 'blog', '블로그') if BLOG else ''}
 {item(PLACE, 'place', '플레이스') if PLACE else ''}
-{item(INSTA, 'insta', '인스타그램') if INSTA else ''}
+{item(INSTA, 'insta', '인스타', aria='인스타그램') if INSTA else ''}
+{item(YOUTUBE, 'youtube', '유튜브') if YOUTUBE else ''}
 {item('tel:' + TEL, 'tel', '전화', target=False)}
 {item('tel:' + TEL, 'book', '예약', cls=' qm--book', target=False)}
   </div>
