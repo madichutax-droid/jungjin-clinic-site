@@ -155,8 +155,9 @@ def build_index():
         f'                 width="960" height="540">\n'
         f'            <source src="assets/guide.mp4?v={P.IMG_V}" type="video/mp4" />\n'
         f'          </video>\n'
-        f'          <figcaption class="guide__note">{H.GUIDE_NOTE}</figcaption>\n'
-        f'        </figure>\n')
+        + (f'          <figcaption class="guide__note">{H.GUIDE_NOTE}</figcaption>\n'
+           if H.GUIDE_NOTE else '')
+        + f'        </figure>\n')
 
     # ※ '진료 내용' 구획(진단명 일곱)은 원장님 지시로 다시 뺐습니다(2026-09-09).
     #    코드와 styles.css 규칙은 커밋 6c84922 에 그대로 있습니다.
