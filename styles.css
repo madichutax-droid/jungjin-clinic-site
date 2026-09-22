@@ -2207,3 +2207,22 @@ a { text-underline-offset: 3px; }
 /* 어두운 면 위에 놓이므로 테두리를 밝은 쪽으로 바꿉니다 */
 .cta-banner__media .guide__player { border-color: rgba(250, 248, 244, .22); }
 .cta-banner__media .guide__note { color: #cac2b7; }
+
+/* ── 푸터 채널 (2026-09-22) ─────────────────────────────────
+   이용약관·개인정보처리방침·비급여 진료비용 줄에 섞여 있던 것을
+   로고 아래로 옮겼습니다. 비급여 고지는 의료법 제45조로 의무인데,
+   인스타·유튜브와 같은 무게로 서 있으면 묻힙니다.
+
+   지우지는 않았습니다 — 오른쪽 바로가기 바가 641~1399px 에서 숨어서,
+   푸터에서까지 빼면 13인치 노트북에는 채널로 가는 길이 없어집니다. */
+.footer__channels {
+  display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-4);
+  margin-top: var(--sp-5);
+}
+.footer__channels a {
+  font-size: var(--fs-sm); letter-spacing: var(--ls-label);
+  color: var(--on-dark); text-decoration: underline; text-underline-offset: 3px;
+}
+.footer__channels a:hover { color: #fff; }
+/* 손끝이 닿는 크기 — 좁은 화면에서 줄이 붙지 않게 */
+@media (max-width: 640px) { .footer__channels a { padding: 6px 0; } }

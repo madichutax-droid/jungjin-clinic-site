@@ -8,7 +8,7 @@
 """
 from datetime import date
 
-CSS_V = "138"
+CSS_V = "139"
 JS_V  = "17"
 IMG_V = "4"
 
@@ -488,13 +488,25 @@ def cta(title='지금,<br class="only-mobile" /> 원인부터 확인해 보세�
 
 
 def _channel_links():
-    """네이버 채널 — 주소가 있는 것만 내보냅니다."""
-    # 블로그는 아래 퀵메뉴에 있어서 푸터에서는 뺐습니다(원장님 지시, 2026-09-01).
-    out = []
-    if PLACE:   out.append(f'        <a href="{PLACE}" target="_blank" rel="noopener">네이버 플레이스</a>')
-    if INSTA:   out.append(f'        <a href="{INSTA}" target="_blank" rel="noopener">인스타그램</a>')
-    if YOUTUBE: out.append(f'        <a href="{YOUTUBE}" target="_blank" rel="noopener">유튜브</a>')
-    return "\n".join(out)
+    """채널 — 주소가 있는 것만, 로고 아래에 모아 둡니다.
+
+    2026-09-22 에 법 문서 줄(이용약관·개인정보처리방침·비급여)에서 떼어
+    이리로 옮겼습니다. 비급여 고지는 의료법 제45조로 의무인데 인스타·유튜브와
+    같은 무게로 서 있으면 묻힙니다.
+
+    **지우지 않고 옮긴 이유** — 오른쪽 바로가기 바는 641~1399px 에서 숨습니다
+    (본문 글자를 덮기 때문입니다). 푸터에서까지 빼면 13인치 노트북으로 보시는
+    분께는 채널로 가는 길이 사라집니다.
+
+    블로그는 2026-09-01 원장님 지시로 푸터에서 뺀 상태 그대로 둡니다.
+    """
+    가진것 = [(PLACE, "네이버 플레이스"), (INSTA, "인스타그램"), (YOUTUBE, "유튜브")]
+    있는것 = [(u, n) for u, n in 가진것 if u]
+    if not 있는것:
+        return ""
+    줄 = "\n".join(
+        f'          <a href="{u}" target="_blank" rel="noopener">{n}</a>' for u, n in 있는것)
+    return f'        <div class="footer__channels">\n{줄}\n        </div>\n'
 
 
 def _copyright():
@@ -521,14 +533,13 @@ def footer():
       <div class="footer__brand">
         <img src="assets/logo-white.png?v={IMG_V}" alt="{CLINIC}" class="footer__logo" width="800" height="223" />
         <p class="footer__slogan">치료반응이 다음 자리를 정합니다.</p>
-      </div>
+{_channel_links()}      </div>
       <div class="footer__info">
         <p>대표 · 양정진{_bizno()}</p>
         <p>{ADDRESS}</p>
         <p>대표전화 <a href="tel:{TEL}">{TEL}</a> &nbsp;|&nbsp; 팩스 {FAX}</p>
       </div>
       <div class="footer__links">
-{_channel_links()}
         <a href="terms.html">이용약관</a>
         <a href="privacy.html">개인정보처리방침</a>
         <a href="pricing.html">비급여 진료비용</a>
