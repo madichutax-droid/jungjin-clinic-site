@@ -74,7 +74,10 @@ def bus_nos(s):
 BLOG     = "https://blog.naver.com/yjj2923"
 PLACE    = ""   # TODO: 네이버 플레이스 주소
 INSTA    = "https://www.instagram.com/jungjin.hani"
-YOUTUBE  = ""   # TODO: 유튜브 주소 (https://www.youtube.com/@아이디)
+# 채널 이름이 한글(@짚어내는한의사)이라 퍼센트 인코딩해 둡니다.
+# 주소창에 한글을 그대로 두면 메신저·검색로봇이 옮길 때 깨지는 일이 있습니다.
+# 누르면 같은 채널로 갑니다.
+YOUTUBE  = "https://www.youtube.com/@%EC%A7%9A%EC%96%B4%EB%82%B4%EB%8A%94%ED%95%9C%EC%9D%98%EC%82%AC"
 
 # 위 셋은 비워 두면 화면에 아예 나오지 않습니다. 주소를 넣는 순간
 # 퀵메뉴와 푸터 양쪽에 함께 생깁니다 — 두 군데를 따로 고치지 않습니다.
